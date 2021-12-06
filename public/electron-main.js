@@ -18,6 +18,7 @@ const createWindow = () => {
 			? 'http://localhost:3000'
 			: `file://${path.join(__dirname, '../build/index.html')}`
 	)
+	mainWindow.maximize();
 }
 
 // This method will be called when Electron has finished
