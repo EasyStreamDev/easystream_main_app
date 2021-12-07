@@ -86,16 +86,19 @@ const MicroSlider = styled(Slider)(({ theme }) => ({
   }
 }));
 
-export default function CustomizedSlider() {
+export default function CustomizedSlider(props: any) {
+
   return (
     <Box sx={{ width: 720 }}>
-      <Typography gutterBottom>Micro 1</Typography>
+      <Typography gutterBottom>{ props.name }</Typography>
       <MicroSlider
+        onChange={ (_, val: any) => { props.sendData(val)} }
+        onChangeCommitted={ (_, val: any) => { props.sendData(val)} }
         aria-label="Micro"
-        defaultValue={50}
+        defaultValue={props.defaultValue}
         marks={marks}
         valueLabelDisplay="on"
-      />
+        />
     </Box>
-    );
+  );
 }
