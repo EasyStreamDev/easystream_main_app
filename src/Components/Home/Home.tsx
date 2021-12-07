@@ -11,9 +11,8 @@ export const Home = () => {
       <>
         <h1> Home</h1>
         <Link to="/reports">reports</Link>
-		<Link to="/products">products</Link>
+		    <Link to="/products">products</Link>
+		    <Link to="/MicsLevel">MicsLevel</Link>
       </>
     );
 }
-
-// export default { Home };

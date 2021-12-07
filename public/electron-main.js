@@ -10,6 +10,8 @@ const createWindow = () => {
 			nodeIntegration: true // turn this off if you don't mean to use node
 		},
 		autoHideMenuBar: true,
+		minWidth: 800,
+		minHeight: 600,
 	})
 
 	// load the index.html of the app. (or localhost on port 3000 if you're in development)

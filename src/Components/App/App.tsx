@@ -1,17 +1,18 @@
-import '../Css/App.css'
+import './App.css'
 // React
 import React, { useState, useEffect } from 'react'
 // Assets
-import Sidebar from './Sidebar'
+import Sidebar from '../Sidebar/Sidebar'
 import {
 	BrowserRouter as Router,
 	Routes,
 	Route,
 	Link
 } from "react-router-dom";
-import { Home } from './Home'
-import { Product } from './Product'
-import { Report } from './Report'
+import { Home } from '../Home/Home'
+import { Product } from '../Product/Product'
+import { Report } from '../Report/Report'
+import { MicsLevel } from '../MicsLevel/MicsLevel';
 
 export default function App() {
 	return (
@@ -25,6 +26,7 @@ export default function App() {
 						<Route path='/' element={<Home/>}/>
 						<Route path='/reports' element={<Report/>} />
 						<Route path='/products' element={<Product/>} />
+						<Route path='/MicsLevel' element={<MicsLevel/>} />
 					</Routes>
 				</div>
 			</Router>
