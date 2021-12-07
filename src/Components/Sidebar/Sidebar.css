@@ -1,11 +1,20 @@
 .navbar {
-  height: 80px;
-  width: 80px;
+  flex-direction: row;
   display: flex;
-  justify-content: start;
-  align-items: center;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  align-content: space-between;
 }
+
+.easystream-title {
+  margin-top: 3.35rem;
+  margin-left: 2rem;
+  color: #EEEEEE;
+  font-size: 1.9rem;
+}
+
 .menu-bars {
+  margin-top: 3rem;
   margin-left: 2rem;
   font-size: 2rem;
   background: none;
