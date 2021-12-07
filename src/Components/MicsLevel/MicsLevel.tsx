@@ -1,6 +1,5 @@
 import React from 'react';
 import ReactRanger from 'react-ranger'
-impo
 
 export const MicsLevel = () => {
   return (

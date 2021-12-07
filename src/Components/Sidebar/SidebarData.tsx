@@ -1,8 +1,9 @@
 import React from 'react';
-import * as FaIcons from 'react-icons/fa';
 import * as AiIcons from 'react-icons/ai';
 import * as IoIcons from 'react-icons/io';
 import * as RiIcons from 'react-icons/ri';
+import * as BsIcons from 'react-icons/bs';
+import * as MdIcons from 'react-icons/md';
 
 export const SidebarData = [
     {
@@ -12,8 +13,8 @@ export const SidebarData = [
     },
     {
       title: 'Audio',
-      path: '/audio',
-      icon: <IoIcons.IoIosPaper />,
+      path: '#',
+      icon: <AiIcons.AiFillAudio />,
       iconClosed: <RiIcons.RiArrowDownSFill />,
       iconOpened: <RiIcons.RiArrowUpSFill />,
   
@@ -21,13 +22,13 @@ export const SidebarData = [
         {
           title: 'General',
           path: '/audio/general',
-          icon: <IoIcons.IoIosPaper />,
+          icon: <AiIcons.AiFillSetting />,
           cName: 'sub-nav'
         },
         {
           title: 'Mic Level',
           path: '/audio/mic-level',
-          icon: <IoIcons.IoIosPaper />,
+          icon: <BsIcons.BsFillVolumeUpFill />,
           cName: 'sub-nav'
         },
         {
@@ -39,17 +40,77 @@ export const SidebarData = [
     },
     {
       title: 'Video',
-      path: '/video',
-      icon: <FaIcons.FaCartPlus />
+      path: '#',
+      icon: <BsIcons.BsCameraVideoFill />,
+      iconClosed: <RiIcons.RiArrowDownSFill />,
+      iconOpened: <RiIcons.RiArrowUpSFill />,
+  
+      subNav: [
+        {
+          title: 'General',
+          path: '/audio/general',
+          icon: <AiIcons.AiFillSetting />,
+          cName: 'sub-nav'
+        },
+        {
+          title: 'Video Level',
+          path: '/audio/mic-level',
+          icon: <MdIcons.MdSwitchCamera />,
+          cName: 'sub-nav'
+        },
+        {
+          title: 'Lorem Ipsum',
+          path: '/audio/lorem-ipsum',
+          icon: <IoIcons.IoIosPaper />
+        }
+      ]
     },
     {
       title: 'Scenes',
-      path: '/scenes',
-      icon: <IoIcons.IoMdPeople />
+      path: '#',
+      icon: <MdIcons.MdOutlineCamera />,
+      iconClosed: <RiIcons.RiArrowDownSFill />,
+      iconOpened: <RiIcons.RiArrowUpSFill />,
+  
+      subNav: [
+        {
+          title: 'General',
+          path: '/audio/general',
+          icon: <AiIcons.AiFillSetting />,
+          cName: 'sub-nav'
+        },
+        {
+          title: 'Scenes Level',
+          path: '/audio/mic-level',
+          icon: <IoIcons.IoMdPeople />,
+          cName: 'sub-nav'
+        },
+        {
+          title: 'Lorem Ipsum',
+          path: '/audio/lorem-ipsum',
+          icon: <IoIcons.IoIosPaper />
+        }
+      ]
     },
     {
       title: 'Events',
-      path: '/events',
-      icon: <FaIcons.FaEnvelopeOpenText />,
+      path: '#',
+      icon: <RiIcons.RiArrowLeftRightLine />,
+      iconClosed: <RiIcons.RiArrowDownSFill />,
+      iconOpened: <RiIcons.RiArrowUpSFill />,
+  
+      subNav: [
+        {
+          title: 'Generate Event',
+          path: '/audio/general',
+          icon: <AiIcons.AiFillSetting />,
+          cName: 'sub-nav'
+        },
+        {
+          title: 'Lorem Ipsum',
+          path: '/audio/lorem-ipsum',
+          icon: <IoIcons.IoIosPaper />
+        }
+      ]
     }
   ];
