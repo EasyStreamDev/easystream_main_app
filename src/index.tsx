@@ -1,6 +1,4 @@
-// order to import: CSS, React, node, code, components, assets
-
-import './index.sass'
+import './index.css'
 // React
 import React from 'react'
 import ReactDOM from 'react-dom'
