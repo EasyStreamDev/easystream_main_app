@@ -4,12 +4,7 @@ import { styled } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 
-interface Props {
-  children: React.ReactElement;
-  value: number;
-}
-
-const iOSBoxShadow =
+const MicroBoxShadow =
   '0 5px 1px rgba(0,0,0,0.1),0 4px 8px rgba(0,0,0,0.13),0 0 0 1px rgba(0,0,0,0.02)';
 
 const marks = [
@@ -39,7 +34,7 @@ const marks = [
   },
 ];
 
-const IOSSlider = styled(Slider)(({ theme }) => ({
+const MicroSlider = styled(Slider)(({ theme }) => ({
   color: theme.palette.mode === 'dark' ? '#FD7014' : '#FD7014',
   height: 2,
   padding: '15px 0',
@@ -47,12 +42,12 @@ const IOSSlider = styled(Slider)(({ theme }) => ({
     height: 20,
     width: 20,
     backgroundColor: '#eeeeee',
-    boxShadow: iOSBoxShadow,
+    boxShadow: MicroBoxShadow,
     '&:focus, &:hover, &.Mui-active': {
       boxShadow:
         '0 3px 1px rgba(0,0,0,0.1),0 4px 8px rgba(0,0,0,0.3),0 0 0 1px rgba(0,0,0,0.02)',
       '@media (hover: none)': {
-        boxShadow: iOSBoxShadow,
+        boxShadow: MicroBoxShadow,
       },
     },
   },
@@ -91,17 +86,16 @@ const IOSSlider = styled(Slider)(({ theme }) => ({
   }
 }));
 
-
 export default function CustomizedSlider() {
   return (
     <Box sx={{ width: 720 }}>
       <Typography gutterBottom>Micro 1</Typography>
-      <IOSSlider
+      <MicroSlider
         aria-label="Micro"
         defaultValue={50}
         marks={marks}
         valueLabelDisplay="on"
       />
     </Box>
-  );
+    );
 }
