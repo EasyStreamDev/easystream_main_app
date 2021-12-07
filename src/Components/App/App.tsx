@@ -18,9 +18,9 @@ export default function App() {
 	return (
 		<div className='App'>
 			<Router>
-				{/* <div className='App-sidebar'>
-					<Sidebar></Sidebar> */}
-				{/* </div> */}
+				<div className='App-sidebar'>
+					<Sidebar></Sidebar>
+				</div>
 				<div className='App-content'>
 					<Routes>
 						<Route path='/' element={<Home/>}/>
