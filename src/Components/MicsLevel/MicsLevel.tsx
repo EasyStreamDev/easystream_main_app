@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { Component, useEffect, useState } from "react";
 import ReactRanger from "react-ranger";
 import CustomizedSlider from "../Slider/Slider";
 
@@ -24,6 +24,8 @@ export const MicsLevel = () => {
     },
   ]);
 
+  const [load, setload] = React.useState(true);
+
   const getData = (index: number, value: number) => {
     exampleMicsArray[index].level = value;
     console.log("Values", exampleMicsArray);
@@ -33,22 +35,37 @@ export const MicsLevel = () => {
     let copy = exampleMicsArray.slice();
     copy[index].isActive = value;
     setExampleMicsArray(copy);
-
   };
 
+  useEffect(() => {
+    async function sleep(): Promise<boolean> {
+      await delay(1000);
+      return (!load);
+    }
+    sleep()
+      .then((res) => setload(res))
+  }, []);
+
+  function delay(ms: number) {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+  }
   return (
     <>
-      {exampleMicsArray.map((item, index) => {
-        return (
-          <CustomizedSlider
-            isActive={item.isActive}
-            name={item.name}
-            defaultValue={item.level}
-            sendData={(val: number) => getData(index, val)}
-            sendActive={(val: boolean) => setActive(index, val)}
-          />
-        );
-      })}
+      {load ? (
+        <h1>Loading</h1>
+      ) : (
+        exampleMicsArray.map((item, index) => {
+          return (
+            <CustomizedSlider
+              isActive={item.isActive}
+              name={item.name}
+              defaultValue={item.level}
+              sendData={(val: number) => getData(index, val)}
+              sendActive={(val: boolean) => setActive(index, val)}
+            />
+          );
+        })
+      )}
     </>
   );
 };
