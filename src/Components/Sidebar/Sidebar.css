@@ -19,6 +19,8 @@
   margin-left: 6rem;
   color: #EEEEEE;
   font-size: 1.9rem;
+  border-bottom: 2px solid #FFF;
+  padding-bottom: 6px
 }
 
 .menu-bars {

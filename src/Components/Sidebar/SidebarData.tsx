@@ -29,7 +29,7 @@ export const SidebarData = [
         {
           title: 'Mic Level',
           fullTitle: 'Audio > Mic Level',
-          path: '/audio/mic-level',
+          path: '/audio/mics-level',
           icon: <BsIcons.BsFillVolumeUpFill />,
           cName: 'sub-nav'
         },

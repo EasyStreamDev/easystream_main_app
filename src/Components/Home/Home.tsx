@@ -12,7 +12,7 @@ export const Home = () => {
         <h1> Home</h1>
         <Link to="/reports">reports</Link>
 		    <Link to="/products">products</Link>
-		    <Link to="/MicsLevel">MicsLevel</Link>
+		    <Link to="/audio/mics-level">Mics Level</Link>
       </>
     );
 }

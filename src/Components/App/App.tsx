@@ -26,7 +26,7 @@ export default function App() {
 						<Route path='/' element={<Home/>}/>
 						<Route path='/reports' element={<Report/>} />
 						<Route path='/products' element={<Product/>} />
-						<Route path='/MicsLevel' element={<MicsLevel/>} />
+						<Route path='/audio/mics-level' element={<MicsLevel/>} />
 					</Routes>
 				</div>
 			</Router>
