@@ -1,4 +1,5 @@
 .navbar {
+  position: absolute;
   flex-direction: row;
   display: flex;
   flex-wrap: wrap;
@@ -13,6 +14,13 @@
   font-size: 1.9rem;
 }
 
+.path {
+  margin-top: 3.35rem;
+  margin-left: 6rem;
+  color: #EEEEEE;
+  font-size: 1.9rem;
+}
+
 .menu-bars {
   margin-top: 3rem;
   margin-left: 2rem;
@@ -21,19 +29,30 @@
 }
 .nav-menu {
   background-color: #18191F;
-  width: 20%;
+  width: 300px;
   height: 100vh;
-  display: block;
   justify-content: center;
-  position: fixed;
+  position: relative;
   top: 0;
-  left: -100%;
-  transition: 2050ms;
+  transition: all 250ms;
+  overflow-y: auto;
 }
 .nav-menu.active {
   left: 0;
-  transition: 250ms;
 }
+.nav-menu.hidden {
+  margin-left: -300px;
+}
+
+@media (max-width: 900px) {
+  .nav-menu.hidden {
+      margin-left: -200px;
+  } 
+  .nav-menu.active {
+      left: 0;
+  }
+}
+
 .nav-text {
   display: flex;
   justify-content: start;

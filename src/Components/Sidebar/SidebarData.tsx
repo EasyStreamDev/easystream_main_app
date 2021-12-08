@@ -21,18 +21,21 @@ export const SidebarData = [
       subNav: [
         {
           title: 'General',
+          fullTitle: 'Audio > General',
           path: '/audio/general',
           icon: <AiIcons.AiFillSetting />,
           cName: 'sub-nav'
         },
         {
           title: 'Mic Level',
+          fullTitle: 'Audio > Mic Level',
           path: '/audio/mic-level',
           icon: <BsIcons.BsFillVolumeUpFill />,
           cName: 'sub-nav'
         },
         {
           title: 'Lorem Ipsum',
+          fullTitle: 'Audio > Lorem Ipsum',
           path: '/audio/lorem-ipsum',
           icon: <IoIcons.IoIosPaper />
         }
@@ -48,19 +51,22 @@ export const SidebarData = [
       subNav: [
         {
           title: 'General',
-          path: '/audio/general',
+          fullTitle: 'Video > General',
+          path: '/video/general',
           icon: <AiIcons.AiFillSetting />,
           cName: 'sub-nav'
         },
         {
           title: 'Video Level',
-          path: '/audio/mic-level',
+          fullTitle: 'Video > Video Level',
+          path: '/video/mic-level',
           icon: <MdIcons.MdSwitchCamera />,
           cName: 'sub-nav'
         },
         {
           title: 'Lorem Ipsum',
-          path: '/audio/lorem-ipsum',
+          fullTitle: 'Video > Lorem Ipsum',
+          path: '/video/lorem-ipsum',
           icon: <IoIcons.IoIosPaper />
         }
       ]
@@ -75,19 +81,22 @@ export const SidebarData = [
       subNav: [
         {
           title: 'General',
-          path: '/audio/general',
+          fullTitle: 'Scenes > General',
+          path: '/scenes/general',
           icon: <AiIcons.AiFillSetting />,
           cName: 'sub-nav'
         },
         {
           title: 'Scenes Level',
-          path: '/audio/mic-level',
+          fullTitle: 'Scenes > Scenes Level',
+          path: '/scenes/mic-level',
           icon: <IoIcons.IoMdPeople />,
           cName: 'sub-nav'
         },
         {
           title: 'Lorem Ipsum',
-          path: '/audio/lorem-ipsum',
+          fullTitle: 'Scenes > Lorem Ipsum',
+          path: '/scenes/lorem-ipsum',
           icon: <IoIcons.IoIosPaper />
         }
       ]
@@ -102,13 +111,15 @@ export const SidebarData = [
       subNav: [
         {
           title: 'Generate Event',
-          path: '/audio/general',
+          fullTitle: 'Events > Generate Event',
+          path: '/events/general',
           icon: <AiIcons.AiFillSetting />,
           cName: 'sub-nav'
         },
         {
           title: 'Lorem Ipsum',
-          path: '/audio/lorem-ipsum',
+          fullTitle: 'Events > Lorem Ipsum',
+          path: '/events/lorem-ipsum',
           icon: <IoIcons.IoIosPaper />
         }
       ]
