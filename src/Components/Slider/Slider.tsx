@@ -90,7 +90,9 @@ export default function CustomizedSlider(props: any) {
 
   return (
     <Box sx={{ width: 720 }}>
-      <Typography gutterBottom>{ props.name }</Typography>
+      <Box sx={{ pt: 4, pb: 4, ml: -1 }}>
+        <Typography gutterBottom>{ props.name }</Typography>
+      </Box>
       <MicroSlider
         onChange={ (_, val: any) => { props.sendData(val)} }
         onChangeCommitted={ (_, val: any) => { props.sendData(val)} }
