@@ -13,6 +13,7 @@ export const Home = () => {
         <Link to="/reports">reports</Link>
 		    <Link to="/products">products</Link>
 		    <Link to="/audio/mics-level">Mics Level</Link>
+		    <Link to="/audio/word-detection">Word Detection</Link>
       </>
     );
 }

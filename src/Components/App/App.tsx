@@ -13,6 +13,7 @@ import { Home } from '../Home/Home'
 import { Product } from '../Product/Product'
 import { Report } from '../Report/Report'
 import { MicsLevel } from '../MicsLevel/MicsLevel';
+import { WordDetection } from '../WordDetection/WordDetection';
 
 export default function App() {
 	return (
@@ -27,6 +28,7 @@ export default function App() {
 						<Route path='/reports' element={<Report/>} />
 						<Route path='/products' element={<Product/>} />
 						<Route path='/audio/mics-level' element={<MicsLevel/>} />
+						<Route path='/audio/word-detection' element={<WordDetection/>} />
 					</Routes>
 				</div>
 			</Router>
