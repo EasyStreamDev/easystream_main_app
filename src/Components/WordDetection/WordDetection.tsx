@@ -6,19 +6,25 @@ import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import { borderColor } from "@mui/system";
 import { AddNewWord } from "../AddNewWord/AddNewWord";
+import BoxEvent from "../BoxEvent/BoxEvent";
+// import { AddNewWord } from "../AddNewWord/AddNewWord";
+// import { BoxEvent } from "../BoxEvent/BoxEvent";
 
-interface keyword {
+interface event {
   id: number;
   keyword: string[];
-  scene: String[];
+  source: String[];
 }
 
 export const WordDetection = (props: any) => {
-  const [eventArray, seteventArray] = React.useState<keyword[]>([
-    { id: 0, keyword: [], scene: [] },
-  ]);
+  const [eventArray, seteventArray] = React.useState<event[]>([{ id: 0, keyword: ["bonjour", "salut"], source: ["ecran d'accueil", "jeu"] }, { id: 1, keyword: ["boutique", "shopping"], source: ["boutique"] }]);
   const [age, setAge] = React.useState("");
-  const [scene] = React.useState(["scene 1", "scene 2", "scene 3", "scene 4"]);
+  const [scene] = React.useState([
+    "scene 1",
+    "scene 2",
+    "scene 3",
+    "scene 4",
+  ]);
 
   // const handleChange = (e: any) => {
   //   if (e.key === "Enter") {
@@ -41,16 +47,34 @@ export const WordDetection = (props: any) => {
   function addNewEvent() {
     console.log("parent");
     let copy = eventArray.slice();
-    const newEvent = { id: eventArray.length, keyword: [], scene: [] };
+    const newEvent = { id: eventArray.length, keyword: [], source: [] };
     copy.push(newEvent);
     seteventArray(copy);
     console.log(eventArray);
   }
+  // const handleChange = (e: any) => {
+  //   if (e.key === "Enter") {
+  //     console.log(inputText);
+  //     let inputTextcpy = inputText;
+  //     const newElem: keyword = {
+  //       id: inputText.length,
+  //       keyword: e.currentTarget.value,
+  //       scene: [],
+  //     };
+  //     inputTextcpy.push(newElem);
+  //     setInputText(inputTextcpy);
+  //   }
+  // };
+
+  // const handleChangeSelect = (event: SelectChangeEvent) => {
+  //   setAge(event.target.value as string);
+  // };
 
   return (
     <>
       {eventArray.map((item, index) => {
-        return <h1>{item.id}</h1>;
+        return <BoxEvent keyObj={item}
+        />
       })}
       <AddNewWord createNewEvent={() => addNewEvent()} />
       {/* <input
