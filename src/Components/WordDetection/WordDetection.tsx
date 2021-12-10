@@ -15,7 +15,7 @@ interface keyword {
 export const WordDetection = (props: any) => {
   const [inputText, setInputText] = React.useState<keyword[]>([]);
   const [age, setAge] = React.useState("");
-  const [scene, setscene] = React.useState([
+  const [scene] = React.useState([
     "scene 1",
     "scene 2",
     "scene 3",
