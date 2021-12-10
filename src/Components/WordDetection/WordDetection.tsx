@@ -1,88 +1,68 @@
 import * as React from "react";
-import { styled, alpha } from '@mui/material/styles';
 import Box from '@mui/material/Box';
-import InputBase from '@mui/material/InputBase';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
+import { borderColor } from "@mui/system";
 
-const KeyWord = [
-  {
-    value: 0,
-    word: "Hello",
-  },
-  {
-    value: 1,
-    word: "World",
-  },
-  {
-    value: 2,
-    word: "Event",
-  },
-];
-
-// const Search = styled('div')(({ theme }) => ({
-//   position: 'relative',
-//   borderRadius: theme.shape.borderRadius,
-//   backgroundColor: alpha(theme.palette.common.white, 0.15),
-//   '&:hover': {
-//     backgroundColor: alpha(theme.palette.common.white, 0.25),
-//   },
-//   marginRight: theme.spacing(2),
-//   marginLeft: 0,
-//   width: '100%',
-//   [theme.breakpoints.up('sm')]: {
-//     marginLeft: theme.spacing(3),
-//     width: 'auto',
-//   },
-// }));
-
-// const SearchIconWrapper = styled('div')(({ theme }) => ({
-//   padding: theme.spacing(0, 2),
-//   height: '100%',
-//   position: 'absolute',
-//   pointerEvents: 'none',
-//   display: 'flex',
-//   alignItems: 'center',
-//   justifyContent: 'center',
-// }));
-
-// const StyledInputBase = styled(InputBase)(({ theme }) => ({
-//   color: 'inherit',
-//   '& .MuiInputBase-input': {
-//     padding: theme.spacing(1, 1, 1, 0),
-//     // vertical padding + font size from searchIcon
-//     paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-//     transition: theme.transitions.create('width'),
-//     width: '100%',
-//     [theme.breakpoints.up('md')]: {
-//       width: '20ch',
-//     },
-//   },
-// }));
-
-// const [inputText, setInputText] = React.useState("");
+interface keyword {
+  id: number;
+  keyword: string;
+  scene: String[];
+}
 
 export const WordDetection = (props: any) => {
+  const [inputText, setInputText] = React.useState<keyword[]>([]);
+  const [age, setAge] = React.useState("");
+  const [scene, setscene] = React.useState([
+    "scene 1",
+    "scene 2",
+    "scene 3",
+    "scene 4",
+  ]);
 
-  const printData = (value: string) => {
-    console.log("value = ", value);
-  }
+  const handleChange = (e: any) => {
+    if (e.key === "Enter") {
+      console.log(inputText);
+      let inputTextcpy = inputText;
+      const newElem: keyword = {
+        id: inputText.length,
+        keyword: e.currentTarget.value,
+        scene: [],
+      };
+      inputTextcpy.push(newElem);
+      setInputText(inputTextcpy);
+    }
+  };
 
+  const handleChangeSelect = (event: SelectChangeEvent) => {
+    setAge(event.target.value as string);
+  };
 
   return (
     <>
-      <form action="test4" target="_blank">
-        <input type="text" name="abcd" ></input>
-        <button type ="submit">Submit</button>
-      </form>
-      {/* <Box>
-        <Search>
-          <StyledInputBase
-            value={inputText}
-            onChange={}
-            placeholder="Search…"
-            inputProps={{ 'aria-label': 'search' }}
-          />
-        </Search>
-      </Box> */}
+      
+      <input
+        placeholder="type a key word.."
+        name="input-box"
+        type="text"
+        onKeyUp={(event) => {
+          handleChange(event);
+        }}
+      />
+      <FormControl fullWidth>
+        <InputLabel id="demo-simple-select-label">Scene</InputLabel>
+        <Select
+          labelId="demo-simple-select-label"
+          id="demo-simple-select"
+          value={age}
+          label="Scene"
+          onChange={handleChangeSelect}
+        >
+          {scene.map((scene => <MenuItem value={scene}>{scene}</MenuItem>))}
+        </Select>
+      </FormControl>
     </>
   );
 };
