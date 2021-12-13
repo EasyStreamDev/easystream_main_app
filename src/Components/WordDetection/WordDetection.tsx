@@ -17,7 +17,7 @@ interface event {
 }
 
 export const WordDetection = (props: any) => {
-  const [eventArray, seteventArray] = React.useState<event[]>([{ id: 0, keyword: ["bonjour", "salut"], source: ["ecran d'accueil", "jeu"] }, { id: 1, keyword: ["boutique", "shopping"], source: ["boutique"] }]);
+  const [eventArray, seteventArray] = React.useState<event[]>([{ id: 0, keyword: ["bonjour", "salut", "coucou", "alloah", "hola", "hello"], source: ["ecran d'accueil", "jeu"] }, { id: 1, keyword: ["boutique", "shopping"], source: ["boutique"] }]);
   const [age, setAge] = React.useState("");
   const [scene] = React.useState([
     "scene 1",
