@@ -12,91 +12,50 @@ import BoxEvent from "../BoxEvent/BoxEvent";
 
 interface event {
   id: number;
-  keyword: string[];
-  source: String[];
+  keywords: string[];
+  sources: String[];
 }
 
 export const WordDetection = (props: any) => {
-  const [eventArray, seteventArray] = React.useState<event[]>([{ id: 0, keyword: ["bonjour", "salut", "coucou", "alloah", "hola", "hello"], source: ["ecran d'accueil", "jeu"] }, { id: 1, keyword: ["boutique", "shopping"], source: ["boutique"] }]);
-  const [age, setAge] = React.useState("");
-  const [scene] = React.useState([
-    "scene 1",
-    "scene 2",
-    "scene 3",
-    "scene 4",
+  const [eventArray, seteventArray] = React.useState<event[]>([]);
+  const [newEvent, setnewEvent] = React.useState<event>({
+    id: eventArray.length,
+    keywords: [],
+    sources: [],
+  });
+  const [sources] = React.useState([
+    "sources 1",
+    "sources 2",
+    "sources 3",
+    "sources 4",
   ]);
 
-  // const handleChange = (e: any) => {
-  //   if (e.key === "Enter") {
-  //     console.log(inputText);
-  //     let inputTextcpy = inputText;
-  //     const newElem: keyword = {
-  //       id: inputText.length,
-  //       keyword: e.currentTarget.value,
-  //       scene: [],
-  //     };
-  //     inputTextcpy.push(newElem);
-  //     setInputText(inputTextcpy);
-  //   }
-  // };
-
-  // const handleChangeSelect = (event: SelectChangeEvent) => {
-  //   setAge(event.target.value as string);
-  // };
-
-  function addNewEvent() {
-    console.log("parent");
+  function addNewEvent(event: event) {
     let copy = eventArray.slice();
-    const newEvent = { id: eventArray.length, keyword: [], source: [] };
-    copy.push(newEvent);
+    event.id = eventArray.length;
+    copy.push(event);
     seteventArray(copy);
-    console.log(eventArray);
+    setnewEvent({ id: eventArray.length, keywords: [], sources: [] });
   }
-  // const handleChange = (e: any) => {
-  //   if (e.key === "Enter") {
-  //     console.log(inputText);
-  //     let inputTextcpy = inputText;
-  //     const newElem: keyword = {
-  //       id: inputText.length,
-  //       keyword: e.currentTarget.value,
-  //       scene: [],
-  //     };
-  //     inputTextcpy.push(newElem);
-  //     setInputText(inputTextcpy);
-  //   }
-  // };
 
-  // const handleChangeSelect = (event: SelectChangeEvent) => {
-  //   setAge(event.target.value as string);
-  // };
+  const changeEvent = (id: number, event: event) => {
+    let copy = eventArray.slice();
+    copy[id] = event;
+    seteventArray(copy);
+  };
 
   return (
     <>
       {eventArray.map((item, index) => {
-        return <BoxEvent keyObj={item}
-        />
+        return <BoxEvent keyObj={item} key={index}/>;
       })}
-      <AddNewWord createNewEvent={() => addNewEvent()} />
-      {/* <input
-        placeholder="type a key word.."
-        name="input-box"
-        type="text"
-        onKeyUp={(event) => {
-          handleChange(event);
-        }}
+      <AddNewWord
+        addNewEvent={addNewEvent}
+        changeEvent={changeEvent}
+        sources={sources}
+        newEvent={newEvent}
+        setnewEvent={setnewEvent}
       />
-      <FormControl fullWidth>
-        <InputLabel id="demo-simple-select-label">Scene</InputLabel>
-        <Select
-          labelId="demo-simple-select-label"
-          id="demo-simple-select"
-          value={age}
-          label="Scene"
-          onChange={handleChangeSelect}
-        >
-          {scene.map((scene => <MenuItem value={scene}>{scene}</MenuItem>))}
-        </Select>
-      </FormControl> */}
     </>
   );
 };

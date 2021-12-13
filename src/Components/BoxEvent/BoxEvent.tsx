@@ -35,11 +35,11 @@ export default function BoxEvent(props: any) {
         <Grid container>
           {/* <Item styles={TextStyles}>Obj ID : {props.keyObj.id}</Item> */}
           {/* <Item styles={TextStyles}>Keywords : </Item> */}
-          {props.keyObj.keyword.map((item: any, index: number) => {
+          {props.keyObj.keywords.map((item: any, index: number) => {
             return <Item styles={TextStyles}>{index} : {item}</Item>
           })}
           {/* <Item styles={TextStyles}>Sources : </Item> */}
-          {props.keyObj.source.map((item: any, index: number) => {
+          {props.keyObj.sources.map((item: any, index: number) => {
             return <Item styles={TextStyles}>{index} : {item}</Item>
           })}
         </Grid>
