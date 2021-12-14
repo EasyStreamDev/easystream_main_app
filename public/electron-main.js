@@ -2,16 +2,20 @@
 const { app, BrowserWindow, ipcMain } = require('electron')
 const path = require('path')
 const isDev = require('electron-is-dev')
-const { TCPConnection, getAllMics, getMic, getAllEvents, getEvent, disconnectSocket } = require('../src/Socket/socket.js');
+const { TCPConnection } = require('../src/Socket/socket.js');
 
 let loadingScreen;
-let tcpConn = new TCPConnection('localhost', 47920)
-				.then(() => {
-					console.log('TCPConnection is connected');
-					launchingApplication();
-				}).catch(err => {
-					console.log('Error Electron', err);
-				});
+let tcpConn = new TCPConnection('10.101.48.164', 47920);
+tcpConn.connect()
+.then((res) => {
+	console.log('TCPConnection is connected');
+	launchingApplication();
+	console.log('res', res);
+	return res;
+}).catch(err => {
+	console.log('Error Electron', err);
+	return null;
+});
 
 
 const createWindow = () => {
@@ -45,44 +49,44 @@ const createWindow = () => {
 		mainWindow.maximize();
 		mainWindow.show();
 	});
-
-	ipcMain.handle('getAllMics', async (event, arg) => {
-		console.log('getAllMicsPLEASE');
-		return getAllMics(tcpConn.socket).then(res => {
-			console.log('getAllMics : ' + res);
-			return res;
-		});
-	});
-
-	ipcMain.handle('getMic', async (event, arg) => {
-		return getMic(tcpConn.socket, arg).then(res => {
-			console.log('getMic : ' + res);
-			return res;
-		});
-	});
-
-	ipcMain.handle('getAllEvents', async (event, arg) => {
-		return getAllEvents(tcpConn.socket).then(res => {
-			console.log('getAllEvents : ' + res);
-			return res;
-		});
-	});
-
-	ipcMain.handle('getEvent', async (event, arg) => {
-		return getEvent(tcpConn.socket, arg).then(res => {
-			console.log('getEvent : ' + res);
-			return res;
-		});
-	});
-
-	ipcMain.handle('disconnectSocket', async (event, arg) => {
-		return getAllMics(tcpConn.socket).then(res => {
-			console.log('getAllMics : ' + res);
-			return res;
-		});
-	});
-
+	
 }
+
+ipcMain.on('getAllMics', (event, arg) => {
+	console.log('getAllMicsPLEASE');
+	return tcpConn.getAllMics().then(res => {
+		console.log('getAllMics : ' + res);
+		return res;
+	});
+});
+
+ipcMain.on('getMic', (event, arg) => {
+	return tcpConn.getMic(arg).then(res => {
+		console.log('getMic : ' + res);
+		return res;
+	});
+});
+
+ipcMain.on('getAllEvents', (event, arg) => {
+	return tcpConn.getAllEvents().then(res => {
+		console.log('getAllEvents : ' + res);
+		return res;
+	});
+});
+
+ipcMain.on('getEvent', (event, arg) => {
+	return tcpConn.getEvent(arg).then(res => {
+		console.log('getEvent : ' + res);
+		return res;
+	});
+});
+
+ipcMain.on('disconnectSocket', (event, arg) => {
+	return tcpConn.getAllMics().then(res => {
+		console.log('getAllMics : ' + res);
+		return res;
+	});
+});
 
 const createLoadingScreen = () => {
   /// create a browser window
@@ -94,7 +98,10 @@ const createLoadingScreen = () => {
       /// remove the window frame, so it will become a frameless window
       frame: false,
       /// and set the transparency, to remove any window background color
-      transparent: true
+      transparent: true,
+	  webPreferences: {
+		nodeIntegration: true
+	  }
     })
   );
   loadingScreen.setResizable(false);
@@ -131,7 +138,7 @@ app.on('window-all-closed', () => {
 })
 
 app.on('before-quit', () => {
-	disconnectSocket(tcpConn.socket);
+	tcpConn.disconnectSocket();
 })
 
 // In this file you can include the rest of your app's specific main process

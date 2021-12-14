@@ -20,16 +20,16 @@ export default function App() {
 
 	const getAllMics = () => {
 		(async () => {
-			const result = await ipcRenderer.invoke('getAllMics');
+			const result = await ipcRenderer.sendSync('getAllMics', 'ping');
 			console.log('getAllMics invoke', result);
 		})();
 	}
 
 	useEffect(() => {
-		// setTimeout(() => {
-		// 	console.log('Call getAllMics');
-		// 	getAllMics();
-		// }, 5000);
+		setTimeout(() => {
+			console.log('Call getAllMics');
+			getAllMics();
+		}, 5000);
 		
 		return () => { console.log('unmounting') };
 	}, []);
