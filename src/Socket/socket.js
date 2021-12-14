@@ -8,8 +8,8 @@ function TCPConnection(host, port) {
     EventEmitter.call(this);
 
     this.socket = net.connect(port, host, (test, error) => {
-        console.log('test', test);
-        console.log('error', error);
+        console.log('test ->', test);
+        console.log('error ->', error);
         console.log('TCPConnection initialized');
     });
     this.socket.once('data', function (data) {

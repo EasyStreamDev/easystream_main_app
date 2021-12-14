@@ -26,10 +26,10 @@ export default function App() {
 	}
 
 	useEffect(() => {
-		setTimeout(() => {
-			console.log('Call getAllMics');
-			getAllMics();
-		}, 5000);
+		// setTimeout(() => {
+		// 	console.log('Call getAllMics');
+		// 	getAllMics();
+		// }, 5000);
 		
 		return () => { console.log('unmounting') };
 	}, []);
