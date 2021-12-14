@@ -42,7 +42,8 @@ class TCPConnection {
         this.socket.write(obj);
         this.socket.once('data', (data) => {
             data = data.toString().replace('\t','').replace('\r','').replace('\n','').replace(/\0/g, ''); // Remove all useless characters
-            callback(data, null)
+            const payload = JSON.parse(data);
+            callback(payload, null)
         });
         this.socket.on('error', (error) => {
             callback(null, error)
@@ -52,7 +53,7 @@ class TCPConnection {
     getAllMics() {
         let obj = {
             command: 'getAllMics',
-            args: []
+            args: {}
         };
         console.log('obj done');
         return new Promise((resolve, reject) => {
@@ -69,10 +70,34 @@ class TCPConnection {
         });
     }
 
-    getMic(name) {
+    setVolumeToMic(micId, volume) {
+        let obj = {
+            command: 'setVolumeToMic',
+            args: {
+                micId,
+                volume
+            }
+        };
+        return new Promise((resolve, reject) => {
+            this.sendData(obj, (data, error) => {
+                if (data) {
+                    console.log('setVolumeToMic resolve', data);
+                    resolve(data);
+                } else {
+                    console.log('setVolumeToMic error', error);
+                    this.socket.end();
+                    reject(error);
+                }
+            });
+        });
+    }
+
+    getMic(micId) {
         let obj = {
             command: 'getMic',
-            args: [name]
+            args: {
+                micId
+            }
         };
         return new Promise((resolve, reject) => {
             this.sendData(obj, (data, error) => {
@@ -91,7 +116,7 @@ class TCPConnection {
     getAllEvents() {
         let obj = {
             command: 'getAllEvents',
-            args: []
+            args: {}
         };
         return new Promise((resolve, reject) => {
             this.sendData(obj, (data, error) => {
@@ -107,10 +132,12 @@ class TCPConnection {
         });
     }
 
-    getEvent(id) {
+    getEvent(eventId) {
         let obj = {
             command: 'getEvent',
-            args: [id]
+            args: {
+                eventId
+            }
         };
         return new Promise((resolve, reject) => {
             console.log('getEvent emit');

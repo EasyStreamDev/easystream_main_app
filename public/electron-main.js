@@ -53,38 +53,44 @@ const createWindow = () => {
 }
 
 ipcMain.on('getAllMics', (event, arg) => {
-	console.log('getAllMicsPLEASE');
 	return tcpConn.getAllMics().then(res => {
 		console.log('getAllMics : ' + res);
-		return res;
+		event.returnValue = res;
+	});
+});
+
+ipcMain.on('setVolumeToMic', (event, arg) => {
+	return tcpConn.setVolumeToMic(arg).then(res => {
+		console.log('setVolumeToMic : ' + res);
+		event.returnValue = res;
 	});
 });
 
 ipcMain.on('getMic', (event, arg) => {
 	return tcpConn.getMic(arg).then(res => {
 		console.log('getMic : ' + res);
-		return res;
+		event.returnValue = res;
 	});
 });
 
 ipcMain.on('getAllEvents', (event, arg) => {
 	return tcpConn.getAllEvents().then(res => {
 		console.log('getAllEvents : ' + res);
-		return res;
+		event.returnValue = res;
 	});
 });
 
 ipcMain.on('getEvent', (event, arg) => {
 	return tcpConn.getEvent(arg).then(res => {
 		console.log('getEvent : ' + res);
-		return res;
+		event.returnValue = res;
 	});
 });
 
 ipcMain.on('disconnectSocket', (event, arg) => {
 	return tcpConn.getAllMics().then(res => {
-		console.log('getAllMics : ' + res);
-		return res;
+		console.log('disconnectSocket : ' + res);
+		event.returnValue = res;
 	});
 });
 

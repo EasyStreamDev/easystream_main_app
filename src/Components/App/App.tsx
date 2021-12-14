@@ -12,6 +12,7 @@ import { Product } from '../Product/Product'
 import { Report } from '../Report/Report'
 import { MicsLevel } from '../MicsLevel/MicsLevel';
 import { WordDetection } from '../WordDetection/WordDetection';
+import { AllMics } from '../../Socket/interfaces';
 let { ipcRenderer } = window.require("electron");
 
 export default function App() {
@@ -20,8 +21,15 @@ export default function App() {
 
 	const getAllMics = () => {
 		(async () => {
-			const result = await ipcRenderer.sendSync('getAllMics', 'ping');
+			const result: AllMics = await ipcRenderer.sendSync('getAllMics', 'ping');
 			console.log('getAllMics invoke', result);
+		})();
+	}
+
+	const setVolumeToMic = (micId: string, volume: number) => {
+		(async () => {
+			const result = await ipcRenderer.sendSync('setVolumeToMic', micId, volume);
+			console.log('setVolumeToMic invoke', result);
 		})();
 	}
 
@@ -29,6 +37,7 @@ export default function App() {
 		setTimeout(() => {
 			console.log('Call getAllMics');
 			getAllMics();
+			// setVolumeToMic('Mic 1', 0.5);
 		}, 5000);
 		
 		return () => { console.log('unmounting') };
