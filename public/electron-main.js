@@ -106,9 +106,6 @@ const createLoadingScreen = () => {
 };
 
 const launchingApplication = () => {
-	if (loadingScreen) {
-		loadingScreen.close();
-	}
 	createWindow();
 	
 	app.on('activate', () => {
