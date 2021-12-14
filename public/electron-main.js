@@ -1,26 +1,70 @@
 // Modules to control application life and create native browser window
-const { app, BrowserWindow } = require('electron')
+const { app, BrowserWindow, ipcMain } = require('electron')
 const path = require('path')
 const isDev = require('electron-is-dev')
+const net = require('net');
+const { TCPConnection, getAllMics, getMic, getAllEvents, getEvent, disconnectSocket, sendData } = require('../src/Socket/socket.js');
+let socket = null;
+
+let tcpConn = new TCPConnection('10.101.48.164', 47920);
 
 const createWindow = () => {
 	// Create the browser window.
 	const mainWindow = new BrowserWindow({
 		webPreferences: {
-			nodeIntegration: true // turn this off if you don't mean to use node
+			nodeIntegration: true, // turn this off if you don't mean to use node
+			enableRemoteModule: true, // turn this off if you don't mean to use remote module
+			contextIsolation: false
 		},
 		autoHideMenuBar: true,
 		minWidth: 800,
 		minHeight: 600,
 	})
-
+	
 	// load the index.html of the app. (or localhost on port 3000 if you're in development)
 	mainWindow.loadURL(
 		isDev
-			? 'http://localhost:3000'
-			: `file://${path.join(__dirname, '../build/index.html')}`
+		? 'http://localhost:3000'
+		: `file://${path.join(__dirname, '../build/index.html')}`
 	)
 	mainWindow.maximize();
+
+	ipcMain.handle('getAllMics', async (event, arg) => {
+		console.log('getAllMicsPLEASE');
+		return getAllMics(tcpConn.socket).then(res => {
+			console.log('getAllMics : ' + res);
+			return res;
+		});
+	});
+
+	ipcMain.handle('getMic', async (event, arg) => {
+		return getMic(socket, arg).then(res => {
+			console.log('getMic : ' + res);
+			return res;
+		});
+	});
+
+	ipcMain.handle('getAllEvents', async (event, arg) => {
+		return getAllEvents(tcpConn.socket).then(res => {
+			console.log('getAllEvents : ' + res);
+			return res;
+		});
+	});
+
+	ipcMain.handle('getEvent', async (event, arg) => {
+		return getEvent(socket, arg).then(res => {
+			console.log('getEvent : ' + res);
+			return res;
+		});
+	});
+
+	ipcMain.handle('disconnectSocket', async (event, arg) => {
+		return getAllMics(tcpConn.socket).then(res => {
+			console.log('getAllMics : ' + res);
+			return res;
+		});
+	});
+
 }
 
 // This method will be called when Electron has finished
@@ -44,7 +88,11 @@ app.on('window-all-closed', () => {
 	if (process.platform !== 'darwin') app.quit()
 })
 
+app.on('before-quit', () => {
+	tcpConn.socket.end();
+})
+
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
 
-// to access anything in here use window.require('electron').remote
+// to access anything in here use require('electron').remote

@@ -1,7 +1,5 @@
 import './App.css'
-// React
 import React, { useState, useEffect } from 'react'
-// Assets
 import Sidebar from '../Sidebar/Sidebar'
 import {
 	BrowserRouter as Router,
@@ -14,8 +12,28 @@ import { Product } from '../Product/Product'
 import { Report } from '../Report/Report'
 import { MicsLevel } from '../MicsLevel/MicsLevel';
 import { WordDetection } from '../WordDetection/WordDetection';
+let { ipcRenderer } = window.require("electron");
 
 export default function App() {
+
+	const [response, setResponse] = useState('');
+
+	const getAllMics = () => {
+		(async () => {
+			const result = await ipcRenderer.invoke('getAllMics');
+			console.log('getAllMics invoke', result);
+		})();
+	}
+
+	useEffect(() => {
+		setTimeout(() => {
+			console.log('Call getAllMics');
+			getAllMics();
+		}, 5000);
+		
+		return () => { console.log('unmounting') };
+	}, []);
+
 	return (
 		<div className='App'>
 			<Router>
