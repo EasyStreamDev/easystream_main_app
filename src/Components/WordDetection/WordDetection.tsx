@@ -47,7 +47,7 @@ export const WordDetection = (props: any) => {
   return (
     <>
       {eventArray.map((item, index) => {
-        return <BoxEvent keyObj={item} key={index}/>;
+        return <BoxEvent keyObj={item} key={index} i={index} eventArray={eventArray} seteventArray={seteventArray}/>;
       })}
       <AddNewWord
         addNewEvent={addNewEvent}
