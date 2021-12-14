@@ -7,19 +7,28 @@ let util = require('util');
 function TCPConnection(host, port) {
     EventEmitter.call(this);
 
-    this.socket = net.connect(port, host, (test, error) => {
-        console.log('test ->', test);
-        console.log('error ->', error);
-        console.log('TCPConnection initialized');
-    });
-    this.socket.once('data', function (data) {
-        data = data.toString().replace('\t','').replace('\r','').replace('\n','').replace(/\0/g, ''); // Remove all useless characters
-        const payload = JSON.parse(data);
-        console.log(payload);
-    });
-    this.socket.once('error', (error) => {
-        this.socket.destroy();
-        this.emit('error', error);
+    return new Promise((resolve, reject) => {
+        try {
+            this.socket = net.connect(port, host, (test, error) => {
+                console.log('test ->', test);
+                console.log('error ->', error);
+                console.log('TCPConnection initialized');
+                setTimeout(() => {
+                    resolve('');
+                }, 3000);
+            });
+            this.socket.once('data', function (data) {
+                data = data.toString().replace('\t','').replace('\r','').replace('\n','').replace(/\0/g, ''); // Remove all useless characters
+                const payload = JSON.parse(data);
+                console.log(payload);
+            });
+            this.socket.once('error', (error) => {
+                reject(error);
+                this.socket.end();
+            });
+        } catch (error) {
+            reject(error);
+        }
     });
 }
 
@@ -120,8 +129,8 @@ function getEvent(socket, id) {
 
 function disconnectSocket(socket) {
     console.log('enterring disconnectSocket');
-    if (socket.connecting) {
-        socket.destroy();
+    if (socket && socket.connecting) {
+        socket.end();
     }
 }
 
