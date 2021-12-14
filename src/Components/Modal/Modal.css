@@ -27,3 +27,8 @@ TextStylesModal {
   white-space: "nowrap";
   padding-left: "1vw";
 }
+
+/* hover typography-item */
+.typography-item:hover {
+  color: #FD7014;
+}

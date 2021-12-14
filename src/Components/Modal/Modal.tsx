@@ -1,10 +1,11 @@
+import './Modal.css'
 import React from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import { BsTrash } from "react-icons/bs";
-import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
+import { FormControl, InputLabel, MenuItem, Select, withStyles } from "@mui/material";
 import { AiOutlineMinus } from "react-icons/ai";
 import CSS from "csstype";
 
@@ -70,6 +71,7 @@ export const MyModal = (props: any) => {
         {props.newEvent.keywords.map((item: string, index: number) => {
           return (
             <Box
+              className="typography-item"
               sx={{ color: "white", columns: 2, cursor: "pointer" }}
               onClick={() => {
                 props.deleteKeyWord(index);
@@ -112,6 +114,7 @@ export const MyModal = (props: any) => {
             value={props.sources}
             label="sources"
             onChange={props.addSource}
+            className="select-sources"
           >
             {props.sources.map((source: string, index: number) => (
               <MenuItem value={source} key={index}>
@@ -123,6 +126,7 @@ export const MyModal = (props: any) => {
         {props.newEvent.sources.map((item: string, index: number) => {
           return (
             <Box
+              className="typography-item"
               sx={{ color: "white", columns: 2, cursor: "pointer" }}
               onClick={() => {
                 props.deleteSource(index);
