@@ -5,7 +5,7 @@ const isDev = require('electron-is-dev')
 const { TCPConnection } = require('../src/Socket/socket.js');
 
 let loadingScreen;
-let tcpConn = new TCPConnection('192.168.45.181', 47920);
+let tcpConn = new TCPConnection('localhost', 47920);
 tcpConn.connect()
 .then((res) => {
 	console.log('TCPConnection is connected');
