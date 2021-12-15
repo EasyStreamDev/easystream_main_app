@@ -3,7 +3,6 @@ const { app, BrowserWindow, ipcMain } = require('electron')
 const path = require('path')
 const isDev = require('electron-is-dev')
 const { TCPConnection, getAllMics, getMic, getAllEvents, getEvent, disconnectSocket } = require('../src/Socket/socket.js');
-const { url } = require('inspector');
 
 // let tcpConn = new TCPConnection('10.101.48.164', 47920);
 
@@ -21,11 +20,11 @@ const createWindow = () => {
 	})
 	
 	// load the index.html of the app. (or localhost on port 3000 if you're in development)
-	mainWindow.loadURL(url.format({
-		pathname: isDev ? 'http://localhost:3000' : path.join(__dirname, '../build/index.html'),
-		protocol: 'file:',
-		slashes: true
-	}));
+	mainWindow.loadURL(
+		isDev
+		? 'http://localhost:3000'
+		: path.join(__dirname, '../build/index.html')
+	)
 	mainWindow.maximize();
 
 	// ipcMain.handle('getAllMics', async (event, arg) => {
