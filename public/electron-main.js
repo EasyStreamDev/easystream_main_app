@@ -5,7 +5,7 @@ const isDev = require('electron-is-dev')
 const { TCPConnection } = require('../src/Socket/socket.js');
 
 let loadingScreen;
-let tcpConn = new TCPConnection('localhost', 47920);
+let tcpConn = new TCPConnection('192.168.45.181', 47920);
 tcpConn.connect()
 .then((res) => {
 	console.log('TCPConnection is connected');
@@ -13,9 +13,14 @@ tcpConn.connect()
 	console.log('res', res);
 	return res;
 }).catch(err => {
-	console.log('Error Electron', err);
-	console.log('CHANGE HOST IP');
-	return null;
+	if (isDev) {
+		console.log('DEV MODE');
+		return null;
+	} else {
+		console.log('Error Electron', err);
+		console.log('CHANGE HOST IP');
+		return null;
+	}
 });
 
 
@@ -54,17 +59,25 @@ const createWindow = () => {
 }
 
 ipcMain.on('getAllMics', (event, arg) => {
-	return tcpConn.getAllMics().then(res => {
-		console.log('getAllMics : ' + res);
-		event.returnValue = res;
-	});
+	if (isDev) {
+		return { length: 0, mics: [] };
+	} else {
+		return tcpConn.getAllMics().then(res => {
+			console.log('getAllMics : ' + res);
+			event.returnValue = res;
+		});
+	}
 });
 
 ipcMain.on('setVolumeToMic', (event, arg) => {
-	return tcpConn.setVolumeToMic(arg).then(res => {
-		console.log('setVolumeToMic : ' + res);
-		event.returnValue = res;
-	});
+	if (isDev) {
+		return { message: 'Error', statusCode: 500 }
+	} else {
+		return tcpConn.setVolumeToMic(arg).then(res => {
+			console.log('setVolumeToMic : ' + res);
+			event.returnValue = res;
+		});
+	}
 });
 
 ipcMain.on('getMic', (event, arg) => {
@@ -138,7 +151,11 @@ const launchingApplication = () => {
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.on('ready', () => {
-	createLoadingScreen();
+	if (isDev) {
+		launchingApplication();
+	} else {
+		createLoadingScreen();
+	}
 })
 
 // Quit when all windows are closed, except on macOS. There, it's common
