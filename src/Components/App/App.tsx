@@ -39,8 +39,16 @@ export default function App() {
 		setTimeout(() => {
 			console.log('Call getAllMics');
 			getAllMics()
-			.then((res) => {
-				setVolumeToMic('Audio Input Capture (PulseAudio)', 0);
+			.then(_ => {
+				setVolumeToMic('Audio Input Capture (PulseAudio)', 100)
+				.then((res) => {
+					if (res.statusCode === 200) {
+						getAllMics()
+						.then((allMics) => {
+							console.log('FINALLY -> ', allMics);
+						})
+					}
+				})
 			})
 		}, 5000);
 		
