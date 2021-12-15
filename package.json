@@ -38,7 +38,7 @@
     "wait-on": "^5.1.0"
   },
   "scripts": {
-    "start": "concurrently \"yarn react-serve\" \"wait-on http://localhost:3000 && npm run electron-start\"",
+    "start": "concurrently \"yarn react-serve\" \"wait-on http://localhost:3000 && yarn electron-start\"",
     "build": "yarn react-build && npm run electron-build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
