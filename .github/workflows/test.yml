@@ -2,9 +2,9 @@ name: CI Electron test
 
 on:
   pull_request:
-    branches: [main]
+    branches: [feature-github-actions]
   push:
-    branches: [main]
+    branches: [feature-github-actions]
 
 jobs:
   build:
