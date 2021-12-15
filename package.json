@@ -21,6 +21,7 @@
     "electron": "^9.1.0",
     "electron-builder": "^22.7.0",
     "electron-is-dev": "^1.2.0",
+    "electron-webpack": "^2.8.2",
     "electronmon": "^1.1.2",
     "node-sass": "^7.0.0",
     "node-scss": "^7.0.3",
