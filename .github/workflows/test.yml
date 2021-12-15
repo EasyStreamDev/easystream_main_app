@@ -23,10 +23,10 @@ jobs:
           sudo apt-get install -y yarn
           echo Node $(node --version)
           echo Yarn $(yarn --version)
-          yarn add electron-builder --dev
+          yarn
+          yarn add webpack webpack-dev-server --dev
       - name: Build commit ${{ github.sha }}
         run: |
-          yarn
           yarn dist
           tar -caf asset.tar.gz -C dist .
       - name: Test commit ${{ github.sha }}
