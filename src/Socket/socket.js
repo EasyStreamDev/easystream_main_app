@@ -1,5 +1,6 @@
 // const { AllEvents, AllMics, Mic, Event } = require('./interfaces');
 
+const { ipcRenderer } = require('electron');
 const net = require('net');
 
 class TCPConnection {
@@ -24,8 +25,8 @@ class TCPConnection {
                 console.log(payload);
             });
             this.socket.once('error', (error) => {
-                reject(error);
                 this.socket.end();
+                reject(error);
             });
         });
     }
@@ -55,7 +56,7 @@ class TCPConnection {
             command: 'getAllMics',
             args: {}
         };
-        console.log('obj done');
+        console.log('getAllMics -> ', JSON.stringify(obj));
         return new Promise((resolve, reject) => {
             this.sendData(obj, (data, error) => {
                 if (data) {
@@ -64,20 +65,22 @@ class TCPConnection {
                 } else {
                     console.log('getAllMics error', error);
                     this.socket.end();
+                    ipcRenderer.send('close-me')
                     reject(error);
                 }
             });
         });
     }
 
-    setVolumeToMic(micId, volume) {
+    setVolumeToMic(args) {
         let obj = {
             command: 'setVolumeToMic',
             args: {
-                micId,
-                volume
+                micId: args.micId,
+                value: args.value
             }
         };
+        console.log('setVolumeToMic -> ', JSON.stringify(obj));
         return new Promise((resolve, reject) => {
             this.sendData(obj, (data, error) => {
                 if (data) {

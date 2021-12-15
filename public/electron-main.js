@@ -5,7 +5,7 @@ const isDev = require('electron-is-dev')
 const { TCPConnection } = require('../src/Socket/socket.js');
 
 let loadingScreen;
-let tcpConn = new TCPConnection('10.101.48.164', 47920);
+let tcpConn = new TCPConnection('localhost', 47920);
 tcpConn.connect()
 .then((res) => {
 	console.log('TCPConnection is connected');
@@ -14,6 +14,7 @@ tcpConn.connect()
 	return res;
 }).catch(err => {
 	console.log('Error Electron', err);
+	console.log('CHANGE HOST IP');
 	return null;
 });
 
@@ -93,6 +94,10 @@ ipcMain.on('disconnectSocket', (event, arg) => {
 		event.returnValue = res;
 	});
 });
+
+ipcMain.on('close-me', (evt, arg) => {
+	app.quit()
+})
 
 const createLoadingScreen = () => {
   /// create a browser window

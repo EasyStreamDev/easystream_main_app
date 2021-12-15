@@ -1,3 +1,8 @@
+export interface resultFormat {
+	message: string,
+	statusCode: number
+};
+
 export interface Mic {
 	micName: string,
 	micKind: string,

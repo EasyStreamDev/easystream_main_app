@@ -12,32 +12,36 @@ import { Product } from '../Product/Product'
 import { Report } from '../Report/Report'
 import { MicsLevel } from '../MicsLevel/MicsLevel';
 import { WordDetection } from '../WordDetection/WordDetection';
-import { AllMics } from '../../Socket/interfaces';
+import { AllMics, resultFormat } from '../../Socket/interfaces';
 let { ipcRenderer } = window.require("electron");
 
 export default function App() {
 
 	const [response, setResponse] = useState('');
 
-	const getAllMics = () => {
-		(async () => {
+	const getAllMics = (): Promise<AllMics> => {
+		return new Promise(async (resolve, reject) => {
 			const result: AllMics = await ipcRenderer.sendSync('getAllMics', 'ping');
 			console.log('getAllMics invoke', result);
-		})();
+			resolve(result);
+		})
 	}
 
-	const setVolumeToMic = (micId: string, volume: number) => {
-		(async () => {
-			const result = await ipcRenderer.sendSync('setVolumeToMic', micId, volume);
+	const setVolumeToMic = (micId: string, value: number): Promise<resultFormat> => {
+		return new Promise(async (resolve, reject) => {
+			const result: resultFormat = await ipcRenderer.sendSync('setVolumeToMic', {'micId': micId, 'value': value});
 			console.log('setVolumeToMic invoke', result);
-		})();
+			resolve(result)
+		});
 	}
 
 	useEffect(() => {
 		setTimeout(() => {
 			console.log('Call getAllMics');
-			getAllMics();
-			// setVolumeToMic('Mic 1', 0.5);
+			getAllMics()
+			.then((res) => {
+				setVolumeToMic('Audio Input Capture (PulseAudio)', 0);
+			})
 		}, 5000);
 		
 		return () => { console.log('unmounting') };
