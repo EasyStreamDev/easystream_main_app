@@ -2,7 +2,7 @@ export interface Mic {
 	micName: string,
 	micKind: string,
 	unversionedmicKind: string,
-	level: number,
+	value: number,
 	isActive: boolean,
 };
 
