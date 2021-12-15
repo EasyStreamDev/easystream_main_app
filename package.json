@@ -1,0 +1,73 @@
+{
+  "name": "easystream",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@emotion/react": "^11.7.0",
+    "@emotion/styled": "^11.6.0",
+    "@material-ui/icons": "^4.11.2",
+    "@mui/material": "^5.2.3",
+    "@mui/styled-engine-sc": "^5.1.0",
+    "@testing-library/jest-dom": "^4.2.4",
+    "@testing-library/react": "^9.5.0",
+    "@testing-library/user-event": "^7.2.1",
+    "@types/jest": "^24.9.1",
+    "@types/node": "^12.12.50",
+    "@types/react": "^16.9.43",
+    "@types/react-dom": "^16.9.8",
+    "@types/react-ranger": "^2.0.1",
+    "@types/styled-components": "^5.1.17",
+    "concurrently": "^5.2.0",
+    "electron": "^9.1.0",
+    "electron-builder": "^22.7.0",
+    "electron-is-dev": "^1.2.0",
+    "electronmon": "^1.1.2",
+    "node-sass": "^7.0.0",
+    "node-scss": "^7.0.3",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "react-icons": "^4.3.1",
+    "react-ranger": "^2.1.0",
+    "react-router-dom": "^6.0.2",
+    "react-scripts": "3.4.1",
+    "scss": "^0.2.4",
+    "semantic-ui-css": "^2.4.1",
+    "semantic-ui-react": "^2.0.4",
+    "styled-components": "^5.3.3",
+    "typescript": "^3.7.5",
+    "wait-on": "^5.1.0"
+  },
+  "scripts": {
+    "start": "concurrently \"yarn react-serve\" \"wait-on http://localhost:3000 && yarn electron-start\"",
+    "build": "yarn react-build && npm run electron-build",
+    "test": "react-scripts test",
+    "compile": "electron-webpack",
+    "dist": "yarn compile && electron-builder",
+    "dist:dir": "yarn dist --dir -c.compression=store -c.mac.identity=null",
+    "eject": "react-scripts eject",
+    "release": "yarn react-build && npm run electron-release",
+    "electron-start": "electronmon .",
+    "electron-build": "electron-builder",
+    "electron-release": "electron-builder --publish=always",
+    "react-start": "react-scripts start",
+    "react-build": "react-scripts build",
+    "react-serve": "set BROWSER=none && yarn react-start"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "main": "public/electron-main.js",
+  "homepage": "./"
+}
