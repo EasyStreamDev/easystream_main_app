@@ -2,6 +2,7 @@
 .env
 .gclient_done
 **/.npmrc
+**/__snapshots__/**
 .tags*
 .vs/
 .vscode/

@@ -14,7 +14,7 @@
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
-    "@types/jest": "^24.9.1",
+    "@types/jest": "^27.0.3",
     "@types/node": "^12.12.50",
     "@types/react": "^17.0.37",
     "@types/react-dom": "^17.0.11",
@@ -43,6 +43,9 @@
     "wait-on": "^5.1.0"
   },
   "devDependencies": {
+    "@babel/plugin-transform-runtime": "^7.16.5",
+    "@babel/preset-flow": "^7.16.5",
+    "@babel/preset-typescript": "^7.16.5",
     "@electron-forge/cli": "^6.0.0-beta.61",
     "@electron-forge/maker-deb": "^6.0.0-beta.61",
     "@electron-forge/maker-rpm": "^6.0.0-beta.61",
@@ -51,7 +54,9 @@
     "electron": "^9.1.0",
     "electron-builder": "^22.7.0",
     "electron-packager": "^15.4.0",
-    "electron-rebuild": "^3.2.5"
+    "electron-rebuild": "^3.2.5",
+    "jest": "^27.4.5",
+    "react-test-renderer": "^17.0.2"
   },
   "optionalDependencies": {
     "babel-loader": "8.1.0"
@@ -59,7 +64,7 @@
   "scripts": {
     "start": "concurrently \"BROWSER=none yarn react-start\" \"wait-on http://localhost:3000 && yarn electron-start\"",
     "build": "yarn react-build && npm run electron-build",
-    "test": "react-scripts test",
+    "test": "jest",
     "compile": "electron-webpack",
     "dist": "yarn compile && electron-builder",
     "dist:dir": "yarn dist --dir -c.compression=store -c.mac.identity=null",
