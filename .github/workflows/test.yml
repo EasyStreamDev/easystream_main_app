@@ -23,7 +23,8 @@ jobs:
           yarn
           yarn global add @electron-forge/cli
           yarn global add ynpx
-          yarn global add node-gyp
+          yarn global add node-gyp@latest
+          yarn config set node_gyp "/usr/local/lib/node_modules/node-gyp/bin/node-gyp.js"
       - name: Build commit ${{ github.sha }}
         run: |
           yarn make-mac
