@@ -1,14 +1,6 @@
 import * as React from "react";
-import Box from "@mui/material/Box";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import Select, { SelectChangeEvent } from "@mui/material/Select";
-import { borderColor } from "@mui/system";
 import { AddNewWord } from "../AddNewWord/AddNewWord";
 import BoxEvent from "../BoxEvent/BoxEvent";
-// import { AddNewWord } from "../AddNewWord/AddNewWord";
-// import { BoxEvent } from "../BoxEvent/BoxEvent";
 
 interface event {
   id: number;
@@ -47,7 +39,7 @@ export const WordDetection = (props: any) => {
   return (
     <>
       {eventArray.map((item, index) => {
-        return <BoxEvent keyObj={item} key={index}/>;
+        return <BoxEvent keyObj={item} key={index} i={index} eventArray={eventArray} seteventArray={seteventArray}/>;
       })}
       <AddNewWord
         addNewEvent={addNewEvent}

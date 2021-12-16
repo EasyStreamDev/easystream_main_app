@@ -43,7 +43,7 @@ const createWindow = () => {
 	mainWindow.loadURL(
 		isDev
 		? 'http://localhost:3000'
-		: `file://${path.join(__dirname, '../build/index.html')}`
+		: path.join(__dirname, '../build/index.html')
 	)
 
 	/// keep listening on the did-finish-load event, when the mainWindow content has loaded

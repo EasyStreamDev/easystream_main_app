@@ -39,9 +39,12 @@
   },
   "scripts": {
     "front": "concurrently \"APP_DEV=true yarn react-serve\" \"wait-on http://localhost:3000 && APP_DEV=true npm run electron-start\"",
-    "start": "concurrently \"yarn react-serve\" \"wait-on http://localhost:3000 && npm run electron-start\"",
+    "start": "concurrently \"yarn react-serve\" \"wait-on http://localhost:3000 && yarn electron-start\"",
     "build": "yarn react-build && npm run electron-build",
     "test": "react-scripts test",
+    "compile": "electron-webpack",
+    "dist": "yarn compile && electron-builder",
+    "dist:dir": "yarn dist --dir -c.compression=store -c.mac.identity=null",
     "eject": "react-scripts eject",
     "release": "yarn react-build && npm run electron-release",
     "electron-start": "electronmon .",
