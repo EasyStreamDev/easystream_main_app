@@ -57,7 +57,7 @@ jobs:
           yarn test
   win64Build:
     name: "win64Build"
-      runs-on: [windows-latest]
+    runs-on: [windows-latest]
     steps:
       - name: "Add msbuild to PATH"
         uses: microsoft/setup-msbuild@v1.0.2
