@@ -100,7 +100,7 @@
       "packagerConfig": {
         "icon": "build/icon",
         "name": "easystream",
-        "executableName": "Easystream",
+        "executableName": "easystream",
         "asar": true
       },
       "makers": [
