@@ -61,3 +61,11 @@ jobs:
         uses: microsoft/setup-msbuild@v1.0.2
       - name: "Checkout"
         uses: actions/checkout@v2.3.3
+  win32Build:
+    name: "win64Build"
+    runs-on: [windows-latest]
+    steps:
+      - name: "Add msbuild to PATH"
+        uses: microsoft/setup-msbuild@v1.0.2
+      - name: "Checkout"
+        uses: actions/checkout@v2.3.3

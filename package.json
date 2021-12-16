@@ -72,7 +72,7 @@
     "react-build": "react-scripts build",
     "make-mac": "ynpx @electron-forge/cli make --platform darwin",
     "make-linux": "ynpx @electron-forge/cli make --platform linux",
-    "make-win": "ynpx @electron-forge/cli make --platform win64"
+    "make-win32": "ynpx @electron-forge/cli make --platform win32"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -98,6 +98,7 @@
     "forge": {
       "packagerConfig": {
         "icon": "build/icon",
+        "name": "easystream",
         "executableName": "Easystream",
         "asar": true
       },
