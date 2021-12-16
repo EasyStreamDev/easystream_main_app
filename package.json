@@ -38,6 +38,7 @@
     "wait-on": "^5.1.0"
   },
   "scripts": {
+    "front": "concurrently \"APP_DEV=true yarn react-serve\" \"wait-on http://localhost:3000 && APP_DEV=true npm run electron-start\"",
     "start": "concurrently \"yarn react-serve\" \"wait-on http://localhost:3000 && yarn electron-start\"",
     "build": "yarn react-build && npm run electron-build",
     "test": "react-scripts test",
@@ -51,7 +52,7 @@
     "electron-release": "electron-builder --publish=always",
     "react-start": "react-scripts start",
     "react-build": "react-scripts build",
-    "react-serve": "set BROWSER=none && yarn react-start"
+    "react-serve": "BROWSER=none && yarn react-start"
   },
   "eslintConfig": {
     "extends": "react-app"

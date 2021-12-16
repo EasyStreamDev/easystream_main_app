@@ -1,6 +1,13 @@
+export interface resultFormat {
+	message: string,
+	statusCode: number
+};
+
 export interface Mic {
-	name: string,
-	level: number,
+	micName: string,
+	micKind: string,
+	unversionedmicKind: string,
+	value: number,
 	isActive: boolean,
 };
 
