@@ -38,8 +38,8 @@
     "wait-on": "^5.1.0"
   },
   "scripts": {
-    "front": "concurrently \"APP_DEV=true yarn react-serve\" \"wait-on http://localhost:3000 && APP_DEV=true npm run electron-start\"",
-    "start": "concurrently \"yarn react-serve\" \"wait-on http://localhost:3000 && yarn electron-start\"",
+    "front": "concurrently \"ELECTRON_IS_DEV=1 yarn react-serve\" \"wait-on http://localhost:3000 && ELECTRON_IS_DEV=1 yarn electron-start\"",
+    "start": "concurrently \"ELECTRON_IS_DEV=0 yarn react-serve\" \"wait-on http://localhost:3000 && ELECTRON_IS_DEV=0 yarn electron-start\"",
     "build": "yarn react-build && npm run electron-build",
     "test": "react-scripts test",
     "compile": "electron-webpack",
