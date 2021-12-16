@@ -1,38 +1,18 @@
+import { ipcRenderer } from "electron";
 import React, { Component, useEffect, useState } from "react";
 import ReactRanger from "react-ranger";
+import { AllMics, Mic } from "../../Socket/interfaces";
 import CustomizedSlider from "../Slider/Slider";
 
 export const MicsLevel = () => {
-  const [exampleMicsArray, setExampleMicsArray] = React.useState([
-    {
-      id: 1,
-      name: "Mic 1",
-      level: 0,
-      savedlevel: 0,
-      isActive: true,
-    },
-    {
-      id: 2,
-      name: "Mic 2",
-      level: 50,
-      savedlevel: 50,
-      isActive: true,
-    },
-    {
-      id: 3,
-      name: "Mic 3",
-      level: 100,
-      savedlevel: 100,
-      isActive: false,
-    },
-  ]);
+  const [exampleMicsArray, setExampleMicsArray] = React.useState<Mic[]>([]);
 
   const [load, setload] = React.useState(true);
   const [point, setpoint] = React.useState(".");
 
 
   const getData = (index: number, value: number) => {
-    exampleMicsArray[index].level = value;
+    exampleMicsArray[index].value = value;
     console.log("Values", exampleMicsArray);
   };
 
@@ -42,13 +22,22 @@ export const MicsLevel = () => {
     setExampleMicsArray(copy);
   };
 
+  const getAllMics = (): Promise<AllMics> => {
+		return new Promise(async (resolve, reject) => {
+			const result: AllMics = await ipcRenderer.sendSync('getAllMics', 'ping');
+			console.log('getAllMics invoke', result);
+			resolve(result);
+		})
+	}
+
   useEffect(() => {
-    async function sleep(): Promise<boolean> {
-      await delay(4000);
-      return !load;
+    async function GetAllMics(): Promise<Mic[]> {
+      const micsGet: Mic[] = (await getAllMics()).mics
+      setload(!load)
+      return micsGet;
     }
     
-    sleep().then((res) => setload(res));
+    GetAllMics().then((res) => setExampleMicsArray(res));
   }, []);
 
   function delay(ms: number) {
@@ -73,10 +62,10 @@ export const MicsLevel = () => {
         exampleMicsArray.map((item, index) => {
           return (
             <CustomizedSlider
-              key={item.id}
+              key={index}
               isActive={item.isActive}
-              name={item.name}
-              defaultValue={item.savedlevel}
+              name={item.micName}
+              defaultValue={item.value}
               sendData={(val: number) => getData(index, val)}
               sendActive={(val: boolean) => setActive(index, val)}
             />
