@@ -64,7 +64,7 @@
     "dist:dir": "yarn dist --dir -c.compression=store -c.mac.identity=null",
     "eject": "react-scripts eject",
     "package": "react-scripts build && electron-forge package",
-    "make": "react-scripts build && electron-forge make",
+    "make": "CI=false && react-scripts build && electron-forge make",
     "release": "yarn react-build && npm run electron-release",
     "electron-start": "&& electron-forge start",
     "electron-build": "electron-builder",
