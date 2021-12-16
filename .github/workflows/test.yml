@@ -7,16 +7,15 @@ on:
     branches: [feature-github-actions]
 
 jobs:
-  build:
-    name: Upload Release Asset
-    runs-on: ubuntu-18.04 # List in https://help.github.com/en/github/automating-your-workflow-with-github-actions/virtual-environments-for-github-actions#supported-virtual-environments-and-hardware-resources
+  macosBuild:
+    runs-on: macos-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Install requirements and dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y curl tar gnupg2 rpm
+          sudo apt-get install -y curl tar gnupg2 rpm dpkg fakeroot
           curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
           echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
           sudo apt-get update
@@ -24,9 +23,43 @@ jobs:
           echo Node $(node --version)
           echo Yarn $(yarn --version)
           yarn
+          yarn global add @electron-forge/cli
+          yarn global add ynpx
       - name: Build commit ${{ github.sha }}
         run: |
-          yarn make
+          yarn make-mac
       - name: Test commit ${{ github.sha }}
         run: |
           yarn test
+  linuxBuild:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Install requirements and dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y curl tar gnupg2 rpm dpkg fakeroot
+          curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
+          echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
+          sudo apt-get update
+          sudo apt-get install -y yarn
+          echo Node $(node --version)
+          echo Yarn $(yarn --version)
+          yarn
+          yarn global add @electron-forge/cli
+          yarn global add ynpx
+      - name: Build commit ${{ github.sha }}
+        run: |
+          yarn make-linux
+      - name: Test commit ${{ github.sha }}
+        run: |
+          yarn test
+  win64Build:
+    name: "win64Build"
+      runs-on: [windows-latest]
+    steps:
+      - name: "Add msbuild to PATH"
+        uses: microsoft/setup-msbuild@v1.0.2
+      - name: "Checkout"
+        uses: actions/checkout@v2.3.3

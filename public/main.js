@@ -4,10 +4,8 @@ const path = require('path')
 const isDev = require('electron-is-dev')
 const { TCPConnection } = require('../src/Socket/socket.js');
 
-// Handle creating/removing shortcuts on Windows when installing/uninstalling
-if (require("electron-squirrel-startup")) {
-	app.quit();
-} // NEW!
+// Windows compilation
+if(require('electron-squirrel-startup')) return;
 
 let loadingScreen;
 let tcpConn = new TCPConnection('localhost', 47920);
@@ -37,6 +35,7 @@ const createWindow = () => {
 			enableRemoteModule: true, // turn this off if you don't mean to use remote module
 			contextIsolation: false
 		},
+		icon: path.join(app.getAppPath(), 'build/icon.png'),
 		autoHideMenuBar: true,
 		minWidth: 800,
 		minHeight: 600,
@@ -128,6 +127,7 @@ const createLoadingScreen = () => {
       frame: false,
       /// and set the transparency, to remove any window background color
       transparent: true,
+	  icon: path.join(app.getAppPath(), 'build/icon.png'),
 	  webPreferences: {
 		nodeIntegration: true
 	  }

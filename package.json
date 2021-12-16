@@ -2,6 +2,7 @@
   "name": "easystream",
   "version": "0.1.0",
   "private": true,
+  "license": "MIT License",
   "description": "Stream, we'll handle the rest",
   "dependencies": {
     "@emotion/react": "^11.7.0",
@@ -23,6 +24,7 @@
     "@types/styled-components": "^5.1.17",
     "concurrently": "^5.2.0",
     "electron-is-dev": "^1.2.0",
+    "electron-squirrel-startup": "^1.0.0",
     "electron-webpack": "^2.8.2",
     "electronmon": "^1.1.2",
     "node-sass": "^7.0.0",
@@ -43,14 +45,11 @@
   "devDependencies": {
     "@electron-forge/cli": "^6.0.0-beta.61",
     "@electron-forge/maker-deb": "^6.0.0-beta.61",
-    "@electron-forge/maker-dmg": "^6.0.0-beta.61",
     "@electron-forge/maker-rpm": "^6.0.0-beta.61",
     "@electron-forge/maker-squirrel": "^6.0.0-beta.61",
-    "@electron-forge/maker-wix": "^6.0.0-beta.61",
     "@electron-forge/maker-zip": "^6.0.0-beta.61",
     "electron": "^9.1.0",
-    "electron-builder": "^22.7.0",
-    "electron-wix-msi": "^3.2.0"
+    "electron-builder": "^22.7.0"
   },
   "optionalDependencies": {
     "babel-loader": "8.1.0"
@@ -64,13 +63,16 @@
     "dist:dir": "yarn dist --dir -c.compression=store -c.mac.identity=null",
     "eject": "react-scripts eject",
     "package": "react-scripts build && electron-forge package",
-    "make": "CI=false && react-scripts build && electron-forge make",
+    "make": "CI=false && ynpx @electron-forge/cli make && yarn make-mac && yarn make-linux",
     "release": "yarn react-build && npm run electron-release",
     "electron-start": "&& electron-forge start",
     "electron-build": "electron-builder",
     "electron-release": "electron-builder --publish=always",
     "react-start": "react-scripts start",
-    "react-build": "react-scripts build"
+    "react-build": "react-scripts build",
+    "make-mac": "ynpx @electron-forge/cli make --platform darwin",
+    "make-linux": "ynpx @electron-forge/cli make --platform linux",
+    "make-win": "ynpx @electron-forge/cli make --platform win64"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -95,26 +97,30 @@
   "config": {
     "forge": {
       "packagerConfig": {
-        "icon": "src/icons/mac/icon.icns",
+        "icon": "build/icon",
         "name": "easystream",
+        "executableName": "EasyStream",
         "asar": true
       },
       "makers": [
         {
           "name": "@electron-forge/maker-squirrel",
           "config": {
-            "name": "cra_electron_forge_demo"
+            "name": "easystream"
           }
         },
         {
           "name": "@electron-forge/maker-zip",
           "platforms": [
-            "darwin"
+            "darwin",
+            "win32"
           ]
         },
         {
           "name": "@electron-forge/maker-deb",
-          "config": {}
+          "config": {
+            "icon": "./src/Assets/icons/png/128x128.png"
+          }
         },
         {
           "name": "@electron-forge/maker-rpm",
@@ -122,20 +128,6 @@
             "options": {
               "license": "MIT License"
             }
-          }
-        },
-        {
-          "name": "@electron-forge/maker-dmg",
-          "config": {
-            "background": "./src/Assets/icons/png/1024x1024.png",
-            "format": "ULFO"
-          }
-        },
-        {
-          "name": "@electron-forge/maker-wix",
-          "config": {
-            "language": 1033,
-            "manufacturer": "EasyStream"
           }
         }
       ]
