@@ -5,6 +5,7 @@ const isDev = require('electron-is-dev')
 const { TCPConnection } = require('../src/Socket/socket.js');
 
 let loadingScreen;
+let mainWindow;
 let tcpConn = new TCPConnection('localhost', 47920);
 tcpConn.connect()
 .then((res) => {
@@ -26,7 +27,7 @@ tcpConn.connect()
 
 const createWindow = () => {
 	// Create the browser window.
-	const mainWindow = new BrowserWindow({
+	mainWindow = new BrowserWindow({
 		webPreferences: {
 			nodeIntegration: true, // turn this off if you don't mean to use node
 			enableRemoteModule: true, // turn this off if you don't mean to use remote module
@@ -40,11 +41,11 @@ const createWindow = () => {
 	})
 	
 	// load the index.html of the app. (or localhost on port 3000 if you're in development)
-	mainWindow.loadURL(
-		isDev
-		? 'http://localhost:3000'
-		: path.join(__dirname, '../build/index.html')
-	)
+	mainWindow.loadURL('http://localhost:3000')
+
+	mainWindow.on('closed', () => {
+		mainWindow = null;
+	});
 
 	/// keep listening on the did-finish-load event, when the mainWindow content has loaded
 	mainWindow.webContents.on('did-finish-load', () => {
