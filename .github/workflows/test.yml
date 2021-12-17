@@ -105,7 +105,9 @@ jobs:
           sudo apt install mono-complete
           sudo dpkg --add-architecture i386
           sudo apt update
-          sudo apt install wine64 wine32
+          sudo apt install wine64
+          sudo apt-get install -y lib32z1
+          sudo apt install wine32
       - name: Build commit ${{ github.sha }}
         run: |
           yarn make-win32
