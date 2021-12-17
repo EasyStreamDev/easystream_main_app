@@ -108,7 +108,9 @@ jobs:
           sudo add-apt-repository multiverse
           sudo apt update
           sudo apt-get dist-upgrade -y
-          sudo apt-get install lib32z1
+          sudo apt-get install -y lib32z1
+          sudo apt-get install -y libgtk2.0-0:i386 libidn11:i386 libglu1-mesa:i386 libxmu6:i386
+          sudo apt-get install -y libpangox-1.0-0:i386 libpangoxft-1.0-0:i386
           sudo dpkg --add-architecture i386
           sudo apt-get install -y wine32
       - name: Build commit ${{ github.sha }}
