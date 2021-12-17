@@ -88,7 +88,7 @@ jobs:
       - name: Install requirements and dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y curl tar gnupg2 rpm dpkg fakeroot wine64
+          sudo apt-get install -y curl tar gnupg2 rpm dpkg fakeroot
           curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
           echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
           sudo apt-get update
@@ -103,7 +103,9 @@ jobs:
           sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF
           sudo apt-add-repository 'deb https://download.mono-project.com/repo/ubuntu stable-focal main'
           sudo apt install mono-complete
-          sudo dpkg --add-architecture i386 && sudo apt-get update && sudo apt-get install -y wine32
+          sudo apt-get install lib32z1
+          sudo dpkg --add-architecture i386
+          sudo apt install wine-stable wine64 wine32:i386 wine64
       - name: Build commit ${{ github.sha }}
         run: |
           yarn make-win32
