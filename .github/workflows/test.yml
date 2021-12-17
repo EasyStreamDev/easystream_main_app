@@ -108,8 +108,9 @@ jobs:
           wget -nc https://dl.winehq.org/wine-builds/winehq.key && sudo apt-key add winehq.key
           sudo add-apt-repository 'deb https://dl.winehq.org/wine-builds/ubuntu/ focal main'
           sudo apt update
-          sudo apt install --install-recommends winehq-stable
-          sudo apt-get install wine32-development
+          sudo add-apt-repository ppa:cybermax-dexter/sdl2-backport
+          sudo aptitude install winehq-stable
+          sudo aptitude install wine32-development
           echo Wine $(wine --version)
       - name: Build commit ${{ github.sha }}
         run: |
