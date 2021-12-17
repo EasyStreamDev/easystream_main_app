@@ -88,7 +88,7 @@ jobs:
       - name: Install requirements and dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y curl tar gnupg2 rpm dpkg fakeroot
+          sudo apt-get install -y curl tar gnupg2 rpm dpkg fakeroot wine64
           curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
           echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
           sudo apt-get update
