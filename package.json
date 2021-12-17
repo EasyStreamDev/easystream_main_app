@@ -113,7 +113,8 @@
         {
           "name": "@electron-forge/maker-squirrel",
           "config": {
-            "name": "easystream"
+            "name": "easystream",
+            "authors": "easystream"
           }
         },
         {
