@@ -22,22 +22,27 @@ export const MicsLevel = () => {
     setExampleMicsArray(copy);
   };
 
-  const getAllMics = (): Promise<AllMics> => {
-		return new Promise(async (resolve, reject) => {
-			const result: AllMics = await ipcRenderer.sendSync('getAllMics', 'ping');
-			console.log('getAllMics invoke', result);
-			resolve(result);
-		})
-	}
+  // const getAllMics = async (): Promise<AllMics> => {
+	// 	return new Promise(async (resolve, reject) => {
+	// 		const result: AllMics = await ipcRenderer.sendSync('getAllMics', 'ping');
+	// 		console.log('getAllMics invoke', result);
+	// 		resolve(result);
+	// 	})
+	// }
 
   useEffect(() => {
-    async function GetAllMics(): Promise<Mic[]> {
-      const micsGet: Mic[] = (await getAllMics()).mics
-      setload(!load)
-      return micsGet;
-    }
+    // async function connectAllMicsWithTCP(): Promise<Mic[]> {
+    //   const micsGet: Mic[] = (await getAllMics()).mics
+    //   setload(!load)
+    //   return micsGet;
+    // }
     
-    GetAllMics().then((res) => setExampleMicsArray(res));
+    async function sleep(): Promise<boolean> {
+      await setTimeout(() => {console.log("test") }, 2000)
+      return !load
+    }
+    // connectAllMicsWithTCP().then((res) => setExampleMicsArray(res));
+    sleep().then((res) => setload(res))
   }, []);
 
   function delay(ms: number) {
