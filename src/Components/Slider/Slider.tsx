@@ -4,6 +4,8 @@ import { styled } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import { BsMic, BsMicMute } from "react-icons/bs";
+import { resultFormat } from "../../Socket/interfaces";
+let { ipcRenderer } = window.require("electron");
 
 const MicroBoxShadow =
   "0 5px 1px rgba(0,0,0,0.1),0 4px 8px rgba(0,0,0,0.13),0 0 0 1px rgba(0,0,0,0.02)";
@@ -88,6 +90,26 @@ const MicroSlider = styled(Slider)(({ theme }) => ({
 }));
 
 export default function CustomizedSlider(props: any) {
+  const [sliderValue, setSliderValue] =  React.useState(0);
+  const setVolumeToMic = (
+    micId: string,
+    value: number
+  ): Promise<resultFormat> => {
+    return new Promise(async (resolve, reject) => {
+      const result: resultFormat = await ipcRenderer.sendSync(
+        "setVolumeToMic",
+        { micId: micId, value: value }
+      );
+      console.log("setVolumeToMic invoke", result);
+      resolve(result);
+    });
+  };
+
+  const handleMouseUp = (event:any) => {
+    if (event.button !== 2) {
+      setVolumeToMic(props.name, sliderValue)
+    }
+  };
 
   return (
     <Box sx={{ width: 720 }}>
@@ -96,9 +118,11 @@ export default function CustomizedSlider(props: any) {
       </Box>
       <Box sx={{ display: "flex", flexDirection: "row", p: 1, m: 1 }}>
         <MicroSlider
-          onChange={(_, val: any) => {
-            props.sendData(val);
+          onChange={(e, val: any) => {
+            props.sendData(val, e);
+            setSliderValue(val)
           }}
+          onMouseUp={handleMouseUp}
           onChangeCommitted={(_, val: any) => {
             props.sendData(val);
           }}
@@ -110,7 +134,7 @@ export default function CustomizedSlider(props: any) {
         <Box
           sx={{ ml: 4 }}
           onClick={() => {
-            (props.isActive) ? props.sendActive(false) : props.sendActive(true);
+            props.isActive ? props.sendActive(false) : props.sendActive(true);
           }}
         >
           {props.isActive ? <BsMic /> : <BsMicMute />}

@@ -1,8 +1,9 @@
-import { ipcRenderer } from "electron";
+import { Button } from "@mui/material";
 import React, { Component, useEffect, useState } from "react";
 import ReactRanger from "react-ranger";
-import { AllMics, Mic } from "../../Socket/interfaces";
+import { AllMics, Mic, resultFormat } from "../../Socket/interfaces";
 import CustomizedSlider from "../Slider/Slider";
+let { ipcRenderer } = window.require("electron");
 
 export const MicsLevel = () => {
   const [exampleMicsArray, setExampleMicsArray] = React.useState<Mic[]>([]);
@@ -10,10 +11,13 @@ export const MicsLevel = () => {
   const [load, setload] = React.useState(true);
   const [point, setpoint] = React.useState(".");
 
-
-  const getData = (index: number, value: number) => {
+  const getData = (index: number, value: number, event:any) => {
+    if (event)
+    console.log(event)
+    if (event && event.type === "mousedown") {
+      console.log("teazefvqhkgqu")
+    }
     exampleMicsArray[index].value = value;
-    console.log("Values", exampleMicsArray);
   };
 
   const setActive = (index: number, value: boolean) => {
@@ -22,27 +26,23 @@ export const MicsLevel = () => {
     setExampleMicsArray(copy);
   };
 
-  // const getAllMics = async (): Promise<AllMics> => {
-	// 	return new Promise(async (resolve, reject) => {
-	// 		const result: AllMics = await ipcRenderer.sendSync('getAllMics', 'ping');
-	// 		console.log('getAllMics invoke', result);
-	// 		resolve(result);
-	// 	})
-	// }
+  const getAllMics = async (): Promise<AllMics> => {
+    return new Promise(async (resolve, reject) => {
+      const result: AllMics = await ipcRenderer.sendSync("getAllMics", "ping");
+      console.log("getAllMics invoke", result);
+      resolve(result);
+    });
+  };
 
   useEffect(() => {
-    // async function connectAllMicsWithTCP(): Promise<Mic[]> {
-    //   const micsGet: Mic[] = (await getAllMics()).mics
-    //   setload(!load)
-    //   return micsGet;
-    // }
-    
-    async function sleep(): Promise<boolean> {
-      await setTimeout(() => {console.log("test") }, 2000)
-      return !load
+    async function connectAllMicsWithTCP(): Promise<Mic[]> {
+      const micsGet: Mic[] = (await getAllMics()).mics;
+      setload(!load);
+      console.log(micsGet);
+      return micsGet;
     }
-    // connectAllMicsWithTCP().then((res) => setExampleMicsArray(res));
-    sleep().then((res) => setload(res))
+
+    connectAllMicsWithTCP().then((res) => setExampleMicsArray(res));
   }, []);
 
   function delay(ms: number) {
@@ -50,9 +50,11 @@ export const MicsLevel = () => {
   }
 
   function addpoint() {
-    {setInterval(() => {
-      (point.length >= 3 ? setpoint(".") : setpoint(point + "."));
-    }, 1000)}
+    {
+      setInterval(() => {
+        point.length >= 3 ? setpoint(".") : setpoint(point + ".");
+      }, 1000);
+    }
   }
 
   return (
@@ -64,18 +66,21 @@ export const MicsLevel = () => {
           {addpoint()}
         </>
       ) : (
-        exampleMicsArray.map((item, index) => {
-          return (
-            <CustomizedSlider
-              key={index}
-              isActive={item.isActive}
-              name={item.micName}
-              defaultValue={item.value}
-              sendData={(val: number) => getData(index, val)}
-              sendActive={(val: boolean) => setActive(index, val)}
-            />
-          );
-        })
+        <>
+          {exampleMicsArray.map((item, index) => {
+            return (
+              <CustomizedSlider
+                key={index}
+                isActive={item.isActive}
+                name={item.micName}
+                defaultValue={item.value}
+                value={item.value}
+                sendData={(val: number, event:any) => getData(index, val, event)}
+                sendActive={(val: boolean) => setActive(index, val)}
+              />
+            );
+          })}
+        </>
       )}
     </>
   );
