@@ -1,6 +1,6 @@
 export interface resultFormat {
 	message: string,
-	statusCode: number
+	statusCode: number,
 };
 
 export interface Mic {
@@ -12,8 +12,10 @@ export interface Mic {
 };
 
 export interface AllMics {
+	message: string,
 	length: number,
 	mics: [Mic],
+	statusCode: number,
 };
 
 export interface TimeRange {
@@ -29,6 +31,8 @@ export interface Event {
 };
 
 export interface AllEvents {
+	message: string,
 	length: number,
 	events: [Event],
+	statusCode: number,
 };
