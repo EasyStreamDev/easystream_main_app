@@ -111,7 +111,7 @@ jobs:
           sudo add-apt-repository -y ppa:cybermax-dexter/sdl2-backport
           sudo aptitude install -y winehq-stable
           sudo aptitude install -y wine32-development
-          sudo aptitude install -y wine32
+          sudo aptitude install -y wine32:i386
           echo Wine $(wine --version)
       - name: Build commit ${{ github.sha }}
         run: |
