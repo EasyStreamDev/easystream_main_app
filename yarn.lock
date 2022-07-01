@@ -1832,25 +1832,25 @@
     "@rescripts/utilities" "^0.0.8"
 
 "@rescripts/rescript-use-eslint-config@^0.0.12":
-  version "0.0.11"
-  resolved "https://registry.yarnpkg.com/@rescripts/rescript-use-eslint-config/-/rescript-use-eslint-config-0.0.11.tgz#42c76779976f659297c5b3b381f74a2c42a28d78"
-  integrity sha512-rMdRunSosbLM2aGLJpjEnmkfQYm71NmObt6QR4h3e98+vk4in3xelk24vJYcMoCD3Gy/W3sL7IL58I4HGavHhA==
+  version "0.0.5"
+  resolved "https://registry.yarnpkg.com/@rescripts/rescript-use-eslint-config/-/rescript-use-eslint-config-0.0.5.tgz#0613c92cae5b44c2523401b15ae5b3c6e4810b52"
+  integrity sha512-Rn4sjgJCbe6y0PIUa6d2UeDsICPACSj5/HFFLblfKGDgCABxdgr/LsBxdrmzOWehxqVX0qvmWGzbRbmpkNdGbA==
+  dependencies:
+    "@rescripts/utilities" "^0.0.5"
+
+"@rescripts/rescript-use-tslint-config@^0.0.7", "@rescripts/rescript-use-tslint-config@^0.0.8":
+  version "0.0.7"
+  resolved "https://registry.yarnpkg.com/@rescripts/rescript-use-tslint-config/-/rescript-use-tslint-config-0.0.7.tgz#20772130e9c194b7ceb030626012cae87dedb09b"
+  integrity sha512-2Pt8bKB2ROoU/YQnazLxEiM/dE8ld7xxVuCYp+hs9J2UdncQuQokeMmujBZ9xkDpFsjo7Am3l9ccWHE2lQl91w==
   dependencies:
     "@rescripts/utilities" "^0.0.7"
-
-"@rescripts/rescript-use-tslint-config@^0.0.8":
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/@rescripts/rescript-use-tslint-config/-/rescript-use-tslint-config-0.0.1.tgz#ba30a3cbaf6976b4ad1fc45c694833f975b682cf"
-  integrity sha512-oHI6jhX/WeA0QjVRNJw0D2/kWfaXT/ZND2NwPc+4hAOy08Mb8waQxDvaQbmxzrHxDGnwhVfTlR7NPj6j/HXWxg==
-  dependencies:
-    "@rescripts/utilities" "^0.0.2"
     ramda "^0.26.0"
     tslint-loader "^3.5.4"
 
-"@rescripts/utilities@^0.0.2":
-  version "0.0.2"
-  resolved "https://registry.yarnpkg.com/@rescripts/utilities/-/utilities-0.0.2.tgz#75b8bd0b9826a92cad610d534250071b20d81ee6"
-  integrity sha512-sdldr3bDFseX/5FKUY4bVgfG3951eR3cg2y7v0bZ5ZCByIb4KBgS5lBvbNz4kUgUJYUSega8uJsbq+Ygx35fgA==
+"@rescripts/utilities@^0.0.5":
+  version "0.0.5"
+  resolved "https://registry.yarnpkg.com/@rescripts/utilities/-/utilities-0.0.5.tgz#1bc296744044e4c6ea5d137f073f72b4892a357a"
+  integrity sha512-9YtdDTiICbUzFpmUnfSJRfeBtNR+T3+5LYiPS7xaNSzmOiVXwWubl5kfEzNQIpcg5xOUknYbkObwyUzd9s3QvQ==
   dependencies:
     ramda "^0.26.0"
 
