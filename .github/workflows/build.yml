@@ -21,6 +21,7 @@ jobs:
 
       - name: Add msbuild to PATH [WINDOWS]
         uses: microsoft/setup-msbuild@v1.1
+        if: matrix.os == 'windows-latest'
 
       - name: Build/release Electron app
         uses: samuelmeuli/action-electron-builder@v1
