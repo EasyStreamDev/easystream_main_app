@@ -19,6 +19,9 @@ jobs:
         with:
           node-version: 16
 
+      - name: Add msbuild to PATH [WINDOWS]
+        uses: microsoft/setup-msbuild@v1.1
+
       - name: Build/release Electron app
         uses: samuelmeuli/action-electron-builder@v1
         env:
