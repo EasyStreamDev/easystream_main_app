@@ -1,6 +1,12 @@
 {
   "name": "easystream",
   "version": "0.1.0",
+  "description": "EasyStream, the solution to stream easily.",
+  "author": {
+    "email": "easystream@epitech.eu",
+    "name": "EasyStream Co",
+    "url": "https://easystream.com"
+  },
   "private": true,
   "dependencies": {
     "@emotion/react": "^11.7.0",
@@ -18,8 +24,6 @@
     "@types/react-ranger": "^2.0.1",
     "@types/styled-components": "^5.1.17",
     "concurrently": "^5.2.0",
-    "electron": "^19.0.7",
-    "electron-builder": "^22.7.0",
     "electron-is-dev": "^1.2.0",
     "electron-renderer": "^2.0.4",
     "electron-webpack": "^2.8.2",
@@ -46,16 +50,13 @@
     "build": "yarn react-build && npm run electron-build",
     "test": "react-scripts test",
     "compile": "electron-webpack",
-    "dist": "yarn compile && electron-builder",
+    "dist": "yarn build && electron-builder",
     "dist:dir": "yarn dist --dir -c.compression=store -c.mac.identity=null",
     "eject": "react-scripts eject",
-    "release": "yarn react-build && npm run electron-release",
     "electron-start": "electronmon .",
     "electron-build": "electron-builder",
-    "electron-release": "electron-builder --publish=always",
     "react-start": "react-scripts start",
-    "react-build": "react-scripts build",
-    "react-serve": "BROWSER=none && yarn react-start"
+    "react-build": "react-scripts build"
   },
   "rescripts": [
     "env"
@@ -75,10 +76,22 @@
       "last 1 safari version"
     ]
   },
-  "main": "public/electron-main.js",
+  "main": "public/electron.js",
   "homepage": "./",
   "devDependencies": {
     "@rescripts/cli": "^0.0.16",
-    "@rescripts/rescript-env": "^0.0.14"
+    "@rescripts/rescript-env": "^0.0.14",
+    "electron": "^19.0.7",
+    "electron-builder": "^22.7.0"
+  },
+  "build": {
+    "appId": "com.release.easystream",
+    "files": [
+      "build/**/*",
+      "node_modules/**/*"
+    ],
+    "directories":{
+      "buildResources": "assets"
+    }
   }
 }
