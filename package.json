@@ -14,7 +14,6 @@
     "@material-ui/icons": "^4.11.2",
     "@mui/material": "^5.2.3",
     "@mui/styled-engine-sc": "^5.1.0",
-    "@rescripts/rescript-use-tslint-config": "^0.0.7",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
@@ -59,9 +58,6 @@
     "react-start": "react-scripts start",
     "react-build": "react-scripts build"
   },
-  "rescripts": [
-    "env"
-  ],
   "eslintConfig": {
     "extends": "react-app"
   },
@@ -80,8 +76,6 @@
   "main": "public/electron.js",
   "homepage": "./",
   "devDependencies": {
-    "@rescripts/cli": "^0.0.16",
-    "@rescripts/rescript-env": "^0.0.14",
     "electron": "^19.0.7",
     "electron-builder": "^22.7.0"
   },
