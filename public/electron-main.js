@@ -30,8 +30,8 @@ const createWindow = () => {
 	mainWindow = new BrowserWindow({
 		webPreferences: {
 			nodeIntegration: true, // turn this off if you don't mean to use node
-			enableRemoteModule: true, // turn this off if you don't mean to use remote module
-			contextIsolation: false
+			contextIsolation: false,
+      		enableRemoteModule: isDev
 		},
 		autoHideMenuBar: true,
 		minWidth: 800,
@@ -125,7 +125,9 @@ const createLoadingScreen = () => {
       /// and set the transparency, to remove any window background color
       transparent: true,
 	  webPreferences: {
-		nodeIntegration: true
+		nodeIntegration: true,
+      	enableRemoteModule: isDev,
+		contextIsolation: false
 	  }
     })
   );

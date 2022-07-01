@@ -13,7 +13,7 @@ import { Report } from '../Report/Report'
 import { MicsLevel } from '../MicsLevel/MicsLevel';
 import { WordDetection } from '../WordDetection/WordDetection';
 import { AllMics, resultFormat } from '../../Socket/interfaces';
-let { ipcRenderer } = window.require("electron");
+const ipcRenderer = window.require('electron').ipcRenderer
 
 export default function App() {
 
@@ -52,7 +52,10 @@ export default function App() {
 			})
 		}, 5000);
 		
-		return () => { console.log('unmounting') };
+		return () => { 
+			console.log('unmounting');
+			setResponse('');
+		};
 	}, []);
 
 	return (
