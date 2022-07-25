@@ -35,6 +35,20 @@ jobs:
     - uses: actions/setup-node@master
       with:
         node-version: 16
+    - name: Set Windows environment
+      run: |
+        echo 'GYP_MSVS_VERSION=2015' >> $Env:GITHUB_ENV
+        echo 'GYP_MSVS_OVERRIDE_PATH=C:\\Dummy' >> $Env:GITHUB_ENV
+    - name: Use Python ${{ matrix.python }}
+      uses: actions/setup-python@v4
+      with:
+        python-version: 3.8
+      env:
+        PYTHON_VERSION: 3.8
+    - name: Add msbuild to PATH
+      uses: microsoft/setup-msbuild@v1.1
+    - name: install node-gyp
+      run: npm install -g node-gyp
     - name: install dependencies
       run: npm install --legacy-peer-deps
     - name: build
