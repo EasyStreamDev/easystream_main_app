@@ -47,6 +47,10 @@ jobs:
       run: npm install -g node-gyp
     - name: Install Windows Build Tools
       run: npm install --global windows-build-tools@4.0.0
+    - name: Set Windows msbuild_path
+      run: npm config set msbuild_path "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\MSBuild.exe"
+    - name: Set Windows msvs_version
+      run: npm config set msvs_version 2019 --global
     - name: Install dependencies
       run: npm install --legacy-peer-deps
     - name: Build
