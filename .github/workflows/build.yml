@@ -31,12 +31,12 @@ jobs:
         run: npm config set python python2.7
         if: matrix.os == 'windows-2016'
 
-      - name: WINDOWS - Set node config to set msvs_version to 2015
-        run: npm config set msvs_version 2015
+      - name: WINDOWS - Set node config to set msvs_version to 2019
+        run: npm config set msvs_version 2019
         if: matrix.os == 'windows-2016'
 
       - name: WINDOWS - Work around for Windows Server 2019
-        run: set path=%path%;C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Current\Bin
+        run: npm config set msbuild_path "C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\MSBuild\Current\Bin\MSBuild.exe"
         if: matrix.os == 'windows-2016'
 
       - name: Build/release Electron app
