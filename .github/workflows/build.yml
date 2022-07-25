@@ -10,7 +10,9 @@ jobs:
       with:
         node-version: 16
     - name: install dependencies
-      run: npm install
+      run: npm install --legacy-peer-deps
+    - name: install rpm
+      run: apt install rpm
     - name: build
       run: npm run make
 
@@ -22,7 +24,7 @@ jobs:
       with:
         node-version: 16
     - name: install dependencies
-      run: npm install
+      run: npm install --legacy-peer-deps
     - name: build
       run: npm run make
 
@@ -34,6 +36,6 @@ jobs:
       with:
         node-version: 16
     - name: install dependencies
-      run: npm install
+      run: npm install --legacy-peer-deps
     - name: build
       run: npm run make
