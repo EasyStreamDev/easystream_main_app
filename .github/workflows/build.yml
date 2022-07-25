@@ -35,10 +35,6 @@ jobs:
     - uses: actions/setup-node@master
       with:
         node-version: 16
-    - name: Set Windows environment
-      run: |
-        echo 'GYP_MSVS_VERSION=2017' >> $Env:GITHUB_ENV
-        echo 'GYP_MSVS_OVERRIDE_PATH=C:\\Dummy' >> $Env:GITHUB_ENV
     # - name: Use Python 3.8
     #   uses: actions/setup-python@v4
     #   with:
@@ -50,9 +46,9 @@ jobs:
     - name: Install node-gyp
       run: npm install -g node-gyp
     - name: Install Windows Build Tools
-      run: |
-        npm install --global windows-build-tools@4.0.0 --vs2017
-        npm config set msvs_version 2017
+      run: npm install --global windows-build-tools@4.0.0 --vs2017
+    - name: Config msvs Version
+      run: npm config set msvs_version 2017
     - name: Install dependencies
       run: npm install --legacy-peer-deps
     - name: Build
