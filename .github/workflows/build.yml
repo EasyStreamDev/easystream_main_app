@@ -47,8 +47,6 @@ jobs:
       run: npm install -g node-gyp
     - name: Install Windows Build Tools
       run: npm install --global windows-build-tools@4.0.0
-    - name: Config msvs Version
-      run: npm config set msvs_version 2017
     - name: Install dependencies
       run: npm install --legacy-peer-deps
     - name: Build
