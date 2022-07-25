@@ -46,7 +46,18 @@ yarn start
 
 Command to build and run the application only the front:
 ```bash
-yarn run front
+yarn run front-dev
+```
+
+Command to run the application with the OBS plugin:
+```bash
+yarn run front-with-obs
+```
+
+Command to push release a new version
+```bash
+npm version <version>
+git push --follow-tags
 ```
 
 # Build Linux / Windows / Mac
