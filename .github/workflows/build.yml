@@ -8,20 +8,32 @@ jobs:
 
     strategy:
       matrix:
-        os: [macos-latest, ubuntu-latest, windows-latest]
+        os: [ubuntu-latest, windows-2016]
 
     steps:
       - name: Check out Git repository
-        uses: actions/checkout@v1
+        uses: actions/checkout@v3
 
       - name: Install Node.js, NPM and Yarn
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v3
         with:
           node-version: 16
 
-      - name: Add msbuild to PATH [WINDOWS]
-        uses: microsoft/setup-msbuild@v1.1
-        if: matrix.os == 'windows-latest'
+      - name: WINDOWS - install node tools
+        run: npm install --global --production windows-build-tools@4.0.0
+        if: matrix.os == 'windows-2016'
+
+      - name: WINDOWS - install node-gyp
+        run: npm install --global node-gyp@latest
+        if: matrix.os == 'windows-2016'
+
+      - name: WINDOWS - Set node config to set msvs_version to 2019
+        run: npm config set msvs_version 2019
+        if: matrix.os == 'windows-2016'
+
+      - name: WINDOWS - Work around for Windows Server 2019
+        run: npm config set msbuild_path "C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\MSBuild\Current\Bin\MSBuild.exe"
+        if: matrix.os == 'windows-2016'
 
       - name: Build/release Electron app
         uses: samuelmeuli/action-electron-builder@v1.6.0
