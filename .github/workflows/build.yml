@@ -8,7 +8,7 @@ jobs:
 
     strategy:
       matrix:
-        os: [macos-latest, ubuntu-latest, windows-latest]
+        os: [ubuntu-latest, windows-2016]
 
     steps:
       - name: Check out Git repository
@@ -19,17 +19,25 @@ jobs:
         with:
           node-version: 16
 
-      - name: patch node gyp on windows to support Visual Studio 2019
-        shell: powershell
-        run: |
-          npm install --global node-gyp@latest
-          npm prefix -g | % {npm config set node_gyp "$_\node_modules\node-gyp\bin\node-gyp.js"}
-          npm config set msvs_version 2017
-        if: matrix.os == 'windows-latest'
+      - name: WINDOWS - install node tools
+        run: npm install --global --production windows-build-tools@4.0.0
+        if: matrix.os == 'windows-2016'
 
-      - name: Add msbuild to PATH [WINDOWS]
-        uses: microsoft/setup-msbuild@v1.1
-        if: matrix.os == 'windows-latest'
+      - name: WINDOWS - install node-gyp
+        run: npm install --global node-gyp@latest
+        if: matrix.os == 'windows-2016'
+
+      - name: WINDOWS - Set node config to use python2.7
+        run: npm config set python python2.7
+        if: matrix.os == 'windows-2016'
+
+      - name: WINDOWS - Set node config to set msvs_version to 2015
+        run: npm config set msvs_version 2015
+        if: matrix.os == 'windows-2016'
+
+      - name: WINDOWS - Work around for Windows Server 2019
+        run: set path=%path%;C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Current\Bin
+        if: matrix.os == 'windows-2016'
 
       - name: Build/release Electron app
         uses: samuelmeuli/action-electron-builder@v1.6.0
