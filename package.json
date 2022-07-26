@@ -86,6 +86,8 @@
   },
   "build": {
     "appId": "easystream.client",
+    "productName": "EasyStream.Client",
+    "copyright": "Copyright @2021-2024 Easystream",
     "mac": {
       "category": "your.app.category.type"
     },
@@ -94,7 +96,11 @@
     },
     "linux": {
       "target": "AppImage"
-    }
+    },
+    "extraMetadata": {
+      "main": "public/electron.js"
+    },
+    "extends": null
   },
   "postinstall": "electron-builder install-app-deps"
 }
