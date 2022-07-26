@@ -71,7 +71,7 @@
         {
           "name": "@electron-forge/maker-squirrel",
           "config": {
-            "name": "EasyStream Client"
+            "name": "EasyStream.Client"
           }
         },
         {
