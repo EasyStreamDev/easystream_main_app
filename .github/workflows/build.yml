@@ -38,4 +38,4 @@ jobs:
     - name: Install dependencies
       run: npm install --legacy-peer-deps
     - name: Build
-      run: npm run make
+      run: yes | npm run make
