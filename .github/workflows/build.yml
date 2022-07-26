@@ -35,22 +35,6 @@ jobs:
     - uses: actions/setup-node@master
       with:
         node-version: 16
-    # - name: Use Python 3.8
-    #   uses: actions/setup-python@v4
-    #   with:
-    #     python-version: 3.8
-    #   env:
-    #     PYTHON_VERSION: 3.8
-    # - name: Add msbuild to PATH
-    #   uses: microsoft/setup-msbuild@v1.1
-    # - name: Install node-gyp
-    #   run: npm install -g node-gyp
-    # - name: Install Windows Build Tools
-    #   run: npm install --global windows-build-tools@4.0.0
-    # - name: Set Windows msbuild_path
-    #   run: npm config set msbuild_path "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\MSBuild.exe"
-    # - name: Set Windows msvs_version
-    #   run: npm config set msvs_version 2019 --global
     - name: Install dependencies
       run: npm install --legacy-peer-deps
     - name: Build
