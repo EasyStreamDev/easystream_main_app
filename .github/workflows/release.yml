@@ -1,49 +1,45 @@
 name: Release
+
 on:
   push:
     tags:
       - 'v*'
 
 jobs:
-
-  publish_on_linux:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2       
-    - uses: actions/setup-node@master
-      with:
-        node-version: 16
-    - name: install dependencies
-      run: npm install
-    - name: publish
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: npm run publish
-
-  publish_on_mac:
-    runs-on: macos-latest
+  publish:
+    runs-on: ubuntu-18.04
     steps:
     - uses: actions/checkout@v2
     - uses: actions/setup-node@master
       with:
         node-version: 16
+    - name: Install windows dependencies
+      run: |
+        sudo dpkg --add-architecture i386
+        sudo apt update
+        wget -qO- https://dl.winehq.org/wine-builds/winehq.key | sudo apt-key add -
+        sudo apt install software-properties-common
+        sudo apt-add-repository 'deb http://dl.winehq.org/wine-builds/ubuntu/ bionic main'
+        wget -qO- https://download.opensuse.org/repositories/Emulators:/Wine:/Debian/xUbuntu_18.04/Release.key | sudo apt-key add -
+        sudo sh -c 'echo "deb https://download.opensuse.org/repositories/Emulators:/Wine:/Debian/xUbuntu_18.04/ ./" > /etc/apt/sources.list.d/obs.list'
+        sudo apt update
+        sudo apt-get install -y --install-recommends winehq-devel
+        sudo apt-get install -y fakeroot
+    - name: Install mono
+      run: |
+        sudo apt-get install mono-complete
+        sudo apt-get update
     - name: install dependencies
-      run: npm install
-    - name: publish
+      run: yarn install
+    - name: build
+      run: yarn run dist
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: npm run publish
-
-  publish_on_win:
-    runs-on: windows-latest
-    steps:
-    - uses: actions/checkout@v2       
-    - uses: actions/setup-node@master
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - uses: "marvinpinto/action-automatic-releases@latest"
       with:
-        node-version: 16
-    - name: install dependencies
-      run: npm install
-    - name: publish
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: npm run publish
+        repo_token: "${{ secrets.GITHUB_TOKEN }}"
+        prerelease: true
+        title: "Development Build"
+        files: |
+          dist/*.exe
+          dist/*.AppImage
