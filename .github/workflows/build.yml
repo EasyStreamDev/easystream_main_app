@@ -9,9 +9,19 @@ jobs:
     - uses: actions/setup-node@master
       with:
         node-version: 16
+    - name: Install wine
+      run: |
+        sudo dpkg --add-architecture i386
+        sudo apt update
+        wget -qO- https://dl.winehq.org/wine-builds/winehq.key | sudo apt-key add -
+        sudo apt install software-properties-common
+        sudo apt-add-repository 'deb http://dl.winehq.org/wine-builds/ubuntu/ bionic main'
+        wget -qO- https://download.opensuse.org/repositories/Emulators:/Wine:/Debian/xUbuntu_18.04/Release.key | sudo apt-key add -
+        sudo sh -c 'echo "deb https://download.opensuse.org/repositories/Emulators:/Wine:/Debian/xUbuntu_18.04/ ./" > /etc/apt/sources.list.d/obs.list'
+        sudo apt update
+        sudo apt-get install --install-recommends winehq-stable
     - name: Install packages
       run: |
-        sudo apt install wine
         sudo apt-get install mono-complete
         sudo apt-get update
     - name: install dependencies
