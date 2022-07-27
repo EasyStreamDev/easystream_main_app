@@ -13,7 +13,6 @@ jobs:
       run: |
         sudo apt install wine
         sudo apt-get install mono-complete
-        sudo dpkg --add-architecture i386
         sudo apt-get update
         sudo apt-get install wine32
     - name: install dependencies
