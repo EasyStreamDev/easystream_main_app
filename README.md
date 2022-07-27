@@ -57,6 +57,7 @@ yarn run front-with-obs
 Command to push release a new version
 ```bash
 npm version v<version>
+git tag v<version>
 git push --follow-tags
 ```
 
