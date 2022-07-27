@@ -14,7 +14,6 @@ jobs:
         sudo apt install wine
         sudo apt-get install mono-complete
         sudo apt-get update
-        sudo apt-get install wine32
     - name: install dependencies
       run: yarn install
     - name: build
