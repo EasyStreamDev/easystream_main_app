@@ -1,0 +1,17 @@
+name: CI Electron test
+
+on: [push]
+
+jobs:
+  linuxBuild:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - uses: actions/setup-node@master
+        with:
+          node-version: 16
+      - name: Install dependencies
+        run: yarn install
+      - name: Test commit ${{ github.sha }}
+        run: yarn run test
