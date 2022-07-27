@@ -3,13 +3,13 @@ on: [push, pull_request]
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
     steps:
     - uses: actions/checkout@v2
     - uses: actions/setup-node@master
       with:
         node-version: 16
-    - name: Install wine
+    - name: Install windows dependencies
       run: |
         sudo dpkg --add-architecture i386
         sudo apt update
@@ -19,8 +19,9 @@ jobs:
         wget -qO- https://download.opensuse.org/repositories/Emulators:/Wine:/Debian/xUbuntu_18.04/Release.key | sudo apt-key add -
         sudo sh -c 'echo "deb https://download.opensuse.org/repositories/Emulators:/Wine:/Debian/xUbuntu_18.04/ ./" > /etc/apt/sources.list.d/obs.list'
         sudo apt update
-        sudo apt-get install --install-recommends winehq-stable
-    - name: Install packages
+        sudo apt-get install -y --install-recommends winehq-devel
+        sudo apt-get install -y fakeroot
+    - name: Install mono
       run: |
         sudo apt-get install mono-complete
         sudo apt-get update
