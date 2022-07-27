@@ -3,7 +3,7 @@ name: CI Electron test
 on: [push]
 
 jobs:
-  linuxBuild:
+  executeTests:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
