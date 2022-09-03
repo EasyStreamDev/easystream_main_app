@@ -44,6 +44,7 @@ Command to build and run the application in final mode:
 yarn start
 ```
 
+**IT IS OKAY IF IT BUG AT THE START, JUST TRY NEW TIMES WITH PC WORKING, AND IT'LL BE FINE !**
 Command to build and run the application only the front:
 ```bash
 yarn run front-dev
