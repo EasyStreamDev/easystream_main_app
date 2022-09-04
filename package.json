@@ -29,9 +29,12 @@
     "electron-squirrel-startup": "^1.0.0",
     "electron-webpack": "^2.8.2",
     "electronmon": "^1.1.2",
+    "material-ui-numeric-input": "^3.1.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-icons": "^4.3.1",
+    "react-input-number": "^5.0.19",
+    "react-numeric-input": "^2.2.3",
     "react-ranger": "^2.1.0",
     "react-router-dom": "^6.0.2",
     "react-scripts": "3.4.1",
@@ -84,7 +87,8 @@
   "devDependencies": {
     "cross-env": "^7.0.3",
     "electron": "^19.0.7",
-    "electron-builder": "^22.10.5"
+    "electron-builder": "^22.10.5",
+    "react-error-overlay": "6.0.9"
   },
   "build": {
     "appId": "easystream.client",

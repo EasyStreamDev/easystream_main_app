@@ -19,3 +19,6 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
+.m-2{
+  margin: 6px;
+}
