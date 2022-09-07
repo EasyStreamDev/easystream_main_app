@@ -14,6 +14,7 @@ export const Home = () => {
 		    <Link to="/products">products</Link>
 		    <Link to="/audio/mics-level">Mics Level</Link>
 		    <Link to="/audio/word-detection">Word Detection</Link>
+		    <Link to="/audio/Scenes">Scenes</Link>
       </>
     );
 }

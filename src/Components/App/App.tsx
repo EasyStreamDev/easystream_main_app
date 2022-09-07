@@ -12,6 +12,7 @@ import { Product } from '../Product/Product'
 import { Report } from '../Report/Report'
 import { MicsLevel } from '../MicsLevel/MicsLevel';
 import { WordDetection } from '../WordDetection/WordDetection';
+import { Scenes } from '../Scenes/Scenes';
 let { ipcRenderer } = window.require("electron");
 
 export default function App() {
@@ -47,6 +48,7 @@ export default function App() {
 						<Route path='/products' element={<Product/>} />
 						<Route path='/audio/mics-level' element={<MicsLevel/>} />
 						<Route path='/audio/word-detection' element={<WordDetection/>} />
+						<Route path='/audio/Scenes' element={<Scenes/>} />
 					</Routes>
 				</div>
 			</Router>
