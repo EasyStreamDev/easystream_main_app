@@ -5,9 +5,27 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import { BsTrash } from "react-icons/bs";
-import { FormControl, InputLabel, MenuItem, Select, withStyles } from "@mui/material";
+import { Divider, FormControl, InputLabel, MenuItem, withStyles } from "@mui/material";
 import { AiOutlineMinus } from "react-icons/ai";
 import CSS from "csstype";
+import { SxProps } from '@mui/system';
+import { BorderColorRounded } from '@material-ui/icons';
+// import { makeStyles } from "@mui/styles";
+import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import Select from "@material-ui/core/Select";
+import { makeStyles } from "@material-ui/core/styles";
+
+const themeUnFocus = createMuiTheme({
+  overrides: {
+    MuiSelect: {
+      select: {
+        "&:focus": {
+          background: "$labelcolor"
+        }
+      }
+    }
+  }
+});
 
 const style = {
   Box: {
@@ -15,9 +33,9 @@ const style = {
     top: "50%",
     left: "50%",
     transform: "translate(-50%, -50%)",
-    width: 400,
+    width: 500,
     bgcolor: "#222831",
-    border: "2px solid #FD7014",
+    border: "1px solid #FD7014",
     boxShadow: 24,
     p: 4,
     borderRadius: "15px",
@@ -39,7 +57,37 @@ const style = {
   },
 };
 
+const useStyles = makeStyles({
+  select: {
+    "&:before": {
+      borderColor: "#f56f28"
+    },
+    "&:after": {
+      borderColor: "#f56f28"
+    },
+    '&:not(.Mui-disabled):hover::before': {
+      borderColor: '#f56f28',
+    },
+  },
+  icon: {
+    fill: "#f56f28",
+  },
+  root: {
+    color: "#f56f28",
+  },
+  selectLabel: {
+    fontSize: "15px",
+    "&.MuiInputLabel-root": {
+      color: "white",
+    },
+    "&.Mui-focused": {
+      color: "#f56f28",
+    }
+  }
+})
+
 export const MyModal = (props: any) => {
+  const classes = useStyles()
   return (
     <Modal
       open={props.open}
@@ -47,127 +95,143 @@ export const MyModal = (props: any) => {
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
     >
-      <Box sx={style.Box}>
-        <input
-          style={{
-            color: "white",
-            backgroundColor: "#393E46",
-            outline: "none",
-            borderStyle: "Hidden",
-            borderRadius: "20px",
-            paddingTop: "1vh",
-            paddingBottom: "1vh",
-            paddingLeft: "1vw",
-            marginBottom: "2vh",
-            width: "100%",
-          }}
-          placeholder="type a key word.."
-          name="input-box"
-          type="text"
-          onKeyUp={(event) => {
-            props.handleChange(event);
-          }}
-        />
-        {props.newEvent.keywords.map((item: string, index: number) => {
-          return (
-            <Box
-              className="typography-item"
-              sx={{ color: "white", columns: 2, cursor: "pointer" }}
-              onClick={() => {
-                props.deleteKeyWord(index);
-              }}
-            >
-              <Typography
-                id="modal-modal-title"
-                variant="h6"
-                component="h2"
-                key={index}
-                sx={{
-                  color: "white",
-                  mb: "3vh",
-                  maxWidth: "10px",
-                  display: "flex",
-                  alignItems: "center",
-                  textAlign: "center",
-                  wordWrap: "break-word",
-                  width: "10px",
-                  whiteSpace: "nowrap",
-                  paddingLeft: "1vw",
+      <MuiThemeProvider theme={themeUnFocus}>
+        <Box sx={style.Box}>
+          <input
+            style={{
+              color: "white",
+              backgroundColor: "#393E46",
+              outline: "none",
+              borderStyle: "Hidden",
+              borderRadius: "20px",
+              paddingTop: "1vh",
+              paddingBottom: "1vh",
+              paddingLeft: "1vw",
+              marginBottom: "2vh",
+              width: "100%",
+            }}
+            placeholder="type a key word.."
+            color="#f56f28"
+            name="input-box"
+            type="text"
+            onKeyUp={(event) => {
+              props.handleChange(event);
+            }}
+          />
+          {props.newEvent.keywords.map((item: string, index: number) => {
+            return (
+              <Box
+                className="typography-item"
+                sx={{ color: "white", columns: 2, cursor: "pointer" }}
+                onClick={() => {
+                  props.deleteKeyWord(index);
                 }}
               >
-                {item}
-              </Typography>
-              <i style={style.Icon}>
-                <BsTrash />
-              </i>
-            </Box>
-          );
-        })}
+                <Typography
+                  id="modal-modal-title"
+                  variant="h6"
+                  component="h2"
+                  key={index}
+                  sx={{
+                    color: "white",
+                    mb: "3vh",
+                    maxWidth: "10px",
+                    display: "flex",
+                    alignItems: "center",
+                    textAlign: "center",
+                    wordWrap: "break-word",
+                    width: "10px",
+                    whiteSpace: "nowrap",
+                    paddingLeft: "1vw",
+                  }}
+                >
+                  {item}
+                </Typography>
+                <i style={style.Icon}>
+                  <BsTrash />
+                </i>
+              </Box>
+            );
+          })}
 
-        <FormControl fullWidth sx={{ pb: "1vh", borderColor: "white" }}>
-          <InputLabel id="demo-simple-select-label" sx={{ color: "white" }}>
-            sources
-          </InputLabel>
-          <Select
-            labelId="demo-simple-select-label"
-            id="demo-simple-select"
-            value={props.sources}
-            label="sources"
-            onChange={props.addSource}
-            className="select-sources"
-          >
-            {props.sources.map((source: string, index: number) => (
-              <MenuItem value={source} key={index}>
-                {source}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-        {props.newEvent.sources.map((item: string, index: number) => {
-          return (
-            <Box
-              className="typography-item"
-              sx={{ color: "white", columns: 2, cursor: "pointer" }}
-              onClick={() => {
-                props.deleteSource(index);
+          <div
+            style={{
+              color: "#f56f28",
+              backgroundColor: "#f56f28",
+              width: "100%",
+              height: 1,
+              marginBottom: 25
+            }}
+          />
+
+          <FormControl fullWidth sx={{ pb: "1vh", borderColor: "white" }}>
+            <InputLabel
+              id="demo-simple-select-label"
+              className={classes.selectLabel}>
+              sources
+            </InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              className={classes.select}
+              inputProps={{
+                classes: {
+                  icon: classes.icon,
+                  root: classes.root,
+                },
               }}
-            >
-              <Typography
-                id="modal-modal-title"
-                variant="h6"
-                component="h2"
-                key={index}
-                sx={{
-                  color: "white",
-                  display: "flex",
-                  alignItems: "center",
-                  textAlign: "center",
-                  wordWrap: "break-word",
-                  width: "10px",
-                  maxWidth: "10px",
-                  whiteSpace: "nowrap",
-                  mb: "3vh",
-                  paddingLeft: "1vw",
-                }}
-                // style={style.Text}
-              >
-                {item}
-              </Typography>
-              <i style={style.Icon}>
-                <BsTrash />
-              </i>
-            </Box>
-          );
-        })}
-        <Box sx={{ width: "100%", display: "flex", alignItems: "center" }}>
-          <Button
-            onClick={() => props.save()}
-            sx={{ color: "#FD7014", flex: "1", mt: "2vh" }}
-          >
-            Save
-          </Button>
+              value={props.sources}
+              label="sources"
+              onChange={props.addSource}>
+              {props.sources.map((source: string, index: number) => (
+                <MenuItem value={source} key={index}>
+                  {source}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+          {props.newEvent.sources.map((item: string, index: number) => {
+            return (
+              <Box
+                className="typography-item"
+                sx={{ color: "white", columns: 2, cursor: "pointer" }}
+                onClick={() => {
+                  props.deleteSource(index);
+                }}>
+                <Typography
+                  id="modal-modal-title"
+                  variant="h6"
+                  component="h2"
+                  key={index}
+                  sx={{
+                    color: "white",
+                    display: "flex",
+                    alignItems: "center",
+                    textAlign: "center",
+                    wordWrap: "break-word",
+                    width: "10px",
+                    maxWidth: "10px",
+                    whiteSpace: "nowrap",
+                    mb: "3vh",
+                    paddingLeft: "1vw",
+                  }}>
+                  {item}
+                </Typography>
+                <i style={style.Icon}>
+                  <BsTrash />
+                </i>
+              </Box>
+            );
+          })}
+          <Box sx={{ width: "100%", display: "flex", alignItems: "center" }}>
+            <Button
+              onClick={() => props.save()}
+              sx={{ color: "#FD7014", flex: "1", mt: "2vh" }}>
+              Save
+            </Button>
+          </Box>
         </Box>
-      </Box>
+      </MuiThemeProvider>
     </Modal>
   );
 };

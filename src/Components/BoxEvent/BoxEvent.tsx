@@ -62,19 +62,20 @@ export default function BoxEvent(props: any) {
   return (
     <>
       <Box style={boxStyles}>
-        <span style={TextStylesTitle}>Keywords : </span>
+        <span style={TextStylesTitle}>If you say : </span>
         {props.keyObj.keywords.map((item: any, index: number) => {
-          return <span style={TextStyles}>"{item}" </span>
+          return <span style={TextStyles}>{item} </span>
         })}
         <BsTrash
           style={IconStyles}
           onClick={() => { deleteEvent(props.i) }}
         />
         <br></br>
-        <span style={TextStylesTitle}>Sources : </span>
+        <span style={TextStylesTitle}>The actions : </span>
         {props.keyObj.sources.map((item: any, index: number) => {
-          return <span style={TextStyles}>"{item}" </span>
+          return <span style={TextStyles}>{item} </span>
         })}
+        <span style={TextStylesTitle}> will be done.</span>
       </Box>
     </>
   );

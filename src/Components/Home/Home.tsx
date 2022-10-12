@@ -15,6 +15,8 @@ export const Home = () => {
 		<Link className="m-2" to="/audio/mics-level">Mics Level</Link>
 		<Link className="m-2" to="/audio/word-detection">Word Detection</Link>
 		<Link className="m-2" to="/events/general">Generate Event</Link>
+		<Link className="m-2" to="/audio/Scenes">Scenes</Link>
+
       </>
     );
 }

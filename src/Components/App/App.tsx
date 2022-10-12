@@ -14,6 +14,7 @@ import { MicsLevel } from '../MicsLevel/MicsLevel';
 import { WordDetection } from '../WordDetection/WordDetection';
 import { GeneralEvent } from '../Events/GeneralEvent';
 import { AllMics, resultFormat } from '../../Socket/interfaces';
+import { Scenes } from '../Scenes/Scenes';
 const ipcRenderer = window.require('electron').ipcRenderer
 
 export default function App() {
@@ -73,6 +74,7 @@ export default function App() {
 						<Route path='/audio/mics-level' element={<MicsLevel/>} />
 						<Route path='/audio/word-detection' element={<WordDetection/>} />
 						<Route path='/events/general' element={<GeneralEvent/>} />
+						<Route path='/audio/Scenes' element={<Scenes/>} />
 					</Routes>
 				</div>
 			</Router>

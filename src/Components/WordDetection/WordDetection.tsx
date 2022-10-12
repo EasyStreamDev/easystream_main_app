@@ -16,10 +16,15 @@ export const WordDetection = (props: any) => {
     sources: [],
   });
   const [sources] = React.useState([
-    "sources 1",
-    "sources 2",
-    "sources 3",
-    "sources 4",
+    "cameras on",
+    "cameras off",
+    "camera shot change",
+    "shop display",
+    "Facebook pop-up display",
+    "Instagram pop-up display",
+    "Twitter pop-up display",
+    "donate pop-up display",
+    "subscribe pop-up display",
   ]);
 
   function addNewEvent(event: event) {

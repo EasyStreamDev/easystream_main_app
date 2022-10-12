@@ -28,6 +28,10 @@ TextStylesModal {
   padding-left: "1vw";
 }
 
+SelectStylesModal {
+  color: red;
+}
+
 /* hover typography-item */
 .typography-item:hover {
   color: #FD7014;
