@@ -12,7 +12,7 @@ import { Product } from '../Product/Product'
 import { Report } from '../Report/Report'
 import { MicsLevel } from '../MicsLevel/MicsLevel';
 import { WordDetection } from '../WordDetection/WordDetection';
-import { GeneralEvent } from '../Events/GeneralEvent';
+import { GeneralActions } from '../Actions/GeneralActions';
 import { AllMics, resultFormat } from '../../Socket/interfaces';
 import { Scenes } from '../Scenes/Scenes';
 const ipcRenderer = window.require('electron').ipcRenderer
@@ -73,7 +73,7 @@ export default function App() {
 						<Route path='/products' element={<Product/>} />
 						<Route path='/audio/mics-level' element={<MicsLevel/>} />
 						<Route path='/audio/word-detection' element={<WordDetection/>} />
-						<Route path='/events/general' element={<GeneralEvent/>} />
+						<Route path='/action/general' element={<GeneralActions/>} />
 						<Route path='/audio/Scenes' element={<Scenes/>} />
 					</Routes>
 				</div>

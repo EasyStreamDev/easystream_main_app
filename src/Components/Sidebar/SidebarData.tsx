@@ -102,7 +102,7 @@ export const SidebarData = [
       ]
     },
     {
-      title: 'Events',
+      title: 'Actions',
       path: '#',
       icon: <RiIcons.RiArrowLeftRightLine />,
       iconClosed: <RiIcons.RiArrowDownSFill />,
@@ -110,16 +110,16 @@ export const SidebarData = [
   
       subNav: [
         {
-          title: 'Generate Event',
-          fullTitle: 'Events > Generate Event',
-          path: '/events/general',
+          title: 'Generate Action',
+          fullTitle: 'Actions > Generate Event',
+          path: '/action/general',
           icon: <AiIcons.AiFillSetting />,
           cName: 'sub-nav'
         },
         {
           title: 'Lorem Ipsum',
-          fullTitle: 'Events > Lorem Ipsum',
-          path: '/events/lorem-ipsum',
+          fullTitle: 'Actions > Lorem Ipsum',
+          path: '/action/lorem-ipsum',
           icon: <IoIcons.IoIosPaper />
         }
       ]
