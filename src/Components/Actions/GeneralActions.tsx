@@ -16,7 +16,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import NumericInput from 'material-ui-numeric-input';
-import { LocalStorage } from '../../LocalStorage/local_storage';
+import { LocalStorage } from '../../LocalStorage/LocalStorage';
 
 export enum ActionType {
   ChangeCamera,

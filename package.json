@@ -62,6 +62,7 @@
     "publish": "electron-forge publish",
     "build": "yarn react-build && npm run electron-build",
     "test": "react-scripts test",
+    "test-coverage": "react-scripts test --coverage",
     "compile": "electron-webpack",
     "dist:dir": "yarn dist --dir -c.compression=store -c.mac.identity=null",
     "eject": "react-scripts eject",

@@ -10,8 +10,7 @@ export class LocalStorage {
             localStorage.setItem('__localstorage_support_test__', '');
             localStorage.getItem('__localstorage_support_test__');
             localStorage.removeItem('__localstorage_support_test__');
-        }
-        catch (e) {
+        } catch(e) {
             // If exception is thrown, then there is problem in local storage support.
             console.warn('LocalStorage Not supported for this browser.');
             return false;
@@ -47,7 +46,7 @@ export class LocalStorage {
      */
     public static getItem(key: string): string | null {
         // Check if the value for the key exists in the storage.
-        if (localStorage.getItem(key) === undefined || localStorage.getItem(key) === null) {
+        if (localStorage.getItem(key) === null) {
             return null;
         }
 
@@ -62,17 +61,16 @@ export class LocalStorage {
      * @returns Object of type T against the given key.
      */
     public static getItemObject(key: string): any | null {
-        // Check if the value for given key is null.
-        if (this.getItem(key) === null) {
-            return null;
-        }
-
         // Parse and return the JSON object.
         const value = this.getItem(key)
         if (value === null) {
             return null
         }
-        return JSON.parse(value) as any;
+        try {
+            return JSON.parse(value) as any;
+        } catch(e) {
+            return null;
+        }
     };
 
     public static removeItem(key: string): void {
