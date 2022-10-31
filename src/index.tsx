@@ -8,9 +8,7 @@ import * as serviceWorker from './serviceWorker'
 import App from './Components/App/App'
 
 ReactDOM.render(
-	<React.StrictMode>
-		<App />
-	</React.StrictMode>,
+	<App />,
 	document.getElementById('root')
 )
 
