@@ -11,11 +11,11 @@ export const Home = () => {
       <>
         <h1> Home</h1>
         <Link className="m-2" to="/reports">Reports</Link>
-		<Link className="m-2" to="/products">Products</Link>
+		<Link className="m-2" to="/action/general">Generate Actions</Link>
 		<Link className="m-2" to="/audio/mics-level">Mics Level</Link>
 		<Link className="m-2" to="/audio/word-detection">Word Detection</Link>
-		<Link className="m-2" to="/action/general">Generate Actions</Link>
-		<Link className="m-2" to="/audio/Scenes">Scenes</Link>
+		<Link className="m-2" to="/video/scenes">Scenes</Link>
+		<Link className="m-2" to="/video/subtitles">Subtitles</Link>
 
       </>
     );

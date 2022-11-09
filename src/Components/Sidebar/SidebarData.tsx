@@ -20,9 +20,9 @@ export const SidebarData = [
   
       subNav: [
         {
-          title: 'General',
-          fullTitle: 'Audio > General',
-          path: '/audio/general',
+          title: 'Word Detection',
+          fullTitle: 'Audio > Word Detection',
+          path: '/audio/word-detection',
           icon: <AiIcons.AiFillSetting />,
           cName: 'sub-nav'
         },
@@ -50,53 +50,23 @@ export const SidebarData = [
   
       subNav: [
         {
-          title: 'General',
-          fullTitle: 'Video > General',
-          path: '/video/general',
+          title: 'Scenes',
+          fullTitle: 'Video > Scenes',
+          path: '/video/scenes',
           icon: <AiIcons.AiFillSetting />,
           cName: 'sub-nav'
         },
         {
-          title: 'Video Level',
-          fullTitle: 'Video > Video Level',
-          path: '/video/mic-level',
-          icon: <MdIcons.MdSwitchCamera />,
+          title: 'Subtitles',
+          fullTitle: 'Video > Subtitles',
+          path: '/video/subtitles',
+          icon: <AiIcons.AiFillSetting />,
           cName: 'sub-nav'
         },
         {
           title: 'Lorem Ipsum',
           fullTitle: 'Video > Lorem Ipsum',
           path: '/video/lorem-ipsum',
-          icon: <IoIcons.IoIosPaper />
-        }
-      ]
-    },
-    {
-      title: 'Scenes',
-      path: '#',
-      icon: <MdIcons.MdOutlineCamera />,
-      iconClosed: <RiIcons.RiArrowDownSFill />,
-      iconOpened: <RiIcons.RiArrowUpSFill />,
-  
-      subNav: [
-        {
-          title: 'General',
-          fullTitle: 'Scenes > General',
-          path: '/scenes/general',
-          icon: <AiIcons.AiFillSetting />,
-          cName: 'sub-nav'
-        },
-        {
-          title: 'Scenes Level',
-          fullTitle: 'Scenes > Scenes Level',
-          path: '/scenes/mic-level',
-          icon: <IoIcons.IoMdPeople />,
-          cName: 'sub-nav'
-        },
-        {
-          title: 'Lorem Ipsum',
-          fullTitle: 'Scenes > Lorem Ipsum',
-          path: '/scenes/lorem-ipsum',
           icon: <IoIcons.IoIosPaper />
         }
       ]

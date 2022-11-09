@@ -1,6 +1,6 @@
 import React from 'react'
 import { render, unmountComponentAtNode } from "react-dom";
-import { Product } from '../Product/Product';
+import { Product } from '../Subtitles/Subtitles';
 import { act } from "react-dom/test-utils";
 
 let container: any = null;
