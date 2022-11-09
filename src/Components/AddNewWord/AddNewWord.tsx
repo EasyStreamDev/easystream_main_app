@@ -46,12 +46,12 @@ export const AddNewWord = (props: any) => {
   const handleClose = () => setOpen(false);
 
   const save = () => {
-    if (props.newEvent.keywords.length != 0) {
+    if (props.newEvent.keywords.length !== 0 && props.newEvent.source && props.newEvent.source.name) {
       props.addNewEvent(props.newEvent);
+      handleClose();
     } else {
-      props.setnewEvent({ id: props.newEvent, keywords: [], sources: [] });
+      alert("Please insert at least one keyword and one source.")
     }
-    handleClose();
   };
 
   const closeWithoutSave = () => {
@@ -60,7 +60,7 @@ export const AddNewWord = (props: any) => {
   };
 
   const handleChange = (e: any) => {
-    if (e.key === "Enter" && e.currentTarget.value != "") {
+    if (e.key === "Enter" && e.currentTarget.value !== "") {
       if (props.newEvent.keywords.length >= 10) {
         e.currentTarget.value = ""
         alert("You cannot have more than 10 keywords");
@@ -82,13 +82,9 @@ export const AddNewWord = (props: any) => {
 
   const addSource = (event: SelectChangeEvent) => {
     let cpy = {...props.newEvent};
-
-    if (props.newEvent.sources.indexOf(event.target.value as string) !== -1) {
-      alert("This source already exists!");
-    } else {
-      cpy.sources.push(event.target.value as string);
-      setsources(cpy);
-    }
+  
+    cpy.source = props.sources.find((elem: any) => elem.name === event.target.value)
+    props.setnewEvent(cpy);
   };
 
   const deleteKeyWord = (i: number) => {
@@ -98,16 +94,7 @@ export const AddNewWord = (props: any) => {
       cpy.keywords.splice(i, 1);
     }
     props.setnewEvent(cpy);
-  };
-
-  const deleteSource = (i: number) => {
-    let cpy = {...props.newEvent};
-
-    if (i > -1) {
-      cpy.sources.splice(i, 1);
-    }
-    props.setnewEvent(cpy);
-  };
+  }
 
   return (
     <>
@@ -127,7 +114,6 @@ export const AddNewWord = (props: any) => {
         handleChange={handleChange}
         addSource={addSource}
         deleteKeyWord={deleteKeyWord}
-        deleteSource={deleteSource}
 
         sources={props.sources}
         newEvent={props.newEvent}

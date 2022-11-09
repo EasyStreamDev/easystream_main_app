@@ -8,11 +8,11 @@ import {
 	Link
 } from "react-router-dom";
 import { Home } from '../Home/Home'
-import { Product } from '../Product/Product'
+import { Subtitles } from '../Subtitles/Subtitles'
 import { Report } from '../Report/Report'
 import { MicsLevel } from '../MicsLevel/MicsLevel';
 import { WordDetection } from '../WordDetection/WordDetection';
-import { GeneralEvent } from '../Events/GeneralEvent';
+import { GeneralActions } from '../Actions/GeneralActions';
 import { AllMics, resultFormat } from '../../Socket/interfaces';
 import { Scenes } from '../Scenes/Scenes';
 const ipcRenderer = window.require('electron').ipcRenderer
@@ -70,11 +70,11 @@ export default function App() {
 					<Routes>
 						<Route path='/' element={<Home/>}/>
 						<Route path='/reports' element={<Report/>} />
-						<Route path='/products' element={<Product/>} />
 						<Route path='/audio/mics-level' element={<MicsLevel/>} />
 						<Route path='/audio/word-detection' element={<WordDetection/>} />
-						<Route path='/events/general' element={<GeneralEvent/>} />
-						<Route path='/audio/Scenes' element={<Scenes/>} />
+						<Route path='/video/scenes' element={<Scenes/>} />
+						<Route path='/video/subtitles' element={<Subtitles/>} />
+						<Route path='/action/general' element={<GeneralActions/>} />
 					</Routes>
 				</div>
 			</Router>

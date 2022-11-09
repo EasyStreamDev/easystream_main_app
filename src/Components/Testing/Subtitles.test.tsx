@@ -1,6 +1,6 @@
 import React from 'react'
 import { render, unmountComponentAtNode } from "react-dom";
-import { Product } from '../Product/Product';
+import { Subtitles } from '../Subtitles/Subtitles';
 import { act } from "react-dom/test-utils";
 
 let container: any = null;
@@ -17,9 +17,8 @@ afterEach(() => {
   container = null;
 });
 
-it("Testing Product", () => {
+it("Testing Subtitles", () => {
 	act(() => {
-		render(<Product />, container);
+		render(<Subtitles />, container);
 	});
-	expect(container.textContent).toBe(" Product");
 });

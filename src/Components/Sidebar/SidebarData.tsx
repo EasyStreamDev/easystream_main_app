@@ -20,9 +20,9 @@ export const SidebarData = [
   
       subNav: [
         {
-          title: 'General',
-          fullTitle: 'Audio > General',
-          path: '/audio/general',
+          title: 'Word Detection',
+          fullTitle: 'Audio > Word Detection',
+          path: '/audio/word-detection',
           icon: <AiIcons.AiFillSetting />,
           cName: 'sub-nav'
         },
@@ -50,17 +50,17 @@ export const SidebarData = [
   
       subNav: [
         {
-          title: 'General',
-          fullTitle: 'Video > General',
-          path: '/video/general',
+          title: 'Scenes',
+          fullTitle: 'Video > Scenes',
+          path: '/video/scenes',
           icon: <AiIcons.AiFillSetting />,
           cName: 'sub-nav'
         },
         {
-          title: 'Video Level',
-          fullTitle: 'Video > Video Level',
-          path: '/video/mic-level',
-          icon: <MdIcons.MdSwitchCamera />,
+          title: 'Subtitles',
+          fullTitle: 'Video > Subtitles',
+          path: '/video/subtitles',
+          icon: <AiIcons.AiFillSetting />,
           cName: 'sub-nav'
         },
         {
@@ -72,37 +72,7 @@ export const SidebarData = [
       ]
     },
     {
-      title: 'Scenes',
-      path: '#',
-      icon: <MdIcons.MdOutlineCamera />,
-      iconClosed: <RiIcons.RiArrowDownSFill />,
-      iconOpened: <RiIcons.RiArrowUpSFill />,
-  
-      subNav: [
-        {
-          title: 'General',
-          fullTitle: 'Scenes > General',
-          path: '/scenes/general',
-          icon: <AiIcons.AiFillSetting />,
-          cName: 'sub-nav'
-        },
-        {
-          title: 'Scenes Level',
-          fullTitle: 'Scenes > Scenes Level',
-          path: '/scenes/mic-level',
-          icon: <IoIcons.IoMdPeople />,
-          cName: 'sub-nav'
-        },
-        {
-          title: 'Lorem Ipsum',
-          fullTitle: 'Scenes > Lorem Ipsum',
-          path: '/scenes/lorem-ipsum',
-          icon: <IoIcons.IoIosPaper />
-        }
-      ]
-    },
-    {
-      title: 'Events',
+      title: 'Actions',
       path: '#',
       icon: <RiIcons.RiArrowLeftRightLine />,
       iconClosed: <RiIcons.RiArrowDownSFill />,
@@ -110,16 +80,16 @@ export const SidebarData = [
   
       subNav: [
         {
-          title: 'Generate Event',
-          fullTitle: 'Events > Generate Event',
-          path: '/events/general',
+          title: 'Generate Action',
+          fullTitle: 'Actions > Generate Event',
+          path: '/action/general',
           icon: <AiIcons.AiFillSetting />,
           cName: 'sub-nav'
         },
         {
           title: 'Lorem Ipsum',
-          fullTitle: 'Events > Lorem Ipsum',
-          path: '/events/lorem-ipsum',
+          fullTitle: 'Actions > Lorem Ipsum',
+          path: '/action/lorem-ipsum',
           icon: <IoIcons.IoIosPaper />
         }
       ]

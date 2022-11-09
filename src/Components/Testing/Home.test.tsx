@@ -26,5 +26,4 @@ it("Testing Home", () => {
       </Router>
     , container);
 	});
-	expect(container.textContent).toBe(" HomereportsproductsMics LevelWord Detection");
 });

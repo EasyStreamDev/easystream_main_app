@@ -11,11 +11,11 @@ import CSS from "csstype";
 import { SxProps } from '@mui/system';
 import { BorderColorRounded } from '@material-ui/icons';
 // import { makeStyles } from "@mui/styles";
-import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import { MuiThemeProvider, createTheme } from '@material-ui/core/styles';
 import Select from "@material-ui/core/Select";
 import { makeStyles } from "@material-ui/core/styles";
 
-const themeUnFocus = createMuiTheme({
+const themeUnFocus = createTheme({
   overrides: {
     MuiSelect: {
       select: {
@@ -95,7 +95,6 @@ export const MyModal = (props: any) => {
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
     >
-      <MuiThemeProvider theme={themeUnFocus}>
         <Box sx={style.Box}>
           <input
             style={{
@@ -110,7 +109,7 @@ export const MyModal = (props: any) => {
               marginBottom: "2vh",
               width: "100%",
             }}
-            placeholder="type a key word.."
+            placeholder="Type a keyword then press Enter"
             color="#f56f28"
             name="input-box"
             type="text"
@@ -122,6 +121,7 @@ export const MyModal = (props: any) => {
             return (
               <Box
                 className="typography-item"
+                key={index}
                 sx={{ color: "white", columns: 2, cursor: "pointer" }}
                 onClick={() => {
                   props.deleteKeyWord(index);
@@ -164,45 +164,54 @@ export const MyModal = (props: any) => {
             }}
           />
 
-          <FormControl fullWidth sx={{ pb: "1vh", borderColor: "white" }}>
-            <InputLabel
-              id="demo-simple-select-label"
-              className={classes.selectLabel}>
-              sources
-            </InputLabel>
-            <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              className={classes.select}
-              inputProps={{
-                classes: {
-                  icon: classes.icon,
-                  root: classes.root,
-                },
-              }}
-              value={props.sources}
-              label="sources"
-              onChange={props.addSource}>
-              {props.sources.map((source: string, index: number) => (
-                <MenuItem value={source} key={index}>
-                  {source}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-          {props.newEvent.sources.map((item: string, index: number) => {
-            return (
+          {
+            props.sources.length === 0 ? (
+              <>
+                <h4>No action found.</h4>
+                <h5>You can create action in "Generate Action".</h5>
+              </>
+            ) : (
+              <FormControl fullWidth sx={{ pb: "1vh", borderColor: "white" }}>
+                <InputLabel
+                  id="demo-simple-select-label"
+                  className={classes.selectLabel}>
+                  sources
+                </InputLabel>
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  inputProps={{
+                    classes: {
+                      icon: classes.icon,
+                      root: classes.root,
+                    },
+                  }}
+                  value={props.sources}
+                  label="sources"
+                  onChange={props.addSource}>
+                  {
+                    props.sources.map((source: any, index: number) => (
+                      <MenuItem value={source.name} key={index}>
+                        {source.name}
+                      </MenuItem>
+                    ))
+                  }
+                </Select>
+              </FormControl>
+            )
+          }
+          {
+            props.newEvent.source && props.newEvent.source.name ? (
               <Box
+                key={props.newEvent.source.name}
                 className="typography-item"
                 sx={{ color: "white", columns: 2, cursor: "pointer" }}
-                onClick={() => {
-                  props.deleteSource(index);
-                }}>
+                >
                 <Typography
                   id="modal-modal-title"
                   variant="h6"
                   component="h2"
-                  key={index}
+                  key={props.newEvent.source.name}
                   sx={{
                     color: "white",
                     display: "flex",
@@ -215,14 +224,15 @@ export const MyModal = (props: any) => {
                     mb: "3vh",
                     paddingLeft: "1vw",
                   }}>
-                  {item}
+                  {props.newEvent.source.name}
                 </Typography>
-                <i style={style.Icon}>
-                  <BsTrash />
-                </i>
               </Box>
-            );
-          })}
+            ) : (
+              <>
+                <h4>Source not selected.</h4>
+              </>
+            )
+          }
           <Box sx={{ width: "100%", display: "flex", alignItems: "center" }}>
             <Button
               onClick={() => props.save()}
@@ -231,7 +241,6 @@ export const MyModal = (props: any) => {
             </Button>
           </Box>
         </Box>
-      </MuiThemeProvider>
     </Modal>
   );
 };
