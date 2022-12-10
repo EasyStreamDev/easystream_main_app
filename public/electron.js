@@ -83,7 +83,7 @@ ipcMain.on("getAllMics", (event, arg) => {
   }
 });
 
-ipcMain.on("setVolumeToMic", (event, arg) => {
+ipcMain.on("setMicLevel", (event, arg) => {
   if (isDev) {
     let res = {
       message: "OK",
