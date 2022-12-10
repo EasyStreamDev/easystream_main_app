@@ -54,7 +54,6 @@ class TCPConnection {
     getAllMics() {
         let obj = {
             command: 'getAllMics',
-            args: {}
         };
         console.log('getAllMics -> ', JSON.stringify(obj));
         return new Promise((resolve, reject) => {
@@ -75,7 +74,7 @@ class TCPConnection {
     setVolumeToMic(args) {
         let obj = {
             command: 'setVolumeToMic',
-            args: {
+            params: {
                 micId: args.micId,
                 value: args.value
             }
@@ -95,61 +94,19 @@ class TCPConnection {
         });
     }
 
-    getMic(micId) {
+    setAutoAudioLeveler(args) {
         let obj = {
-            command: 'getMic',
-            args: {
-                micId
-            }
+            command: 'setAutoAudioLeveler',
+            params: args
         };
+        console.log('setAutoAudioLeveler -> ', JSON.stringify(obj));
         return new Promise((resolve, reject) => {
             this.sendData(obj, (data, error) => {
                 if (data) {
-                    console.log('getMic resolve', data);
+                    console.log('setAutoAudioLeveler resolve', data);
                     resolve(data);
                 } else {
-                    console.log('getMic error', error);
-                    this.socket.end();
-                    reject(error);
-                }
-            });
-        });
-    }
-
-    getAllEvents() {
-        let obj = {
-            command: 'getAllEvents',
-            args: {}
-        };
-        return new Promise((resolve, reject) => {
-            this.sendData(obj, (data, error) => {
-                if (data) {
-                    console.log('getAllEvents resolve', data);
-                    resolve(data);
-                } else {
-                    console.log('getAllEvents error', error);
-                    this.socket.end();
-                    reject(error);
-                }
-            });
-        });
-    }
-
-    getEvent(eventId) {
-        let obj = {
-            command: 'getEvent',
-            args: {
-                eventId
-            }
-        };
-        return new Promise((resolve, reject) => {
-            console.log('getEvent emit');
-            this.sendData(obj, (data, error) => {
-                if (data) {
-                    console.log('getEvent resolve', data);
-                    resolve(data);
-                } else {
-                    console.log('getEvent error', error);
+                    console.log('setAutoAudioLeveler error', error);
                     this.socket.end();
                     reject(error);
                 }

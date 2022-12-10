@@ -1,17 +1,17 @@
 export interface resultFormat {
+	statusCode: number,
 	message: string,
-	statusCode: number
 };
 
 export interface Mic {
-	micName: string,
-	micKind: string,
-	unversionedmicKind: string,
-	value: number,
+	name: string,
+	level: number,
 	isActive: boolean,
 };
 
 export interface AllMics {
+	statusCode: number,
+	message: string,
 	length: number,
 	mics: [Mic],
 };

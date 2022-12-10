@@ -96,9 +96,6 @@ export default function CustomizedSlider(props: any) {
       </Box>
       <Box sx={{ display: "flex", flexDirection: "row", p: 1, m: 1 }}>
         <MicroSlider
-          onChange={(_, val: any) => {
-            props.sendData(val);
-          }}
           onChangeCommitted={(_, val: any) => {
             props.sendData(val);
           }}

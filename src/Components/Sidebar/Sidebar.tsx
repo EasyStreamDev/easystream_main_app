@@ -14,7 +14,6 @@ const PathView = (props: any) => {
 
   const parseLocation = (path: string) => {
     const res = SidebarData.find(item => item.subNav && item.subNav.find(item => item.path === path)?.fullTitle); // Get the item which has the full title of the current page
-    console.log(res);
     if (res?.subNav) {
       return res.subNav.find(item => item.path === path)?.fullTitle; // Get the full title of the current page
     } else {
