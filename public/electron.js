@@ -99,6 +99,22 @@ ipcMain.on("setMicLevel", (event, arg) => {
   }
 });
 
+ipcMain.on("setSubtitles", (event, arg) => {
+  if (isDev) {
+    let res = {
+      message: "OK",
+      statusCode: 200,
+    };
+    event.returnValue = res;
+    return res;
+  } else {
+    return tcpConn.setSubtitles(arg).then((res) => {
+      console.log("setSubtitles : " + res);
+      event.returnValue = res;
+    });
+  }
+});
+
 ipcMain.on("setAutoAudioLeveler", (event, arg) => {
   if (isDev) {
     let res = {

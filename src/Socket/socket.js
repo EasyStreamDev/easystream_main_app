@@ -93,6 +93,26 @@ class TCPConnection {
         });
     }
 
+    setSubtitles(args) {
+        let obj = {
+            command: 'setSubtitles',
+            params: args
+        };
+        console.log('setSubtitles -> ', JSON.stringify(obj));
+        return new Promise((resolve, reject) => {
+            this.sendData(obj, (data, error) => {
+                if (data) {
+                    console.log('setSubtitles resolve', data);
+                    resolve(data);
+                } else {
+                    console.log('setSubtitles error', error);
+                    this.socket.end();
+                    reject(error);
+                }
+            });
+        });
+    }
+
     setAutoAudioLeveler(args) {
         let obj = {
             command: 'setAutoAudioLeveler',
