@@ -9,6 +9,8 @@ export const MicsLevel = () => {
   const [exampleMicsArray, setExampleMicsArray] = React.useState<Mic[]>([]);
   const [load, setload] = React.useState(true);
   const [point, setpoint] = React.useState(".");
+
+  let timeoutCommit: NodeJS.Timeout | undefined = undefined;
   
   const getAllMics = (): Promise<AllMics> => {
 		return new Promise(async (resolve, reject) => {
@@ -18,9 +20,9 @@ export const MicsLevel = () => {
 	}
 
   // setVolumeToMic('Audio Input Capture (PulseAudio)', 100)
-  const setVolumeToMic = (mic: Mic): Promise<resultFormat> => {
+  const setVolumeToMic = (mics: Mic[]): Promise<resultFormat> => {
 		return new Promise(async (resolve, reject) => {
-			const result: resultFormat = await ipcRenderer.sendSync('setMicLevel', mic);
+			const result: resultFormat = await ipcRenderer.sendSync('setMicLevel', mics);
 			console.log('setVolumeToMic invoke', result);
 			resolve(result)
 		});
@@ -33,10 +35,10 @@ export const MicsLevel = () => {
     setExampleMicsArray(copy);
 
     // Update to server
-    setVolumeToMic(exampleMicsArray[index])
-    .then(res => {
-      console.log("setVolumeToMic", res)
-    });
+    clearTimeout(timeoutCommit)
+    timeoutCommit = setTimeout(() => {
+      setVolumeToMic(exampleMicsArray)
+    }, 3000);
   };
 
 
@@ -46,10 +48,10 @@ export const MicsLevel = () => {
     setExampleMicsArray(copy);
 
     // Update to server
-    setVolumeToMic(exampleMicsArray[index])
-    .then(res => {
-      console.log("setVolumeToMic", res)
-    });
+    clearTimeout(timeoutCommit)
+    timeoutCommit = setTimeout(() => {
+      setVolumeToMic(exampleMicsArray)
+    }, 3000);
   };
 
   useEffect(() => {
