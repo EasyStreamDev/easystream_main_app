@@ -61,20 +61,28 @@ export default function BoxEvent(props: any) {
 
   return (
     <>
-      <Box style={boxStyles}>
-        <span key="if-you-say" style={TextStylesTitle}>If you say : </span>
-        {props.keyObj.keywords.map((item: any, index: number) => {
-          return <span key={item} style={TextStyles}>[{item}] </span>
-        })}
-        <BsTrash
-          style={IconStyles}
-          onClick={() => { deleteEvent(props.i) }}
-        />
-        <br></br>
-        <span key="the-actions" style={TextStylesTitle}>The actions : </span>
-          <span key={props.keyObj.source.name} style={TextStyles}>[{props.keyObj.source.name}]</span>
-        <span style={TextStylesTitle}> will be done.</span>
-      </Box>
+     {
+        props.keyObj.action.type === "WORD_DETECT" ?
+
+          <Box style={boxStyles}>
+            <span key="if-you-say" style={TextStylesTitle}>If you say : </span>
+            {
+                props.keyObj.action.params.words.map((item: any, index: number) => {
+                  return <span key={item} style={TextStyles}>[{item}] </span>
+                })
+            }
+            <BsTrash
+              style={IconStyles}
+              onClick={() => { deleteEvent(props.i) }}
+            />
+            <br></br>
+            <span key="the-actions" style={TextStylesTitle}>The actions : </span>
+              <span key={props.keyObj.actReactId } style={TextStyles}>[{props.keyObj.action?.name ? props.keyObj.action?.name : "NAME ERROR" }]</span>
+            <span style={TextStylesTitle}> will be done.</span>
+          </Box>
+
+        : <></>
+      }
     </>
   );
 }

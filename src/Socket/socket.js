@@ -71,6 +71,26 @@ class TCPConnection {
         });
     }
 
+    getActReactCouples() {
+        let obj = {
+            command: 'getActReactCouples',
+        };
+        console.log('getActReactCouples -> ', JSON.stringify(obj));
+        return new Promise((resolve, reject) => {
+            this.sendData(obj, (data, error) => {
+                if (data) {
+                    console.log('getActReactCouples resolve', data);
+                    resolve(data);
+                } else {
+                    console.log('getActReactCouples error', error);
+                    this.socket.end();
+                    ipcRenderer.send('close-me')
+                    reject(error);
+                }
+            });
+        });
+    }
+
     setVolumeToMic(args) {
         let obj = {
             command: 'setMicLevel',
@@ -106,6 +126,26 @@ class TCPConnection {
                     resolve(data);
                 } else {
                     console.log('setSubtitles error', error);
+                    this.socket.end();
+                    reject(error);
+                }
+            });
+        });
+    }
+
+    setActionReaction(args) {
+        let obj = {
+            command: 'setActionReaction',
+            params: args
+        };
+        console.log('setActionReaction -> ', JSON.stringify(obj));
+        return new Promise((resolve, reject) => {
+            this.sendData(obj, (data, error) => {
+                if (data) {
+                    console.log('setActionReaction resolve', data);
+                    resolve(data);
+                } else {
+                    console.log('setActionReaction error', error);
                     this.socket.end();
                     reject(error);
                 }

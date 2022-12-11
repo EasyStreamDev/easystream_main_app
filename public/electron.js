@@ -83,6 +83,43 @@ ipcMain.on("getAllMics", (event, arg) => {
   }
 });
 
+ipcMain.on("getActReactCouples", (event, arg) => {
+  if (isDev) {
+    let res = {
+      statusCode: 200,
+      message: "OK",
+      length: 1,
+      actReacts: [
+        {
+          actReactId: 1,
+          isActive: true,
+          action: {
+              actionId: 1,
+              type: "WORD_DETECT",
+              params: {
+                words: ['bouloubouga']
+              }
+          },
+          reaction: {
+              reactionId: 1,
+              type: "CAMERA_SWITCH",
+              params: {
+                "video-source": "camera_1"
+              }
+          }
+        },
+      ],
+    };
+    event.returnValue = res;
+    return res;
+  } else {
+    return tcpConn.getActReactCouples().then((res) => {
+      console.log("getActReactCouples : " + res);
+      event.returnValue = res;
+    });
+  }
+});
+
 ipcMain.on("setMicLevel", (event, arg) => {
   if (isDev) {
     let res = {
@@ -110,6 +147,27 @@ ipcMain.on("setSubtitles", (event, arg) => {
   } else {
     return tcpConn.setSubtitles(arg).then((res) => {
       console.log("setSubtitles : " + res);
+      event.returnValue = res;
+    });
+  }
+});
+
+ipcMain.on("setActionReaction", (event, arg) => {
+  if (isDev) {
+    let res = {
+      message: "OK",
+      statusCode: 200,
+      data: {
+        actionId: 1,
+        reactionId: 1,
+        actReactId: 1,
+      }
+    };
+    event.returnValue = res;
+    return res;
+  } else {
+    return tcpConn.setActionReaction(arg).then((res) => {
+      console.log("setActionReaction : " + res);
       event.returnValue = res;
     });
   }

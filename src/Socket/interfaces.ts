@@ -3,6 +3,42 @@ export interface resultFormat {
 	message: string,
 };
 
+export interface actionReactionFormat {
+	message: string,
+    statusCode: number,
+    data: {
+      actionId: number,
+      reactionId: number,
+      actReactId: number,
+    }
+}
+
+interface actionInterface {
+	actionId: number,
+	type: string,
+	params: any
+}
+
+interface reactionInterface {
+	reactionId: number,
+	type: string,
+	params?: any
+}
+
+export interface actReactInterface {
+	actReactId: number,
+	isActive: boolean,
+	action: actionInterface
+	reaction: reactionInterface
+}
+
+export interface getActReactCouplesFormat {
+	statusCode: number,
+    message: string,
+    length: number,
+    actReacts: actReactInterface[]
+}
+
 export interface Mic {
 	name: string,
 	level: number,
