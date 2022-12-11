@@ -19,66 +19,65 @@ import NumericInput from 'material-ui-numeric-input';
 import { LocalStorage } from '../../LocalStorage/LocalStorage';
 
 export enum ActionType {
-  ChangeCamera,
-  ChangeScene,
-  StartLive,
-  StopLive,
-  ActivateSoundboard
+  CAMERA_SWITCH = "CAMERA_SWITCH",
+  SCENE_SWITCH = "SCENE_SWITCH",
+  START_LIVE = "START_LIVE",
+  STOP_LIVE = "STOP_LIVE",
+  TOGGLE_AUDIO_COMPRESSOR = "TOGGLE_AUDIO_COMPRESSOR"
 }
 
 export const GeneralActions = () => {
 
-  const keysActionType = Object.keys(ActionType).filter(k => typeof ActionType[k as any] === "number");
-  const valuesActionType = keysActionType.map(k => ActionType[k as any]);
+    const keysActionType = Object.keys(ActionType);
 
-  const [open, setOpen] = React.useState(false);
-  const [newActionName, setNewActionName] = React.useState("");
-  const [newActionSelected, setNewActionSelected] = React.useState(0);
-  const [newActionParam, setNewActionParam] = React.useState(0)
+    const [open, setOpen] = React.useState(false);
+    const [newActionName, setNewActionName] = React.useState("");
+    const [newActionSelected, setNewActionSelected] = React.useState("CAMERA_SWITCH");
+    const [newActionParam, setNewActionParam] = React.useState(0)
 
-  const handleOnChangeSelect = (action: SelectChangeEvent<unknown>) => {
-    const value = action.target.value as ActionType;
-    setNewActionSelected(value);
-  };
+    const handleOnChangeSelect = (action: SelectChangeEvent<unknown>) => {
+      const value = action.target.value as ActionType;
+      setNewActionSelected(value);
+    };
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
+    const handleClickOpen = () => {
+      setOpen(true);
+    };
 
-  const [ actionsList, setActionsList ] = React.useState(LocalStorage.getItemObject("actionsList") || [])
+    const [ actionsList, setActionsList ] = React.useState(LocalStorage.getItemObject("actionsList") || [])
 
-  const handleSave = () => {
-    console.log("newActionName", newActionName);
-    console.log("newActionSelected", newActionSelected);
-    console.log("newActionParam", newActionParam);
-    if (newActionName !== "") {
-      let newElem: any = {
-        id: actionsList.length > 0 ? Math.max(...actionsList.map((o: any) => o.id)) + 1 : 1,
-        name: newActionName,
-        action: newActionSelected as ActionType,
+    const handleSave = () => {
+      console.log("newActionName", newActionName);
+      console.log("newActionSelected", newActionSelected);
+      console.log("newActionParam", newActionParam);
+      if (newActionName !== "") {
+        let newElem: any = {
+          id: actionsList.length > 0 ? Math.max(...actionsList.map((o: any) => o.id)) + 1 : 1,
+          name: newActionName,
+          action: newActionSelected as ActionType,
+        }
+        if (newActionParam) {
+          newElem.param_value = newActionParam;
+        }
+
+        const newList = actionsList.concat([newElem]);
+
+        setActionsList(newList);
+        LocalStorage.setItemObject("actionsList", newList)
+        alert("Action saved");
+      } else {
+        // Put alert
+        alert("Missing parameters");
       }
-      if (newActionParam) {
-        newElem.param_value = newActionParam;
-      }
+      setNewActionName("");
+      setNewActionSelected("CAMERA_SWITCH");
+      setNewActionParam(0);
+      setOpen(false);
+    };
 
-      const newList = actionsList.concat([newElem]);
-
-      setActionsList(newList);
-      LocalStorage.setItemObject("actionsList", newList)
-      alert("Action saved");
-    } else {
-      // Put alert
-      alert("Missing parameters");
+    const handleCancel = () => {
+      setOpen(false);
     }
-    setNewActionName("");
-    setNewActionSelected(0);
-    setNewActionParam(0);
-    setOpen(false);
-  };
-
-  const handleCancel = () => {
-    setOpen(false);
-  }
 
 
     function deleteAction(id: number) {
@@ -89,29 +88,29 @@ export const GeneralActions = () => {
     }
 
     function getAction(actionEnum: any) {
-      if (actionEnum === ActionType.ActivateSoundboard)
-        return "Activate Soundboard";
-      if (actionEnum === ActionType.ChangeCamera)
+      if (actionEnum === ActionType.TOGGLE_AUDIO_COMPRESSOR)
+        return "Toggle the audio compressor";
+      if (actionEnum === ActionType.CAMERA_SWITCH)
         return "Change the camera"
-      if (actionEnum === ActionType.ChangeScene)
+      if (actionEnum === ActionType.SCENE_SWITCH)
         return "Change the scene"
-      if (actionEnum === ActionType.StartLive)
+      if (actionEnum === ActionType.START_LIVE)
         return "Start the live"
-      if (actionEnum === ActionType.StopLive)
+      if (actionEnum === ActionType.STOP_LIVE)
         return "Stop the live"
       return ""
     }
 
     function getIcon(actionEnum: ActionType) {
-      if (actionEnum === ActionType.ActivateSoundboard)
+      if (actionEnum === ActionType.TOGGLE_AUDIO_COMPRESSOR)
         return <AiOutlineSound />
-      if (actionEnum === ActionType.ChangeCamera)
+      if (actionEnum === ActionType.CAMERA_SWITCH)
         return <AiOutlineVideoCamera />
-      if (actionEnum === ActionType.ChangeScene)
+      if (actionEnum === ActionType.SCENE_SWITCH)
         return <MdPanoramaHorizontal />
-      if (actionEnum === ActionType.StartLive)
+      if (actionEnum === ActionType.START_LIVE)
         return <AiOutlinePlayCircle />
-      if (actionEnum === ActionType.StopLive)
+      if (actionEnum === ActionType.STOP_LIVE)
         return <AiOutlineStop />
       return <AiOutlineBug />
     }
@@ -188,7 +187,7 @@ export const GeneralActions = () => {
               >
                 {
                   keysActionType.map((k) => {
-                    return (<MenuItem key={ActionType[k as any]} value={ActionType[k as any]}>{getAction(ActionType[k as any])}</MenuItem>)
+                    return (<MenuItem key={k} value={k}>{getAction(k)}</MenuItem>)
                   })
                 }
               </Select>
