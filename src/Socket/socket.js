@@ -173,6 +173,26 @@ class TCPConnection {
         });
     }
 
+    removeActReact(args) {
+        let obj = {
+            command: 'removeActReact',
+            params: args
+        };
+        console.log('removeActReact -> ', JSON.stringify(obj));
+        return new Promise((resolve, reject) => {
+            this.sendData(obj, (data, error) => {
+                if (data) {
+                    console.log('removeActReact resolve', data);
+                    resolve(data);
+                } else {
+                    console.log('removeActReact error', error);
+                    this.socket.end();
+                    reject(error);
+                }
+            });
+        });
+    }
+
 }
 
 // function TCPConnection(host, port) {

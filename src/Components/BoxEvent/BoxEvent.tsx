@@ -76,8 +76,8 @@ export default function BoxEvent(props: any) {
               onClick={() => { deleteEvent(props.i) }}
             />
             <br></br>
-            <span key="the-actions" style={TextStylesTitle}>The actions : </span>
-              <span key={props.keyObj.actReactId } style={TextStyles}>[{props.keyObj.action?.name ? props.keyObj.action?.name : "NAME ERROR" }]</span>
+            <span key="the-actions" style={TextStylesTitle}>The reaction : </span>
+              <span key={props.keyObj.reactionId } style={TextStyles}>[{props.keyObj.reaction?.name ? props.keyObj.reaction?.name : "NAME ERROR" }]</span>
             <span style={TextStylesTitle}> will be done.</span>
           </Box>
 

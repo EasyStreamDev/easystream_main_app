@@ -2,7 +2,7 @@ import React, { Component, useEffect, useState } from "react";
 import { AddNewWord } from "../AddNewWord/AddNewWord";
 import BoxEvent from "../BoxEvent/BoxEvent";
 import { LocalStorage } from '../../LocalStorage/LocalStorage';
-import { getActReactCouplesFormat, actionReactionFormat } from '../../Socket/interfaces';
+import { getActReactCouplesFormat, actionReactionFormat, removeActReactAnswer } from '../../Socket/interfaces';
 const ipcRenderer = window.require('electron').ipcRenderer
 
 export enum ActionType {
@@ -32,6 +32,7 @@ interface action_reaction {
     params?: Object
   },
   reaction: {
+    name: string,
     type: string,
     params?: Object
   }
@@ -92,6 +93,7 @@ export const WordDetection = (props: any) => {
         }
       },
       reaction: {
+        name: event.source.name,
         type: event.source.action,
         params: event.source.params
       }
@@ -108,9 +110,41 @@ export const WordDetection = (props: any) => {
     });
   }
 
+  function findDeletedElement(originalArray: any[], newArray: any[]): any | undefined {
+    const newSet = new Set(newArray);
+    for (const element of originalArray) {
+      if (!newSet.has(element)) {
+        return element;
+      }
+    }
+    return undefined;
+  }
+
+  const removeAndUpdateActReaction = (params: any, eventArr: any) => {
+    return new Promise(async (resolve, reject) => {
+      const result: removeActReactAnswer = await ipcRenderer.sendSync('removeActReact', params)
+      if (result.statusCode === 200) {
+        console.log("Remove ActReaction", result.data.actReactId)
+        setaction_reactionArray(eventArr);
+        LocalStorage.setItemObject("action_reactionArray", eventArr)
+      } else {
+        alert("Error server. Please check connection.")
+      }
+    })
+  }
+
   function updateEventFromBoxEvent(eventArr: any) {
-    setaction_reactionArray(eventArr);
-    LocalStorage.setItemObject("action_reactionArray", eventArr)
+    console.log("Before", action_reactionArray);
+    console.log("After", eventArr);
+
+    const elem = findDeletedElement(action_reactionArray, eventArr)
+    if (elem !== undefined) {
+      console.log("LELEMENT", elem)
+      const actReactId = elem.actReactId;
+      removeAndUpdateActReaction({ actReactId }, eventArr)
+    } else {
+      console.error("Changement undefined.");
+    }
   }
 
   useEffect(() => {

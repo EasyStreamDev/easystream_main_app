@@ -101,6 +101,7 @@ ipcMain.on("getActReactCouples", (event, arg) => {
               }
           },
           reaction: {
+              name: "Changement de caméra sur la caméra 1",
               reactionId: 1,
               type: "CAMERA_SWITCH",
               params: {
@@ -184,6 +185,25 @@ ipcMain.on("setAutoAudioLeveler", (event, arg) => {
   } else {
     return tcpConn.setAutoAudioLeveler(arg).then((res) => {
       console.log("setAutoAudioLeveler : " + res);
+      event.returnValue = res;
+    });
+  }
+});
+
+ipcMain.on("removeActReact", (event, arg) => {
+  if (isDev) {
+    let res = {
+      statusCode: 200,
+      message: "OK",
+      data: {
+        actReactId: 1
+      }
+    };
+    event.returnValue = res;
+    return res;
+  } else {
+    return tcpConn.removeActReact(arg).then((res) => {
+      console.log("removeActReact : " + res);
       event.returnValue = res;
     });
   }

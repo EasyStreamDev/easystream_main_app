@@ -20,9 +20,18 @@ interface actionInterface {
 }
 
 interface reactionInterface {
+	name: string,
 	reactionId: number,
 	type: string,
 	params?: any
+}
+
+export interface removeActReactAnswer {
+	statusCode: number,
+	message: string,
+	data: {
+		actReactId: number
+	}
 }
 
 export interface actReactInterface {
