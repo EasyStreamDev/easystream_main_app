@@ -54,7 +54,6 @@ class TCPConnection {
     getAllMics() {
         let obj = {
             command: 'getAllMics',
-            args: {}
         };
         console.log('getAllMics -> ', JSON.stringify(obj));
         return new Promise((resolve, reject) => {
@@ -72,12 +71,31 @@ class TCPConnection {
         });
     }
 
+    getActReactCouples() {
+        let obj = {
+            command: 'getActReactCouples',
+        };
+        console.log('getActReactCouples -> ', JSON.stringify(obj));
+        return new Promise((resolve, reject) => {
+            this.sendData(obj, (data, error) => {
+                if (data) {
+                    console.log('getActReactCouples resolve', data);
+                    resolve(data);
+                } else {
+                    console.log('getActReactCouples error', error);
+                    this.socket.end();
+                    ipcRenderer.send('close-me')
+                    reject(error);
+                }
+            });
+        });
+    }
+
     setVolumeToMic(args) {
         let obj = {
-            command: 'setVolumeToMic',
-            args: {
-                micId: args.micId,
-                value: args.value
+            command: 'setMicLevel',
+            params: {
+                mics: args
             }
         };
         console.log('setVolumeToMic -> ', JSON.stringify(obj));
@@ -95,20 +113,19 @@ class TCPConnection {
         });
     }
 
-    getMic(micId) {
+    setSubtitles(args) {
         let obj = {
-            command: 'getMic',
-            args: {
-                micId
-            }
+            command: 'setSubtitles',
+            params: args
         };
+        console.log('setSubtitles -> ', JSON.stringify(obj));
         return new Promise((resolve, reject) => {
             this.sendData(obj, (data, error) => {
                 if (data) {
-                    console.log('getMic resolve', data);
+                    console.log('setSubtitles resolve', data);
                     resolve(data);
                 } else {
-                    console.log('getMic error', error);
+                    console.log('setSubtitles error', error);
                     this.socket.end();
                     reject(error);
                 }
@@ -116,18 +133,19 @@ class TCPConnection {
         });
     }
 
-    getAllEvents() {
+    setActionReaction(args) {
         let obj = {
-            command: 'getAllEvents',
-            args: {}
+            command: 'setActionReaction',
+            params: args
         };
+        console.log('setActionReaction -> ', JSON.stringify(obj));
         return new Promise((resolve, reject) => {
             this.sendData(obj, (data, error) => {
                 if (data) {
-                    console.log('getAllEvents resolve', data);
+                    console.log('setActionReaction resolve', data);
                     resolve(data);
                 } else {
-                    console.log('getAllEvents error', error);
+                    console.log('setActionReaction error', error);
                     this.socket.end();
                     reject(error);
                 }
@@ -135,21 +153,39 @@ class TCPConnection {
         });
     }
 
-    getEvent(eventId) {
+    setAutoAudioLeveler(args) {
         let obj = {
-            command: 'getEvent',
-            args: {
-                eventId
-            }
+            command: 'setAutoAudioLeveler',
+            params: args
         };
+        console.log('setAutoAudioLeveler -> ', JSON.stringify(obj));
         return new Promise((resolve, reject) => {
-            console.log('getEvent emit');
             this.sendData(obj, (data, error) => {
                 if (data) {
-                    console.log('getEvent resolve', data);
+                    console.log('setAutoAudioLeveler resolve', data);
                     resolve(data);
                 } else {
-                    console.log('getEvent error', error);
+                    console.log('setAutoAudioLeveler error', error);
+                    this.socket.end();
+                    reject(error);
+                }
+            });
+        });
+    }
+
+    removeActReact(args) {
+        let obj = {
+            command: 'removeActReact',
+            params: args
+        };
+        console.log('removeActReact -> ', JSON.stringify(obj));
+        return new Promise((resolve, reject) => {
+            this.sendData(obj, (data, error) => {
+                if (data) {
+                    console.log('removeActReact resolve', data);
+                    resolve(data);
+                } else {
+                    console.log('removeActReact error', error);
                     this.socket.end();
                     reject(error);
                 }

@@ -10,6 +10,8 @@ import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { languages } from "../Language/LanguageData";
 import Grid from '@mui/material/Grid';
 import { LocalStorage } from "../../LocalStorage/LocalStorage";
+import { resultFormat } from "../../Socket/interfaces";
+const ipcRenderer = window.require('electron').ipcRenderer
 
 export const Subtitles = () => {
 
@@ -44,14 +46,30 @@ export const Subtitles = () => {
   const [subtitlesActivated, setSubtitlesActivated] = React.useState(LocalStorage.getItemObject("subtitlesActivated") || false);
   const [languageSelected, setLanguageSelected] = React.useState(LocalStorage.getItemObject("languageSelected") || "en");
 
+  const updateChangesToServer = (): Promise<resultFormat> => {
+    return new Promise(async (resolve, reject) => {
+      let params = {
+        enable: subtitlesActivated,
+        language: languageSelected
+      }
+			const result: resultFormat = await ipcRenderer.sendSync('setSubtitles', params);
+			console.log('updateChangesToServer invoke', result);
+			resolve(result)
+		});
+  }
+
   const handleToggleChange = (event: SelectChangeEvent) => {
     LocalStorage.setItemObject("subtitlesActivated", !subtitlesActivated)
     setSubtitlesActivated(!subtitlesActivated);
+
+    updateChangesToServer();
   };
 
   const handleSelectChange = (event: any) => {
     LocalStorage.setItemObject("languageSelected", event.target.value)
     setLanguageSelected(event.target.value);
+
+    updateChangesToServer();
   };
 
   return (

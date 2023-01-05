@@ -15,70 +15,77 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import NumericInput from 'material-ui-numeric-input';
 import { LocalStorage } from '../../LocalStorage/LocalStorage';
 
-export enum ActionType {
-  ChangeCamera,
-  ChangeScene,
-  StartLive,
-  StopLive,
-  ActivateSoundboard
+export enum ReactionType {
+  CAMERA_SWITCH = "CAMERA_SWITCH",
+  SCENE_SWITCH = "SCENE_SWITCH",
+  START_LIVE = "START_LIVE",
+  STOP_LIVE = "STOP_LIVE",
+  TOGGLE_AUDIO_COMPRESSOR = "TOGGLE_AUDIO_COMPRESSOR"
 }
 
 export const GeneralActions = () => {
 
-  const keysActionType = Object.keys(ActionType).filter(k => typeof ActionType[k as any] === "number");
-  const valuesActionType = keysActionType.map(k => ActionType[k as any]);
+    const keysReactionType = Object.keys(ReactionType);
 
-  const [open, setOpen] = React.useState(false);
-  const [newActionName, setNewActionName] = React.useState("");
-  const [newActionSelected, setNewActionSelected] = React.useState(0);
-  const [newActionParam, setNewActionParam] = React.useState(0)
+    const [open, setOpen] = React.useState(false);
+    const [newActionName, setNewActionName] = React.useState("");
+    const [newActionSelected, setNewActionSelected] = React.useState("CAMERA_SWITCH");
+    const [newActionParam, setNewActionParam] = React.useState("")
 
-  const handleOnChangeSelect = (action: SelectChangeEvent<unknown>) => {
-    const value = action.target.value as ActionType;
-    setNewActionSelected(value);
-  };
+    const handleOnChangeSelect = (action: SelectChangeEvent<unknown>) => {
+      const value = action.target.value as ReactionType;
+      setNewActionSelected(value);
+    };
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
+    const handleClickOpen = () => {
+      setOpen(true);
+    };
 
-  const [ actionsList, setActionsList ] = React.useState(LocalStorage.getItemObject("actionsList") || [])
+    const [ actionsList, setActionsList ] = React.useState(LocalStorage.getItemObject("actionsList") || [])
 
-  const handleSave = () => {
-    console.log("newActionName", newActionName);
-    console.log("newActionSelected", newActionSelected);
-    console.log("newActionParam", newActionParam);
-    if (newActionName !== "") {
-      let newElem: any = {
-        id: actionsList.length > 0 ? Math.max(...actionsList.map((o: any) => o.id)) + 1 : 1,
-        name: newActionName,
-        action: newActionSelected as ActionType,
+    const handleSave = () => {
+      console.log("newActionName", newActionName);
+      console.log("newActionSelected", newActionSelected);
+      console.log("newActionParam", newActionParam);
+      if (newActionName !== "") {
+        let newElem: any = {
+          id: actionsList.length > 0 ? Math.max(...actionsList.map((o: any) => o.id)) + 1 : 1,
+          name: newActionName,
+          action: newActionSelected as ReactionType,
+        }
+        if (newActionParam) {
+          if (newActionSelected === ReactionType.TOGGLE_AUDIO_COMPRESSOR)
+            newElem.params = { "audio-source": newActionParam };
+          if (newActionSelected === ReactionType.CAMERA_SWITCH)
+            newElem.params = { "video-source": newActionParam };
+          if (newActionSelected === ReactionType.SCENE_SWITCH)
+            newElem.params = { "scene-name": newActionParam };
+          if (newActionSelected === ReactionType.START_LIVE)
+            newElem.params = { "seconds": newActionParam };
+          if (newActionSelected === ReactionType.STOP_LIVE)
+            newElem.params = { "seconds": newActionParam };
+        }
+
+        const newList = actionsList.concat([newElem]);
+
+        setActionsList(newList);
+        LocalStorage.setItemObject("actionsList", newList)
+        alert("Action saved");
+      } else {
+        // Put alert
+        alert("Missing parameters");
       }
-      if (newActionParam) {
-        newElem.param_value = newActionParam;
-      }
+      setNewActionName("");
+      setNewActionSelected("CAMERA_SWITCH");
+      setNewActionParam("");
+      setOpen(false);
+    };
 
-      const newList = actionsList.concat([newElem]);
-
-      setActionsList(newList);
-      LocalStorage.setItemObject("actionsList", newList)
-      alert("Action saved");
-    } else {
-      // Put alert
-      alert("Missing parameters");
+    const handleCancel = () => {
+      setOpen(false);
     }
-    setNewActionName("");
-    setNewActionSelected(0);
-    setNewActionParam(0);
-    setOpen(false);
-  };
-
-  const handleCancel = () => {
-    setOpen(false);
-  }
 
 
     function deleteAction(id: number) {
@@ -89,29 +96,29 @@ export const GeneralActions = () => {
     }
 
     function getAction(actionEnum: any) {
-      if (actionEnum === ActionType.ActivateSoundboard)
-        return "Activate Soundboard";
-      if (actionEnum === ActionType.ChangeCamera)
+      if (actionEnum === ReactionType.TOGGLE_AUDIO_COMPRESSOR)
+        return "Toggle the audio compressor";
+      if (actionEnum === ReactionType.CAMERA_SWITCH)
         return "Change the camera"
-      if (actionEnum === ActionType.ChangeScene)
+      if (actionEnum === ReactionType.SCENE_SWITCH)
         return "Change the scene"
-      if (actionEnum === ActionType.StartLive)
+      if (actionEnum === ReactionType.START_LIVE)
         return "Start the live"
-      if (actionEnum === ActionType.StopLive)
+      if (actionEnum === ReactionType.STOP_LIVE)
         return "Stop the live"
       return ""
     }
 
-    function getIcon(actionEnum: ActionType) {
-      if (actionEnum === ActionType.ActivateSoundboard)
+    function getIcon(actionEnum: ReactionType) {
+      if (actionEnum === ReactionType.TOGGLE_AUDIO_COMPRESSOR)
         return <AiOutlineSound />
-      if (actionEnum === ActionType.ChangeCamera)
+      if (actionEnum === ReactionType.CAMERA_SWITCH)
         return <AiOutlineVideoCamera />
-      if (actionEnum === ActionType.ChangeScene)
+      if (actionEnum === ReactionType.SCENE_SWITCH)
         return <MdPanoramaHorizontal />
-      if (actionEnum === ActionType.StartLive)
+      if (actionEnum === ReactionType.START_LIVE)
         return <AiOutlinePlayCircle />
-      if (actionEnum === ActionType.StopLive)
+      if (actionEnum === ReactionType.STOP_LIVE)
         return <AiOutlineStop />
       return <AiOutlineBug />
     }
@@ -120,7 +127,7 @@ export const GeneralActions = () => {
       <>
         <div className="container events-container">
 
-          <h2>List of Actions</h2>
+          <h2>List of Reactions</h2>
 
           {
             actionsList.length === 0 ? (
@@ -138,7 +145,14 @@ export const GeneralActions = () => {
                       { getAction(item.action) }
                     </Typography>
                     <Typography variant="body2">
-                      { item.param_value ? "Parameter:" + item.param_value : "" }
+                      {
+                        item.params ? 
+                          Object.keys(item.params).map(key => {
+                            return `${key}: ${item.params[key]}`;
+                          }).join("\n")
+                        :
+                          ""
+                      }
                     </Typography>
                   </CardContent>
                   <CardActions disableSpacing className="rightAlignItem">
@@ -154,7 +168,7 @@ export const GeneralActions = () => {
         </div>
 
         <Dialog open={open} onClose={handleCancel}>
-          <DialogTitle>Add Action</DialogTitle>
+          <DialogTitle>Add Reaction</DialogTitle>
           <DialogContent>
             <DialogContentText>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit.
@@ -187,22 +201,20 @@ export const GeneralActions = () => {
                 label="Action"
               >
                 {
-                  keysActionType.map((k) => {
-                    return (<MenuItem key={ActionType[k as any]} value={ActionType[k as any]}>{getAction(ActionType[k as any])}</MenuItem>)
+                  keysReactionType.map((k) => {
+                    return (<MenuItem key={k} value={k}>{getAction(k)}</MenuItem>)
                   })
                 }
               </Select>
             </div>
 
             <div className="form-item">
-              <NumericInput
-                name='Parameter action'
-                precision={0}
-                decimalChar=','
-                thousandChar='.'
-                label='Parameter action'
-                onChange={(action) => setNewActionParam(action.target.value as number)}
-                variant='outlined'
+              <TextField
+                id="parameter-action"
+                label="Parameter action"
+                type="text"
+                variant="outlined"
+                onChange={(action) => setNewActionParam(action.target.value)}
               />
             </div>
 
@@ -216,7 +228,7 @@ export const GeneralActions = () => {
         <div className="add_button_pos">
           <Button variant="contained" className="add_button" onClick={handleClickOpen}
           >
-            Add Action
+            Add Reaction
           </Button>
         </div>
       </>
