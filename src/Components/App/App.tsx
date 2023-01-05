@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-import "./App.css";
-=======
 import './App.css'
->>>>>>> 03180be (Add login/ account and subscription system)
 import React, { useState, useEffect } from "react";
 import Sidebar from "../Sidebar/Sidebar";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
