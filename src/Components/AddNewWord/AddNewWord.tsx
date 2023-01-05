@@ -119,7 +119,6 @@ export const AddNewWord = (props: any) => {
         newEvent={props.newEvent}
         setnewEvent={props.setnewEvent}
         addNewEvent={props.addNewEvent}
-        changeEvent={props.changeEvent}
         open={open}
       />
     </>

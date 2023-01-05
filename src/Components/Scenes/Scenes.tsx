@@ -26,8 +26,8 @@ export const Scenes = (props: any) => {
     lineHeight: 1.6
   };
 
-  const test = () => {
-    console.log("hello");
+  const toggle = () => {
+    console.log("toggle");
   }
 
   return (
@@ -37,7 +37,7 @@ export const Scenes = (props: any) => {
         <Switch
           color="warning"
           onChange={() => {
-            test();
+            toggle();
           }}
         />
       </Box>
