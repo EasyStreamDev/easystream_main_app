@@ -15,6 +15,7 @@ import { WordDetection } from '../WordDetection/WordDetection';
 import { GeneralActions } from '../Actions/GeneralActions';
 import { AllMics, resultFormat } from '../../Socket/interfaces';
 import { Scenes } from '../Scenes/Scenes';
+import { Login } from '../Login/login';
 const ipcRenderer = window.require('electron').ipcRenderer
 
 export default function App() {
@@ -75,6 +76,7 @@ export default function App() {
 						<Route path='/video/scenes' element={<Scenes/>} />
 						<Route path='/video/subtitles' element={<Subtitles/>} />
 						<Route path='/action/general' element={<GeneralActions/>} />
+						<Route path='/login' element={<Login/>} />
 					</Routes>
 				</div>
 			</Router>
