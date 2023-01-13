@@ -1,7 +1,7 @@
 import React from 'react'
 import { render, unmountComponentAtNode } from "react-dom";
-// import { Sidebar } from '../Sidebar/Sidebar';
-// import { SidebarData } from '../Sidebar/SidebarData';
+import Sidebar from '../Sidebar/Sidebar';
+import { SidebarData } from '../Sidebar/SidebarData';
 import { act } from "react-dom/test-utils";
 import { HashRouter as Router } from 'react-router-dom';
 
