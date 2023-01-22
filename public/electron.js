@@ -71,6 +71,11 @@ ipcMain.on("getAllMics", (event, arg) => {
           level: 30,
           isActive: true,
         },
+        {
+          name: "Mic Test Dev 2",
+          level: 60,
+          isActive: true,
+        },
       ],
     };
     event.returnValue = res;
@@ -105,7 +110,7 @@ ipcMain.on("getActReactCouples", (event, arg) => {
               reactionId: 1,
               type: "CAMERA_SWITCH",
               params: {
-                "video-source": "camera_1"
+                "video_source": "camera_1"
               }
           }
         },
