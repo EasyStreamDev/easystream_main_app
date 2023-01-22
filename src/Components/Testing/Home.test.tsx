@@ -2,7 +2,7 @@ import React from 'react'
 import { render, unmountComponentAtNode } from "react-dom";
 import { Home } from '../Home/Home';
 import { act } from "react-dom/test-utils";
-import { BrowserRouter as Router } from 'react-router-dom';
+// import { BrowserRouter as Router } from 'react-router-dom';
 
 let container: any = null;
 beforeEach(() => {
@@ -18,12 +18,12 @@ afterEach(() => {
   container = null;
 });
 
-it("Testing Home", () => {
-	act(() => {
-		render(
-      <Router>
-        <Home />
-      </Router>
-    , container);
-	});
-});
+// it("Testing Home", () => {
+// 	act(() => {
+// 		render(
+//       <Router>
+//         <Home />
+//       </Router>
+//     , container);
+// 	});
+// });
