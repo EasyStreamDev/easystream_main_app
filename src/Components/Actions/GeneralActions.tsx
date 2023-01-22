@@ -17,6 +17,9 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { LocalStorage } from '../../LocalStorage/LocalStorage';
 
+import useAxiosPrivate from "../../hooks/useAxiosPrivate";
+
+
 export enum ReactionType {
   CAMERA_SWITCH = "CAMERA_SWITCH",
   SCENE_SWITCH = "SCENE_SWITCH",
@@ -24,6 +27,8 @@ export enum ReactionType {
   STOP_LIVE = "STOP_LIVE",
   TOGGLE_AUDIO_COMPRESSOR = "TOGGLE_AUDIO_COMPRESSOR"
 }
+
+const SAVE_GENERATE_EVENT_URL = "/applicationSavedFeature/saveGenerateEvent";
 
 export const GeneralActions = () => {
 
@@ -33,6 +38,49 @@ export const GeneralActions = () => {
     const [newActionName, setNewActionName] = React.useState("");
     const [newActionSelected, setNewActionSelected] = React.useState("CAMERA_SWITCH");
     const [newActionParam, setNewActionParam] = React.useState("")
+
+    const axiosPrivate = useAxiosPrivate();
+
+    const style = {
+      Button: {
+        borderColor: "#f56f28",
+        color: "#FFFFFF",
+        marginTop: "20px",
+        "&:hover": {
+          borderColor: "#f56f28",
+          color: "#f56f28",
+        },
+      },
+    }
+
+    const save = () => {
+      const generateEvents = actionsList.map((action: any) => {
+        
+        let parameter = '';
+        if (action.action === ReactionType.TOGGLE_AUDIO_COMPRESSOR)
+            parameter = "audio_source";
+          if (action.action === ReactionType.CAMERA_SWITCH)
+            parameter = "video_source";
+          if (action.action === ReactionType.SCENE_SWITCH)
+            parameter = "scene_name";
+          if (action.action === ReactionType.START_LIVE)
+            parameter = "seconds";
+          if (action.action === ReactionType.STOP_LIVE)
+            parameter = "seconds";
+
+        return {
+          name: action.name,
+          action: action.action,
+          parameter,
+        }
+      })
+      console.log(generateEvents)
+      axiosPrivate.post(SAVE_GENERATE_EVENT_URL, {
+        generateEvents,
+        headers: { "Content-Type": "application/json" },
+        // withCredentials: true,
+      });
+    }
 
     const handleOnChangeSelect = (action: SelectChangeEvent<unknown>) => {
       const value = action.target.value as ReactionType;
@@ -57,11 +105,11 @@ export const GeneralActions = () => {
         }
         if (newActionParam) {
           if (newActionSelected === ReactionType.TOGGLE_AUDIO_COMPRESSOR)
-            newElem.params = { "audio-source": newActionParam };
+            newElem.params = { "audio_source": newActionParam };
           if (newActionSelected === ReactionType.CAMERA_SWITCH)
-            newElem.params = { "video-source": newActionParam };
+            newElem.params = { "video_source": newActionParam };
           if (newActionSelected === ReactionType.SCENE_SWITCH)
-            newElem.params = { "scene-name": newActionParam };
+            newElem.params = { "scene_name": newActionParam };
           if (newActionSelected === ReactionType.START_LIVE)
             newElem.params = { "seconds": newActionParam };
           if (newActionSelected === ReactionType.STOP_LIVE)
@@ -231,6 +279,14 @@ export const GeneralActions = () => {
             Add Reaction
           </Button>
         </div>
+        <Button
+          variant="outlined"
+          sx={style.Button}
+          onClick={save}
+        >
+          {" "}
+          Save{" "}
+        </Button>
       </>
     );
 }

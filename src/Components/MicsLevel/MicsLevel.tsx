@@ -3,12 +3,30 @@ import ReactRanger from "react-ranger";
 import CustomizedSlider from "../Slider/Slider";
 import { AllMics, Mic } from '../../Socket/interfaces';
 import { resultFormat } from '../../Socket/interfaces';
+import { Button } from "@mui/material";
+
+import useAxiosPrivate from "../../hooks/useAxiosPrivate";
+
 const ipcRenderer = window.require('electron').ipcRenderer
+const SAVE_MICROPHONE_URL = "/applicationSavedFeature/saveMicrophones";
 
 export const MicsLevel = () => {
   const [exampleMicsArray, setExampleMicsArray] = React.useState<Mic[]>([]);
   const [load, setload] = React.useState(true);
   const [point, setpoint] = React.useState(".");
+  const axiosPrivate = useAxiosPrivate();
+
+  const style = {
+    Button: {
+      borderColor: "#f56f28",
+      color: "#FFFFFF",
+      marginTop: "20px",
+      "&:hover": {
+        borderColor: "#f56f28",
+        color: "#f56f28",
+      },
+    },
+  };
 
   let timeoutCommit: NodeJS.Timeout | undefined = undefined;
   
@@ -76,6 +94,15 @@ export const MicsLevel = () => {
     }, 1000)}
   }
 
+  const save = () => {
+    const mics = [...exampleMicsArray] 
+    axiosPrivate.post(SAVE_MICROPHONE_URL, {
+      mics,
+      headers: { "Content-Type": "application/json" },
+      // withCredentials: true,
+    });
+  }
+
   return (
     <>
       {load ? (
@@ -85,22 +112,35 @@ export const MicsLevel = () => {
           {addpoint()}
         </>
       ) : (
-        exampleMicsArray && exampleMicsArray.length > 0 ? (
-          exampleMicsArray.map((item, index) => {
-            return (
-              <CustomizedSlider
-                key={item.name}
-                isActive={item.isActive}
-                name={item.name}
-                value={item.level}
-                sendData={(val: number) => getData(index, val)}
-                sendActive={(val: boolean) => setActive(index, val)}
-              />
-            );
-          })
-        ) : (
-          <></>
-        )
+        <>
+          <h1>Mics Level</h1>
+          {
+            exampleMicsArray && exampleMicsArray.length > 0 ? (
+              exampleMicsArray.map((item, index) => {
+                return (
+                  <CustomizedSlider
+                  key={item.name}
+                  isActive={item.isActive}
+                  name={item.name}
+                  value={item.level}
+                  sendData={(val: number) => getData(index, val)}
+                  sendActive={(val: boolean) => setActive(index, val)}
+                  />
+                  );
+                })
+            ) : (
+              <></>
+            )
+          }
+          <Button
+            variant="outlined"
+            sx={style.Button}
+            onClick={save}
+          >
+            {" "}
+            Save{" "}
+          </Button>
+        </>
       )}
     </>
   );

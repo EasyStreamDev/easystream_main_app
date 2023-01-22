@@ -3,7 +3,12 @@ import { AddNewWord } from "../AddNewWord/AddNewWord";
 import BoxEvent from "../BoxEvent/BoxEvent";
 import { LocalStorage } from '../../LocalStorage/LocalStorage';
 import { getActReactCouplesFormat, actionReactionFormat, removeActReactAnswer } from '../../Socket/interfaces';
+import { Button } from "@mui/material";
+
+import useAxiosPrivate from "../../hooks/useAxiosPrivate";
+
 const ipcRenderer = window.require('electron').ipcRenderer
+const SAVE_WORD_DETECTION_URL = "/applicationSavedFeature/saveWordsDetection";
 
 export enum ActionType {
   WORD_DETECT = "WORD_DETECT",
@@ -59,13 +64,37 @@ export const WordDetection = (props: any) => {
   const [sources] = React.useState(LocalStorage.getItemObject("actionsList") || [])
   const [load, setload] = React.useState(true);
   const [point, setpoint] = React.useState(".");
+  const axiosPrivate = useAxiosPrivate();
+
+  const style = {
+    Button: {
+      borderColor: "#f56f28",
+      color: "#FFFFFF",
+      marginTop: "20px",
+      "&:hover": {
+        borderColor: "#f56f28",
+        color: "#f56f28",
+      },
+    },
+  };
+
+  const save = () => {
+    const mics = ''
+    console.log(action_reactionArray)
+    // axiosPrivate.post(SAVE_WORD_DETECTION_URL, {
+    //   mics,
+    //   headers: { "Content-Type": "application/json" },
+    //   // withCredentials: true,
+    // });
+  }
 
   const updateActionReactionArray = () => {
     getActionReactionFromServer()
     .then(res => {
       if (res.statusCode === 200) {
         console.log("New Array", res);
-        setaction_reactionArray(res.actReacts)
+        console.log(res.actReacts, newEvent)
+        setaction_reactionArray([...res.actReacts])
       }
     });
   }
@@ -180,17 +209,25 @@ export const WordDetection = (props: any) => {
         </>
       ) : (
       <>
-      {
-        action_reactionArray.map((item: any, index: number) => {
-          return <BoxEvent keyObj={item} key={index} i={index} eventArray={action_reactionArray} seteventArray={updateEventFromBoxEvent}/>;
-        })
-      }
-      <AddNewWord
-        addNewEvent={addNewEvent}
-        sources={sources}
-        newEvent={newEvent}
-        setnewEvent={setnewEvent}
-      />
+        {
+          action_reactionArray.map((item: any, index: number) => {
+            return <BoxEvent keyObj={item} key={index} i={index} eventArray={action_reactionArray} seteventArray={updateEventFromBoxEvent}/>;
+          })
+        }
+        <AddNewWord
+          addNewEvent={addNewEvent}
+          sources={sources}
+          newEvent={newEvent}
+          setnewEvent={setnewEvent}
+        />
+        <Button
+          variant="outlined"
+          sx={style.Button}
+          onClick={save}
+        >
+          {" "}
+          Save{" "}
+        </Button>
       </>
       )
     }
