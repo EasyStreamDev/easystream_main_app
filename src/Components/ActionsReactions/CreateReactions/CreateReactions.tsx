@@ -1,5 +1,5 @@
 import React from 'react';
-import './GeneralActions.css';
+import './CreateReactions.css';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
@@ -15,7 +15,7 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import { LocalStorage } from '../../LocalStorage/LocalStorage';
+import { LocalStorage } from '../../../LocalStorage/LocalStorage';
 
 export enum ReactionType {
   CAMERA_SWITCH = "CAMERA_SWITCH",
@@ -25,7 +25,7 @@ export enum ReactionType {
   TOGGLE_AUDIO_COMPRESSOR = "TOGGLE_AUDIO_COMPRESSOR"
 }
 
-export const GeneralActions = () => {
+export const CreateReactions = () => {
 
     const keysReactionType = Object.keys(ReactionType);
 

@@ -40,6 +40,7 @@
   overflow-y: auto;
 }
 .nav-menu.active {
+  z-index: 999;
   left: 0;
 }
 .nav-menu.hidden {

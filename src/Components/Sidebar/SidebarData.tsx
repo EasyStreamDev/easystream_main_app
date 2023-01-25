@@ -20,13 +20,6 @@ export const SidebarData = [
   
       subNav: [
         {
-          title: 'Word Detection',
-          fullTitle: 'Audio > Word Detection',
-          path: '/audio/word-detection',
-          icon: <AiIcons.AiFillSetting />,
-          cName: 'sub-nav'
-        },
-        {
           title: 'Mic Level',
           fullTitle: 'Audio > Mic Level',
           path: '/audio/mics-level',
@@ -72,7 +65,7 @@ export const SidebarData = [
       ]
     },
     {
-      title: 'Actions',
+      title: 'Actions & Reactions',
       path: '#',
       icon: <RiIcons.RiArrowLeftRightLine />,
       iconClosed: <RiIcons.RiArrowDownSFill />,
@@ -80,18 +73,40 @@ export const SidebarData = [
   
       subNav: [
         {
-          title: 'Generate Action',
-          fullTitle: 'Actions > Generate Event',
-          path: '/action/general',
-          icon: <AiIcons.AiFillSetting />,
-          cName: 'sub-nav'
+          title: 'All Actions & Reactions',
+          fullTitle: 'Actions & Reactions > Home',
+          path: '/actions-reactions/home',
+          icon: <IoIcons.IoIosPaper />
         },
         {
-          title: 'Lorem Ipsum',
-          fullTitle: 'Actions > Lorem Ipsum',
-          path: '/action/lorem-ipsum',
+          title: 'Create Actions',
+          fullTitle: 'Actions & Reactions > List of possible Actions',
+          path: '/actions-reactions/actions',
           icon: <IoIcons.IoIosPaper />
+        },
+        {
+          title: 'Create Reactions',
+          fullTitle: 'Actions & Reactions > Create Reaction',
+          path: '/actions-reactions/reactions',
+          icon: <AiIcons.AiFillSetting />,
+          cName: 'sub-nav'
         }
       ]
-    }
+    },
+    {
+      title: 'Other',
+      path: '#',
+      icon: <RiIcons.RiArrowLeftRightLine />,
+      iconClosed: <RiIcons.RiArrowDownSFill />,
+      iconOpened: <RiIcons.RiArrowUpSFill />,
+  
+      subNav: [
+        {
+          title: 'Feedback',
+          fullTitle: 'Other > Feedback',
+          path: '/other/feedback',
+          icon: <IoIcons.IoIosPaper />
+        },
+      ]
+    },
   ];

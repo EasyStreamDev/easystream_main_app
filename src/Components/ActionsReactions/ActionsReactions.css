@@ -1,0 +1,40 @@
+body {
+    margin: 0
+}
+
+.events-container {
+    text-align: center;
+}
+
+.card-event {
+    background-color: black;
+    border-color: grey;
+}
+
+.create_actions_button_pos {
+    top: 20%;
+    left: 10%;
+    position: absolute;
+}
+
+.create_reactions_button_pos {
+    top: 20%;
+    left: calc(100% - 20%);
+    position: absolute;
+}
+
+.add_button {
+    font-size: 25px !important;
+}
+
+.rightAlignItem {
+    justify-content: flex-end;
+}
+
+.MuiCardActions-root{
+    padding: 0 !important;
+}
+
+.form-item {
+    padding: 10px;
+}

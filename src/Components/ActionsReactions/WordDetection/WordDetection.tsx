@@ -1,8 +1,8 @@
 import React, { Component, useEffect, useState } from "react";
-import { AddNewWord } from "../AddNewWord/AddNewWord";
-import BoxEvent from "../BoxEvent/BoxEvent";
-import { LocalStorage } from '../../LocalStorage/LocalStorage';
-import { getActReactCouplesFormat, actionReactionFormat, removeActReactAnswer } from '../../Socket/interfaces';
+import { AddNewWord } from "../../AddNewWord/AddNewWord";
+import BoxEvent from "../../BoxEvent/BoxEvent";
+import { LocalStorage } from '../../../LocalStorage/LocalStorage';
+import { getActReactCouplesFormat, actionReactionFormat, removeActReactAnswer } from '../../../Socket/interfaces';
 const ipcRenderer = window.require('electron').ipcRenderer
 
 export enum ActionType {
