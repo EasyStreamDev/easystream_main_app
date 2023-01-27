@@ -9,7 +9,6 @@ import {
 } from "react-router-dom";
 import { Home } from '../Home/Home'
 import { Subtitles } from '../Subtitles/Subtitles'
-import { Report } from '../Report/Report'
 import { MicsLevel } from '../MicsLevel/MicsLevel';
 import { ActionsReactions } from "../ActionsReactions/ActionsReactions"
 import { WordDetection } from '../ActionsReactions/WordDetection/WordDetection';
