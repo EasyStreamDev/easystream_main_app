@@ -11,7 +11,7 @@ export enum ActionType {
   KEY_PRESSED = "KEY_PRESSED",
 }
 
-interface action_reaction_identified {
+export interface action_reaction_identified {
   actReactId: number,
   isActive: boolean,
   action: {
@@ -26,7 +26,7 @@ interface action_reaction_identified {
   }
 }
 
-interface action_reaction {
+export interface action_reaction {
   action: {
     type: string,
     params?: Object
