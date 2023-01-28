@@ -5,7 +5,8 @@ import {
 	BrowserRouter as Router,
 	Routes,
 	Route,
-	Link
+	Link,
+	HashRouter
 } from "react-router-dom";
 import { Home } from '../Home/Home'
 import { Subtitles } from '../Subtitles/Subtitles'
@@ -21,7 +22,7 @@ export default function App() {
 
 	return (
 		<div className='App'>
-			<Router>
+			<HashRouter>
 				<div className='App-sidebar'>
 					<Sidebar></Sidebar>
 				</div>
@@ -38,7 +39,7 @@ export default function App() {
 						<Route path='/actions-reactions/reactions' element={<CreateReactions/>} />
 					</Routes>
 				</div>
-			</Router>
+			</HashRouter>
 		</div>
 	)
 }

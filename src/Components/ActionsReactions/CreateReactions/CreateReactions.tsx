@@ -57,11 +57,14 @@ export const CreateReactions = () => {
         }
         if (newActionParam) {
           if (newActionSelected === ReactionType.TOGGLE_AUDIO_COMPRESSOR)
-            newElem.params = { "audio-source": newActionParam };
+            newElem.params = {
+              "audio-source": newActionParam,
+              "toggle": true
+            };
           if (newActionSelected === ReactionType.CAMERA_SWITCH)
             newElem.params = { "video-source": newActionParam };
           if (newActionSelected === ReactionType.SCENE_SWITCH)
-            newElem.params = { "scene-name": newActionParam };
+            newElem.params = { "scene": newActionParam };
           if (newActionSelected === ReactionType.START_LIVE)
             newElem.params = { "seconds": newActionParam };
           if (newActionSelected === ReactionType.STOP_LIVE)
@@ -72,7 +75,7 @@ export const CreateReactions = () => {
 
         setActionsList(newList);
         LocalStorage.setItemObject("actionsList", newList)
-        alert("Action saved");
+        alert("Reaction saved");
       } else {
         // Put alert
         alert("Missing parameters");
