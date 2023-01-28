@@ -22,7 +22,6 @@ tcpConn
       console.log("DEV MODE");
       return null;
     } else {
-      launchingApplication();
       console.log("Error Electron", err);
       console.log("CHANGE HOST IP");
       return null;
@@ -44,16 +43,15 @@ const createWindow = () => {
     show: false,
   });
 
-  // load the index.html of the app. (or localhost on port 3000 if you're in development)
-  // if (isRelease) {
-
   // https://github.com/electron-userland/electron-builder/issues/2404
-  const startURL = isDev
-    ? "http://localhost:3000/app"
-    : `file://${path.join(__dirname, '../build/index.html')}`;
+  // load the index.html of the app. (or localhost on port 3000 if you're in development)
+  const startURL = isRelease
+    ? `file://${path.join(__dirname, '../build/index.html')}` 
+    : "http://localhost:3000/app";
   
 
-    mainWindow.loadURL(startURL)
+  mainWindow.loadURL(startURL)
+
     // mainWindow.loadURL(url.format({
     //   pathname: path.join(__dirname, 'index.html'),
     //   protocol: 'file:',

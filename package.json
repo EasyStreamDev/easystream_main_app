@@ -56,7 +56,7 @@
     "front-dev": "concurrently \"ELECTRON_IS_DEV=1 yarn react-start\" \"wait-on http://localhost:3000 && ELECTRON_IS_DEV=1 yarn electron-start\"",
     "pack": "electron-builder --dir",
     "dist": "RELEASE=true electron-builder build -wl",
-    "build-dist": "RELEASE=true yarn build && RELEASE=true electron-builder",
+    "build-dist": "RELEASE=true yarn build && RELEASE=true electron-builder build -wl",
     "start": "electron-forge start",
     "package": "electron-forge package",
     "make": "electron-forge make",
@@ -70,7 +70,7 @@
     "electron-start": "electronmon .",
     "electron-build": "electron-builder",
     "react-start": "react-scripts start",
-    "react-build": "react-scripts build",
+    "react-build": "RELEASE=true react-scripts build",
     "prod": "react-scripts build --em.main=build/electron.js --publish=always"
   },
   "eslintConfig": {
@@ -120,11 +120,13 @@
     "win": {
       "target":[
         "nsis"
-      ]
+      ],
+      "icon": "build/logo.png"
     },
     "linux": {
       "target": "AppImage",
-      "category": "Utility"
+      "category": "Utility",
+      "icon": "build/logo.png"
     },
     "extends": null
   },
