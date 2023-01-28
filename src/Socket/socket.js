@@ -60,6 +60,7 @@ class TCPConnection {
             this.sendData(obj, (data, error) => {
                 if (data) {
                     console.log('getAllMics resolve', data);
+                    console.log("DEBUG", data.mics[0])
                     resolve(data);
                 } else {
                     console.log('getAllMics error', error);
