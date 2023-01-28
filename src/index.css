@@ -26,3 +26,7 @@ code {
 .m-6{
   margin: 16px;
 }
+
+h4, h5, h6 {
+  color: white;
+}
