@@ -67,7 +67,7 @@ ipcMain.on("getAllMics", (event, arg) => {
       length: 1,
       mics: [
         {
-          name: "Mic Test Dev",
+          micName: "Mic Test Dev",
           level: 30,
           isActive: true,
         },

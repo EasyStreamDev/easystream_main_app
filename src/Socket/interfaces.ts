@@ -49,7 +49,7 @@ export interface getActReactCouplesFormat {
 }
 
 export interface Mic {
-	name: string,
+	micName: string,
 	level: number,
 	isActive: boolean,
 };

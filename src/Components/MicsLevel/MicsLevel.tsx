@@ -89,9 +89,9 @@ export const MicsLevel = () => {
           exampleMicsArray.map((item, index) => {
             return (
               <CustomizedSlider
-                key={item.name}
+                key={item.micName}
                 isActive={item.isActive}
-                name={item.name}
+                name={item.micName}
                 value={item.level}
                 sendData={(val: number) => getData(index, val)}
                 sendActive={(val: boolean) => setActive(index, val)}
