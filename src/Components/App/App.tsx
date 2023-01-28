@@ -22,7 +22,7 @@ export default function App() {
 
 	return (
 		<div className='App'>
-			<HashRouter>
+			<Router>
 				<div className='App-sidebar'>
 					<Sidebar></Sidebar>
 				</div>
@@ -39,7 +39,7 @@ export default function App() {
 						<Route path='/actions-reactions/reactions' element={<CreateReactions/>} />
 					</Routes>
 				</div>
-			</HashRouter>
+			</Router>
 		</div>
 	)
 }
