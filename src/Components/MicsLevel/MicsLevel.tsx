@@ -20,9 +20,9 @@ export const MicsLevel = () => {
 	}
 
   // setVolumeToMic('Audio Input Capture (PulseAudio)', 100)
-  const setVolumeToMic = (mics: Mic[]): Promise<resultFormat> => {
+  const setVolumeToMic = (mic: Mic): Promise<resultFormat> => {
 		return new Promise(async (resolve, reject) => {
-			const result: resultFormat = await ipcRenderer.sendSync('setMicLevel', mics);
+			const result: resultFormat = await ipcRenderer.sendSync('setMicLevel', mic);
 			console.log('setVolumeToMic invoke', result);
 			resolve(result)
 		});
@@ -31,13 +31,13 @@ export const MicsLevel = () => {
   const getData = (index: number, value: number) => {
     let copy = exampleMicsArray.slice();
     copy[index].level = value;
-    console.log("Values", copy);
+    console.log("Value", copy[index]);
     setExampleMicsArray(copy);
 
     // Update to server
     clearTimeout(timeoutCommit)
     timeoutCommit = setTimeout(() => {
-      setVolumeToMic(exampleMicsArray)
+      setVolumeToMic(copy[index])
     }, 3000);
   };
 
@@ -50,7 +50,7 @@ export const MicsLevel = () => {
     // Update to server
     clearTimeout(timeoutCommit)
     timeoutCommit = setTimeout(() => {
-      setVolumeToMic(exampleMicsArray)
+      setVolumeToMic(copy[index])
     }, 3000);
   };
 
