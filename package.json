@@ -50,9 +50,10 @@
     "webpack": "^5.73.0"
   },
   "scripts": {
-    "front-dev": "concurrently \"ELECTRON_IS_DEV=1 yarn react-start\" \"wait-on http://localhost:3000 && ELECTRON_IS_DEV=1 yarn electron-start\"",
+    "front-with-obs-windows": "concurrently \"yarn react-start\" \"wait-on http://localhost:3000 && yarn electron-start\"",
     "front-with-obs": "concurrently \"ELECTRON_IS_DEV=0 yarn react-start\" \"wait-on http://localhost:3000 && ELECTRON_IS_DEV=0 yarn electron-start\"",
-    "serve": "concurrently -k \"cross-env ELECTRON_IS_DEV=1 yarn react-start\" \"wait-on http://localhost:3000 && ELECTRON_IS_DEV=1 electron .\"",
+    "only-front": "concurrently -k \"cross-env ELECTRON_IS_DEV=1 yarn react-start\" \"wait-on http://localhost:3000 && ELECTRON_IS_DEV=1 electron .\"",
+    "front-dev": "concurrently \"ELECTRON_IS_DEV=1 yarn react-start\" \"wait-on http://localhost:3000 && ELECTRON_IS_DEV=1 yarn electron-start\"",
     "pack": "electron-builder --dir",
     "dist": "electron-builder -wl",
     "build-dist": "yarn build && electron-builder",

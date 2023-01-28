@@ -16,7 +16,7 @@ export enum ActionType {
   KEY_PRESSED = "KEY_PRESSED",
 }
 
-interface action_reaction_identified {
+export interface action_reaction_identified {
   actReactId: number,
   isActive: boolean,
   action: {
@@ -31,7 +31,7 @@ interface action_reaction_identified {
   }
 }
 
-interface action_reaction {
+export interface action_reaction {
   action: {
     type: string,
     params?: Object
@@ -93,8 +93,7 @@ export const WordDetection = (props: any) => {
     .then(res => {
       if (res.statusCode === 200) {
         console.log("New Array", res);
-        console.log(res.actReacts, newEvent)
-        setaction_reactionArray([...res.actReacts])
+        setaction_reactionArray(res.data.actReacts)
       }
     });
   }
@@ -183,7 +182,7 @@ export const WordDetection = (props: any) => {
         .then(res => {
           if (res.statusCode === 200) {
             console.log("New Array", res);
-            setaction_reactionArray(res.actReacts)
+            setaction_reactionArray(res.data.actReacts)
             resolve(false);
           }
         })

@@ -1,5 +1,5 @@
 import React from 'react';
-import './GeneralActions.css';
+import './CreateReactions.css';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
@@ -15,7 +15,7 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import { LocalStorage } from '../../LocalStorage/LocalStorage';
+import { LocalStorage } from '../../../LocalStorage/LocalStorage';
 
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 
@@ -105,7 +105,10 @@ export const GeneralActions = () => {
         }
         if (newActionParam) {
           if (newActionSelected === ReactionType.TOGGLE_AUDIO_COMPRESSOR)
-            newElem.params = { "audio_source": newActionParam };
+            newElem.params = {
+              "audio-source": newActionParam,
+              "toggle": true
+            };
           if (newActionSelected === ReactionType.CAMERA_SWITCH)
             newElem.params = { "video_source": newActionParam };
           if (newActionSelected === ReactionType.SCENE_SWITCH)
@@ -120,7 +123,7 @@ export const GeneralActions = () => {
 
         setActionsList(newList);
         LocalStorage.setItemObject("actionsList", newList)
-        alert("Action saved");
+        alert("Reaction saved");
       } else {
         // Put alert
         alert("Missing parameters");

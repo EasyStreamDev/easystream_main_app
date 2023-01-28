@@ -2,6 +2,7 @@
 const { app, BrowserWindow, ipcMain } = require("electron");
 const path = require("path");
 const isDev = require("electron-is-dev");
+let isRelease = process.env.RELEASE;
 const { TCPConnection } = require("../src/Socket/socket.js");
 
 let loadingScreen;
@@ -42,7 +43,7 @@ const createWindow = () => {
   });
 
   // load the index.html of the app. (or localhost on port 3000 if you're in development)
-  mainWindow.loadURL("http://localhost:3000");
+  mainWindow.loadURL(isRelease ? `file://${path.join(__dirname, "./index.html")}` : "http://localhost:3000")
 
   mainWindow.on("closed", () => {
     mainWindow = null;
@@ -64,19 +65,16 @@ ipcMain.on("getAllMics", (event, arg) => {
     let res = {
       statusCode: 200,
       message: "OK",
-      length: 1,
-      mics: [
-        {
-          name: "Mic Test Dev",
-          level: 30,
-          isActive: true,
-        },
-        {
-          name: "Mic Test Dev 2",
-          level: 60,
-          isActive: true,
-        },
-      ],
+      data: {
+        length: 1,
+        mics: [
+          {
+            micName: "Mic Test Dev",
+            level: 30,
+            isActive: true,
+          },
+        ],
+      }
     };
     event.returnValue = res;
     return res;
@@ -93,28 +91,30 @@ ipcMain.on("getActReactCouples", (event, arg) => {
     let res = {
       statusCode: 200,
       message: "OK",
-      length: 1,
-      actReacts: [
-        {
-          actReactId: 1,
-          isActive: true,
-          action: {
-              actionId: 1,
-              type: "WORD_DETECT",
-              params: {
-                words: ['bouloubouga']
-              }
+      data: {
+        length: 1,
+        actReacts: [
+          {
+            actReactId: 1,
+            isActive: true,
+            action: {
+                actionId: 1,
+                type: "WORD_DETECT",
+                params: {
+                  words: ['bouloubouga']
+                }
+            },
+            reaction: {
+                name: "Changement de caméra sur la caméra 1",
+                reactionId: 1,
+                type: "CAMERA_SWITCH",
+                params: {
+                  "video-source": "camera_1"
+                }
+            }
           },
-          reaction: {
-              name: "Changement de caméra sur la caméra 1",
-              reactionId: 1,
-              type: "CAMERA_SWITCH",
-              params: {
-                "video_source": "camera_1"
-              }
-          }
-        },
-      ],
+        ],
+      }
     };
     event.returnValue = res;
     return res;

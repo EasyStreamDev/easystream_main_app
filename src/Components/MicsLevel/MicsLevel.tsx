@@ -38,9 +38,9 @@ export const MicsLevel = () => {
 	}
 
   // setVolumeToMic('Audio Input Capture (PulseAudio)', 100)
-  const setVolumeToMic = (mics: Mic[]): Promise<resultFormat> => {
+  const setVolumeToMic = (mic: Mic): Promise<resultFormat> => {
 		return new Promise(async (resolve, reject) => {
-			const result: resultFormat = await ipcRenderer.sendSync('setMicLevel', mics);
+			const result: resultFormat = await ipcRenderer.sendSync('setMicLevel', mic);
 			console.log('setVolumeToMic invoke', result);
 			resolve(result)
 		});
@@ -49,13 +49,13 @@ export const MicsLevel = () => {
   const getData = (index: number, value: number) => {
     let copy = exampleMicsArray.slice();
     copy[index].level = value;
-    console.log("Values", copy);
+    console.log("Value", copy[index]);
     setExampleMicsArray(copy);
 
     // Update to server
     clearTimeout(timeoutCommit)
     timeoutCommit = setTimeout(() => {
-      setVolumeToMic(exampleMicsArray)
+      setVolumeToMic(copy[index])
     }, 3000);
   };
 
@@ -68,7 +68,7 @@ export const MicsLevel = () => {
     // Update to server
     clearTimeout(timeoutCommit)
     timeoutCommit = setTimeout(() => {
-      setVolumeToMic(exampleMicsArray)
+      setVolumeToMic(copy[index])
     }, 3000);
   };
 
@@ -78,7 +78,7 @@ export const MicsLevel = () => {
         getAllMics()
         .then(res => {
           if (res.statusCode === 200) {
-            setExampleMicsArray(res.mics)
+            setExampleMicsArray(res.data.mics)
             resolve(false);
           }
         })
@@ -112,35 +112,22 @@ export const MicsLevel = () => {
           {addpoint()}
         </>
       ) : (
-        <>
-          <h1>Mics Level</h1>
-          {
-            exampleMicsArray && exampleMicsArray.length > 0 ? (
-              exampleMicsArray.map((item, index) => {
-                return (
-                  <CustomizedSlider
-                  key={item.name}
-                  isActive={item.isActive}
-                  name={item.name}
-                  value={item.level}
-                  sendData={(val: number) => getData(index, val)}
-                  sendActive={(val: boolean) => setActive(index, val)}
-                  />
-                  );
-                })
-            ) : (
-              <></>
-            )
-          }
-          <Button
-            variant="outlined"
-            sx={style.Button}
-            onClick={save}
-          >
-            {" "}
-            Save{" "}
-          </Button>
-        </>
+        exampleMicsArray && exampleMicsArray.length > 0 ? (
+          exampleMicsArray.map((item, index) => {
+            return (
+              <CustomizedSlider
+                key={item.micName}
+                isActive={item.isActive}
+                name={item.micName}
+                value={item.level}
+                sendData={(val: number) => getData(index, val)}
+                sendActive={(val: boolean) => setActive(index, val)}
+              />
+            );
+          })
+        ) : (
+          <></>
+        )
       )}
     </>
   );
