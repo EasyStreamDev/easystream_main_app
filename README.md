@@ -66,6 +66,7 @@ git push --follow-tags
 # Build Linux / Windows / Mac
 
 Just run the following commands
+(do not forget to put the RELEASE env var to true)
 ```bash
 yarn run build
 yarn run dist
