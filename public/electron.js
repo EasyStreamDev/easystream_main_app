@@ -4,6 +4,7 @@ const path = require("path");
 const isDev = require("electron-is-dev");
 let isRelease = process.env.RELEASE;
 const { TCPConnection } = require("../src/Socket/socket.js");
+console.log("isRelease", isRelease)
 
 let loadingScreen;
 let mainWindow;
@@ -21,6 +22,7 @@ tcpConn
       console.log("DEV MODE");
       return null;
     } else {
+      launchingApplication();
       console.log("Error Electron", err);
       console.log("CHANGE HOST IP");
       return null;
@@ -43,7 +45,23 @@ const createWindow = () => {
   });
 
   // load the index.html of the app. (or localhost on port 3000 if you're in development)
-  mainWindow.loadURL(isRelease ? `file://${path.join(__dirname, "./index.html")}` : "http://localhost:3000")
+  // if (isRelease) {
+
+  // https://github.com/electron-userland/electron-builder/issues/2404
+  const startURL = isDev
+    ? "http://localhost:3000/app"
+    : `file://${path.join(__dirname, '../build/index.html')}`;
+  
+
+    mainWindow.loadURL(startURL)
+    // mainWindow.loadURL(url.format({
+    //   pathname: path.join(__dirname, 'index.html'),
+    //   protocol: 'file:',
+    //   slashes: true
+    // }));
+  // } else {
+  //   mainWindow.loadURL("http://localhost:3000")
+  // }
 
   mainWindow.on("closed", () => {
     mainWindow = null;

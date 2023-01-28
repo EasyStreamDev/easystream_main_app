@@ -55,13 +55,13 @@
     "only-front": "concurrently -k \"cross-env ELECTRON_IS_DEV=1 yarn react-start\" \"wait-on http://localhost:3000 && ELECTRON_IS_DEV=1 electron .\"",
     "front-dev": "concurrently \"ELECTRON_IS_DEV=1 yarn react-start\" \"wait-on http://localhost:3000 && ELECTRON_IS_DEV=1 yarn electron-start\"",
     "pack": "electron-builder --dir",
-    "dist": "electron-builder -wl",
-    "build-dist": "yarn build && electron-builder",
+    "dist": "RELEASE=true electron-builder build -wl",
+    "build-dist": "RELEASE=true yarn build && RELEASE=true electron-builder",
     "start": "electron-forge start",
     "package": "electron-forge package",
     "make": "electron-forge make",
     "publish": "electron-forge publish",
-    "build": "yarn react-build && npm run electron-build",
+    "build": "RELEASE=true yarn react-build && RELEASE=true npm run electron-build",
     "test": "react-scripts test",
     "test-coverage": "react-scripts test --coverage",
     "compile": "electron-webpack",
@@ -70,7 +70,8 @@
     "electron-start": "electronmon .",
     "electron-build": "electron-builder",
     "react-start": "react-scripts start",
-    "react-build": "react-scripts build"
+    "react-build": "react-scripts build",
+    "prod": "react-scripts build --em.main=build/electron.js --publish=always"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -88,7 +89,7 @@
     ]
   },
   "main": "public/electron.js",
-  "homepage": "./",
+  "homepage": ".",
   "devDependencies": {
     "cross-env": "^7.0.3",
     "electron": "^19.0.7",
@@ -97,19 +98,33 @@
   },
   "build": {
     "appId": "easystream.client",
+    "directories": {
+      "buildResources": "assets"
+    },
+    "dmg":{
+        "contents":[
+            {
+                "x":130,
+                "y":220
+            },
+            {
+                "x":410,
+                "y":220,
+                "type":"link",
+                "path":"/Applications"
+            }
+        ]
+    },
     "productName": "EasyStream.Client",
     "copyright": "Copyright @2021-2024 Easystream",
-    "mac": {
-      "category": "your.app.category.type"
-    },
     "win": {
-      "target": "portable"
+      "target":[
+        "nsis"
+      ]
     },
     "linux": {
-      "target": "AppImage"
-    },
-    "extraMetadata": {
-      "main": "public/electron.js"
+      "target": "AppImage",
+      "category": "Utility"
     },
     "extends": null
   },
