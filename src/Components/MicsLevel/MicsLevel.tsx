@@ -60,7 +60,7 @@ export const MicsLevel = () => {
         getAllMics()
         .then(res => {
           if (res.statusCode === 200) {
-            setExampleMicsArray(res.mics)
+            setExampleMicsArray(res.data.mics)
             resolve(false);
           }
         })

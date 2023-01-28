@@ -44,8 +44,10 @@ export interface actReactInterface {
 export interface getActReactCouplesFormat {
 	statusCode: number,
     message: string,
-    length: number,
-    actReacts: actReactInterface[]
+	data: {
+		length: number,
+		actReacts: actReactInterface[]
+	}
 }
 
 export interface Mic {
@@ -57,8 +59,10 @@ export interface Mic {
 export interface AllMics {
 	statusCode: number,
 	message: string,
-	length: number,
-	mics: [Mic],
+	data: {
+		length: number,
+		mics: [Mic],
+	}
 };
 
 export interface TimeRange {

@@ -64,14 +64,16 @@ ipcMain.on("getAllMics", (event, arg) => {
     let res = {
       statusCode: 200,
       message: "OK",
-      length: 1,
-      mics: [
-        {
-          micName: "Mic Test Dev",
-          level: 30,
-          isActive: true,
-        },
-      ],
+      data: {
+        length: 1,
+        mics: [
+          {
+            micName: "Mic Test Dev",
+            level: 30,
+            isActive: true,
+          },
+        ],
+      }
     };
     event.returnValue = res;
     return res;
@@ -88,28 +90,30 @@ ipcMain.on("getActReactCouples", (event, arg) => {
     let res = {
       statusCode: 200,
       message: "OK",
-      length: 1,
-      actReacts: [
-        {
-          actReactId: 1,
-          isActive: true,
-          action: {
-              actionId: 1,
-              type: "WORD_DETECT",
-              params: {
-                words: ['bouloubouga']
-              }
+      data: {
+        length: 1,
+        actReacts: [
+          {
+            actReactId: 1,
+            isActive: true,
+            action: {
+                actionId: 1,
+                type: "WORD_DETECT",
+                params: {
+                  words: ['bouloubouga']
+                }
+            },
+            reaction: {
+                name: "Changement de caméra sur la caméra 1",
+                reactionId: 1,
+                type: "CAMERA_SWITCH",
+                params: {
+                  "video-source": "camera_1"
+                }
+            }
           },
-          reaction: {
-              name: "Changement de caméra sur la caméra 1",
-              reactionId: 1,
-              type: "CAMERA_SWITCH",
-              params: {
-                "video-source": "camera_1"
-              }
-          }
-        },
-      ],
+        ],
+      }
     };
     event.returnValue = res;
     return res;

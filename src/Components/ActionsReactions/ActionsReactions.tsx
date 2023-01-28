@@ -54,7 +54,7 @@ export const ActionsReactions = () => {
     .then(res => {
       if (res.statusCode === 200) {
         console.log("New Array", res);
-        setActionsReactionsList(res.actReacts)
+        setActionsReactionsList(res.data.actReacts)
       }
     });
   }
@@ -80,8 +80,7 @@ export const ActionsReactions = () => {
         .then(res => {
           if (res.statusCode === 200) {
             console.log("New Array", res);
-            const tmp = [res.actReacts[0], res.actReacts[0], res.actReacts[0], res.actReacts[0]]
-            setActionsReactionsList(tmp)
+            setActionsReactionsList(res.data.actReacts)
             resolve(false);
           }
         })

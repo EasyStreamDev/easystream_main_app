@@ -65,7 +65,7 @@ export const WordDetection = (props: any) => {
     .then(res => {
       if (res.statusCode === 200) {
         console.log("New Array", res);
-        setaction_reactionArray(res.actReacts)
+        setaction_reactionArray(res.data.actReacts)
       }
     });
   }
@@ -154,7 +154,7 @@ export const WordDetection = (props: any) => {
         .then(res => {
           if (res.statusCode === 200) {
             console.log("New Array", res);
-            setaction_reactionArray(res.actReacts)
+            setaction_reactionArray(res.data.actReacts)
             resolve(false);
           }
         })
