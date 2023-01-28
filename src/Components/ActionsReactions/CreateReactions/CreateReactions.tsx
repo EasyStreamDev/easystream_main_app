@@ -1,5 +1,5 @@
 import React from 'react';
-import './GeneralActions.css';
+import './CreateReactions.css';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
@@ -15,7 +15,7 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import { LocalStorage } from '../../LocalStorage/LocalStorage';
+import { LocalStorage } from '../../../LocalStorage/LocalStorage';
 
 export enum ReactionType {
   CAMERA_SWITCH = "CAMERA_SWITCH",
@@ -25,7 +25,7 @@ export enum ReactionType {
   TOGGLE_AUDIO_COMPRESSOR = "TOGGLE_AUDIO_COMPRESSOR"
 }
 
-export const GeneralActions = () => {
+export const CreateReactions = () => {
 
     const keysReactionType = Object.keys(ReactionType);
 
@@ -57,11 +57,14 @@ export const GeneralActions = () => {
         }
         if (newActionParam) {
           if (newActionSelected === ReactionType.TOGGLE_AUDIO_COMPRESSOR)
-            newElem.params = { "audio-source": newActionParam };
+            newElem.params = {
+              "audio-source": newActionParam,
+              "toggle": true
+            };
           if (newActionSelected === ReactionType.CAMERA_SWITCH)
             newElem.params = { "video-source": newActionParam };
           if (newActionSelected === ReactionType.SCENE_SWITCH)
-            newElem.params = { "scene-name": newActionParam };
+            newElem.params = { "scene": newActionParam };
           if (newActionSelected === ReactionType.START_LIVE)
             newElem.params = { "seconds": newActionParam };
           if (newActionSelected === ReactionType.STOP_LIVE)
@@ -72,7 +75,7 @@ export const GeneralActions = () => {
 
         setActionsList(newList);
         LocalStorage.setItemObject("actionsList", newList)
-        alert("Action saved");
+        alert("Reaction saved");
       } else {
         // Put alert
         alert("Missing parameters");

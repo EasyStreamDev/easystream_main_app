@@ -94,9 +94,7 @@ class TCPConnection {
     setVolumeToMic(args) {
         let obj = {
             command: 'setMicLevel',
-            params: {
-                mics: args
-            }
+            params: args
         };
         console.log('setVolumeToMic -> ', JSON.stringify(obj));
         return new Promise((resolve, reject) => {
