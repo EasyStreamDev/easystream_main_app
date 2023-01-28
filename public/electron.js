@@ -42,7 +42,8 @@ const createWindow = () => {
   });
 
   // load the index.html of the app. (or localhost on port 3000 if you're in development)
-  mainWindow.loadURL("http://localhost:3000");
+  // mainWindow.loadURL("http://localhost:3000");
+  mainWindow.loadURL(isDev ? "http://localhost:3000" : `file://${path.join(__dirname, "./index.html")}`)
 
   mainWindow.on("closed", () => {
     mainWindow = null;
