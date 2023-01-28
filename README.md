@@ -45,14 +45,15 @@ yarn start
 ```
 
 **IT IS OKAY IF IT BUG AT THE START, JUST TRY NEW TIMES WITH PC WORKING, AND IT'LL BE FINE !**
-Command to build and run the application only the front:
+Command to build and run the application only the front (with fake server results):
 ```bash
-yarn run front-dev
+yarn run only-front
 ```
 
 Command to run the application with the OBS plugin:
 ```bash
-yarn run front-with-obs
+yarn run front-with-obs # Linux
+yarn run front-with-obs-windows # Windows (You must setup env variable ELECTRON_IS_DEV=0)
 ```
 
 Command to push release a new version
