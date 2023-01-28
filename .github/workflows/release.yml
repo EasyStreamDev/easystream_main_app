@@ -5,6 +5,9 @@ on:
     tags:
       - 'v*'
 
+env:
+  RELEASE: true
+
 jobs:
   publish:
     runs-on: ubuntu-latest
