@@ -1,7 +1,12 @@
 import './App.css'
 import React, { useState, useEffect } from "react";
 import Sidebar from "../Sidebar/Sidebar";
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import {
+	Routes,
+	Route,
+	Link,
+	HashRouter
+} from "react-router-dom";
 import { Home } from "../Home/Home";
 import { Subtitles } from "../Subtitles/Subtitles";
 import { Report } from "../Report/Report";

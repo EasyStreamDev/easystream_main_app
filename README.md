@@ -63,17 +63,15 @@ git tag v<version>
 git push --follow-tags
 ```
 
-# Build Linux / Windows / Mac
+# Build Linux / Windows
 
 Just run the following commands
 (do not forget to put the RELEASE env var to true)
 ```bash
-yarn run build
-yarn run dist
+yarn run build-dist
 ```
 
 [Linux instructions](https://www.electronjs.org/fr/docs/latest/development/build-instructions-linux)
-[MacOs instructions](https://www.electronjs.org/fr/docs/latest/development/build-instructions-macos)
 [Windows instructions](https://www.electronjs.org/fr/docs/latest/development/build-instructions-windows)
 
 [Medium tutorial](https://medium.com/@kitze/%EF%B8%8F-from-react-to-an-electron-app-ready-for-production-a0468ecb1da3)
