@@ -70,8 +70,8 @@
     "electron-start": "electronmon .",
     "electron-build": "electron-builder",
     "react-start": "react-scripts start",
-    "react-build": "react-scripts build",
-    "prod": "react-scripts build --em.main=build/electron.js --publish=always"
+    "react-build": "CI=false react-scripts build",
+    "prod": "CI=false react-scripts build --em.main=build/electron.js --publish=always"
   },
   "eslintConfig": {
     "extends": "react-app"
