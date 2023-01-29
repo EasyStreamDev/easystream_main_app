@@ -238,8 +238,8 @@ const createLoadingScreen = () => {
   loadingScreen = new BrowserWindow(
     Object.assign({
       /// define width and height for the window
-      width: 300,
-      height: 400,
+      width: 440,
+      height: 250,
       /// remove the window frame, so it will become a frameless window
       frame: false,
       /// and set the transparency, to remove any window background color
