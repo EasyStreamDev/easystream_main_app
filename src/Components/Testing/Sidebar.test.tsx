@@ -3,7 +3,7 @@ import { render, unmountComponentAtNode } from "react-dom";
 import { Sidebar } from '../Sidebar/Sidebar';
 import { SidebarData } from '../Sidebar/SidebarData';
 import { act } from "react-dom/test-utils";
-import { BrowserRouter as Router } from 'react-router-dom';
+import { HashRouter as Router } from 'react-router-dom';
 
 let container: any = null;
 beforeEach(() => {

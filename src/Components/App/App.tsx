@@ -2,7 +2,6 @@ import './App.css'
 import React, { useState, useEffect } from 'react'
 import Sidebar from '../Sidebar/Sidebar'
 import {
-	BrowserRouter as Router,
 	Routes,
 	Route,
 	Link,

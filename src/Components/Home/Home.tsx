@@ -1,6 +1,5 @@
 import React from 'react';
 import {
-	BrowserRouter as Router,
 	Routes,
 	Route,
 	Link
@@ -15,7 +14,6 @@ export const Home = () => {
         <Link className="m-2" to="/video/scenes">Scenes</Link>
         <Link className="m-2" to="/video/subtitles">Subtitles</Link>
         <Link className="m-2" to="/other/feedback">Feedback</Link>
-
       </>
     );
 }
