@@ -50,18 +50,18 @@
     "webpack": "^5.73.0"
   },
   "scripts": {
-    "front-with-obs-windows": "concurrently \"yarn react-start\" \"wait-on http://localhost:3000 && yarn electron-start\"",
-    "front-with-obs": "concurrently \"ELECTRON_IS_DEV=0 yarn react-start\" \"wait-on http://localhost:3000 && ELECTRON_IS_DEV=0 yarn electron-start\"",
+    "front-with-obs-windows": "concurrently \"set ELECTRON_IS_DEV=0 && set NOT_RELEASE=true && yarn react-start\" \"wait-on http://localhost:3000 && set ELECTRON_IS_DEV=0 && set NOT_RELEASE=true && yarn electron-start\"",
+    "front-with-obs": "concurrently \"cross-env ELECTRON_IS_DEV=0 NOT_RELEASE=true yarn react-start\" \"wait-on http://localhost:3000 && cross-env ELECTRON_IS_DEV=0 NOT_RELEASE=true yarn electron-start\"",
     "only-front": "concurrently -k \"cross-env ELECTRON_IS_DEV=1 yarn react-start\" \"wait-on http://localhost:3000 && ELECTRON_IS_DEV=1 electron .\"",
     "front-dev": "concurrently \"ELECTRON_IS_DEV=1 yarn react-start\" \"wait-on http://localhost:3000 && ELECTRON_IS_DEV=1 yarn electron-start\"",
     "pack": "electron-builder --dir",
-    "dist": "RELEASE=true electron-builder build -wl",
-    "build-dist": "RELEASE=true yarn build && RELEASE=true electron-builder build -wl",
+    "dist": "electron-builder build -wl",
+    "build-dist": "yarn build && electron-builder build -wl",
     "start": "electron-forge start",
     "package": "electron-forge package",
     "make": "electron-forge make",
     "publish": "electron-forge publish",
-    "build": "RELEASE=true yarn react-build && RELEASE=true npm run electron-build",
+    "build": "yarn react-build && npm run electron-build",
     "test": "react-scripts test",
     "test-coverage": "react-scripts test --coverage",
     "compile": "electron-webpack",
@@ -70,7 +70,7 @@
     "electron-start": "electronmon .",
     "electron-build": "electron-builder",
     "react-start": "react-scripts start",
-    "react-build": "RELEASE=true react-scripts build",
+    "react-build": "react-scripts build",
     "prod": "react-scripts build --em.main=build/electron.js --publish=always"
   },
   "eslintConfig": {

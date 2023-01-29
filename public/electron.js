@@ -2,9 +2,10 @@
 const { app, BrowserWindow, ipcMain } = require("electron");
 const path = require("path");
 const isDev = require("electron-is-dev");
-let isRelease = process.env.RELEASE;
+let notRelease = process.env.NOT_RELEASE || false;
 const { TCPConnection } = require("../src/Socket/socket.js");
-console.log("isRelease", isRelease)
+console.log("isDev", isDev)
+console.log("notRelease", notRelease)
 
 let loadingScreen;
 let mainWindow;
@@ -45,21 +46,12 @@ const createWindow = () => {
 
   // https://github.com/electron-userland/electron-builder/issues/2404
   // load the index.html of the app. (or localhost on port 3000 if you're in development)
-  const startURL = isRelease
-    ? `file://${path.join(__dirname, '../build/index.html')}` 
-    : "http://localhost:3000/app";
+  const startURL = isDev || notRelease
+    ? "http://localhost:3000/app"
+    : `file://${path.join(__dirname, '../build/index.html')}`; 
   
 
   mainWindow.loadURL(startURL)
-
-    // mainWindow.loadURL(url.format({
-    //   pathname: path.join(__dirname, 'index.html'),
-    //   protocol: 'file:',
-    //   slashes: true
-    // }));
-  // } else {
-  //   mainWindow.loadURL("http://localhost:3000")
-  // }
 
   mainWindow.on("closed", () => {
     mainWindow = null;
