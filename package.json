@@ -1,6 +1,6 @@
 {
   "name": "easystream",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "description": "EasyStream, the solution to stream easily.",
   "author": {
     "email": "easystream@epitech.eu",
@@ -101,24 +101,24 @@
     "directories": {
       "buildResources": "assets"
     },
-    "dmg":{
-        "contents":[
-            {
-                "x":130,
-                "y":220
-            },
-            {
-                "x":410,
-                "y":220,
-                "type":"link",
-                "path":"/Applications"
-            }
-        ]
+    "dmg": {
+      "contents": [
+        {
+          "x": 130,
+          "y": 220
+        },
+        {
+          "x": 410,
+          "y": 220,
+          "type": "link",
+          "path": "/Applications"
+        }
+      ]
     },
     "productName": "EasyStream.Client",
     "copyright": "Copyright @2021-2024 Easystream",
     "win": {
-      "target":[
+      "target": [
         "nsis"
       ],
       "icon": "build/logo.png"
