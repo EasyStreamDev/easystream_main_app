@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="UTF-8" />
-    <title>FLOATING LOADING SCREEN</title>
+    <title>EasyStream</title>
     <style>
       /* Define the main wrapper style */
       .LoaderWrapper {
@@ -13,7 +13,7 @@
         width: 100%;
         height: 100%;
 
-        display: flex;
+        display: grid;
         align-content: center;
         justify-content: center;
         align-items: center;
@@ -31,6 +31,7 @@
   <body>
     <div class="LoaderWrapper">
       <img src="./loading.gif" alt="Easystream is loading"  width="400" />
+      <h3 class="LoaderContent">Connecting to server</h3>
     </div>
     <script>
       // You can also require other files to run in this process
