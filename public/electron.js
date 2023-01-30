@@ -4,6 +4,7 @@ const path = require("path");
 const isDev = require("electron-is-dev");
 let notRelease = process.env.NOT_RELEASE || false;
 const { TCPConnection } = require("../src/Socket/socket.js");
+const { title } = require("process");
 console.log("isDev", isDev)
 console.log("notRelease", notRelease)
 
@@ -20,8 +21,10 @@ const createWindow = () => {
       enableRemoteModule: isDev,
     },
     autoHideMenuBar: true,
+    title: "EasyStream",
     minWidth: 800,
     minHeight: 600,
+    icon: __dirname + '/icon.png',
     /// show to false mean than the window will proceed with its lifecycle, but will not render until we will show it up
     show: false,
   });
@@ -252,6 +255,8 @@ const createLoadingScreen = () => {
       /// define width and height for the window
       width: 440,
       height: 260,
+      title: "EasyStream",
+      icon: __dirname + '/icon.png',
       /// remove the window frame, so it will become a frameless window
       frame: false,
       /// and set the transparency, to remove any window background color
@@ -261,7 +266,7 @@ const createLoadingScreen = () => {
         enableRemoteModule: isDev,
         contextIsolation: false,
       },
-    })
+    }),
   );
   loadingScreen.setResizable(false);
   loadingScreen.loadURL(`file://${path.join(__dirname, "./loading.html")}`);
