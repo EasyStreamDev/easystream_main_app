@@ -4,7 +4,6 @@ const path = require("path");
 const isDev = require("electron-is-dev");
 let notRelease = process.env.NOT_RELEASE || false;
 const { TCPConnection } = require("../src/Socket/socket.js");
-const { title } = require("process");
 console.log("isDev", isDev)
 console.log("notRelease", notRelease)
 
@@ -209,11 +208,13 @@ ipcMain.on("removeActReact", (event, arg) => {
 
 ipcMain.on("connection-server-lost", (evt, arg) => {
   // Quit main app
-  mainWindow.close();
-  tcpConn.disconnectSocket();
+  if (mainWindow)
+    mainWindow.close();
   tcpConn = null;
 
   // Load Loading page
+  if (loadingScreen)
+    loadingScreen.close()
   createLoadingScreen()
 });
 

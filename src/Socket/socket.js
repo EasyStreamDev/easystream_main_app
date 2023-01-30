@@ -1,5 +1,3 @@
-// const { AllEvents, AllMics, Mic, Event } = require('./interfaces');
-
 const net = require('net');
 
 class TCPConnection {
@@ -19,9 +17,13 @@ class TCPConnection {
                 }, 3000);
             });
             this.socket.once('data', function (data) {
-                data = data.toString().replace('\t','').replace('\r','').replace('\n','').replace(/\0/g, ''); // Remove all useless characters
-                const payload = JSON.parse(data);
-                console.log(payload);
+                try {
+                    data = data.toString().replace('\t','').replace('\r','').replace('\n','').replace(/\0/g, ''); // Remove all useless characters
+                    const payload = JSON.parse(data);
+                    console.log(payload);
+                } catch (error) {
+                    console.error(error)
+                }
             });
             this.socket.once('error', (error) => {
                 console.log("TCP server error");
@@ -51,11 +53,17 @@ class TCPConnection {
         obj = JSON.stringify(obj);
         this.socket.write(obj);
         this.socket.once('data', (data) => {
-            data = data.toString().replace('\t','').replace('\r','').replace('\n','').replace(/\0/g, ''); // Remove all useless characters
-            const payload = JSON.parse(data);
-            callback(payload, null)
+            try {
+                data = data.toString().replace('\t','').replace('\r','').replace('\n','').replace(/\0/g, ''); // Remove all useless characters
+                const payload = JSON.parse(data);
+                callback(payload, null);
+            } catch (error) {
+                callback(null, null);
+            }
         });
         this.socket.on('error', (error) => {
+            console.log(error)
+            this.socket.end();
             this.ipcMain.emit('connection-server-lost')
             callback(null, error)
         });
@@ -114,8 +122,8 @@ class TCPConnection {
                     resolve(data);
                 } else {
                     console.log('setVolumeToMic error', error);
-                    this.ipcMain.emit('connection-server-lost')
                     this.socket.end();
+                    this.ipcMain.emit('connection-server-lost')
                     reject(error);
                 }
             });
