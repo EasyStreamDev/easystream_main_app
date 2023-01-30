@@ -10,24 +10,31 @@ console.log("notRelease", notRelease)
 let loadingScreen;
 let mainWindow;
 let tcpConn = new TCPConnection("localhost", 47920);
-tcpConn
-  .connect()
-  .then((res) => {
-    console.log("TCPConnection is connected");
-    launchingApplication();
-    console.log("res", res);
-    return res;
-  })
-  .catch((err) => {
-    if (isDev) {
-      console.log("DEV MODE");
-      return null;
-    } else {
-      console.log("Error Electron", err);
-      console.log("CHANGE HOST IP");
-      return null;
-    }
-  });
+
+// Try to connect every 5 seconds 
+let refreshIntervalId = setInterval(() => {
+
+  tcpConn
+    .connect()
+    .then((res) => {
+      console.log("TCPConnection is connected");
+      launchingApplication();
+      console.log("res", res);
+      clearInterval(refreshIntervalId);
+      return res;
+    })
+    .catch((err) => {
+      if (isDev) {
+        console.log("DEV MODE");
+        clearInterval(refreshIntervalId);
+        return null;
+      } else {
+        console.log("Can't locate the server", err);
+        return null;
+      }
+    });
+
+}, 5000);
 
 const createWindow = () => {
   // Create the browser window.
