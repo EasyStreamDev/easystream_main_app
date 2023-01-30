@@ -1,32 +1,43 @@
-// const { AllEvents, AllMics, Mic, Event } = require('./interfaces');
-
-const { ipcRenderer } = require('electron');
 const net = require('net');
 
 class TCPConnection {
-    constructor(host, port) {
+    constructor(host, port, ipcMain) {
         this.host = host;
         this.port = port;
+        this.socket = null;
+        this.ipcMain = ipcMain
     }
 
     connect() {
         return new Promise((resolve, reject) => {
-            this.socket = net.connect(this.port, this.host, (test, error) => {
-                console.log('test ->', test);
-                console.log('error ->', error);
+            this.socket = net.createConnection({port: this.port, host: this.host}, () => {
                 console.log('TCPConnection initialized');
                 setTimeout(() => {
                     resolve(this.socket);
                 }, 3000);
             });
             this.socket.once('data', function (data) {
-                data = data.toString().replace('\t','').replace('\r','').replace('\n','').replace(/\0/g, ''); // Remove all useless characters
-                const payload = JSON.parse(data);
-                console.log(payload);
+                try {
+                    data = data.toString().replace('\t','').replace('\r','').replace('\n','').replace(/\0/g, ''); // Remove all useless characters
+                    const payload = JSON.parse(data);
+                    console.log(payload);
+                } catch (error) {
+                    console.error(error)
+                }
             });
             this.socket.once('error', (error) => {
+                console.log("TCP server error");
                 this.socket.end();
                 reject(error);
+            });
+            this.socket.once('close', (error) => {
+                console.log("C'est CLOSE", error)
+                if (!error) {
+                    console.log('Server connection closed');
+                    this.socket.end();
+                    this.ipcMain.emit('connection-server-lost')
+                    reject(new Error("Server connection closed"));
+                }
             });
         });
     }
@@ -42,11 +53,18 @@ class TCPConnection {
         obj = JSON.stringify(obj);
         this.socket.write(obj);
         this.socket.once('data', (data) => {
-            data = data.toString().replace('\t','').replace('\r','').replace('\n','').replace(/\0/g, ''); // Remove all useless characters
-            const payload = JSON.parse(data);
-            callback(payload, null)
+            try {
+                data = data.toString().replace('\t','').replace('\r','').replace('\n','').replace(/\0/g, ''); // Remove all useless characters
+                const payload = JSON.parse(data);
+                callback(payload, null);
+            } catch (error) {
+                callback(null, null);
+            }
         });
         this.socket.on('error', (error) => {
+            console.log(error)
+            this.socket.end();
+            this.ipcMain.emit('connection-server-lost')
             callback(null, error)
         });
     };
@@ -64,7 +82,7 @@ class TCPConnection {
                 } else {
                     console.log('getAllMics error', error);
                     this.socket.end();
-                    ipcRenderer.send('close-me')
+                    this.ipcMain.emit('connection-server-lost')
                     reject(error);
                 }
             });
@@ -84,7 +102,7 @@ class TCPConnection {
                 } else {
                     console.log('getActReactCouples error', error);
                     this.socket.end();
-                    ipcRenderer.send('close-me')
+                    this.ipcMain.emit('connection-server-lost')
                     reject(error);
                 }
             });
@@ -105,6 +123,7 @@ class TCPConnection {
                 } else {
                     console.log('setVolumeToMic error', error);
                     this.socket.end();
+                    this.ipcMain.emit('connection-server-lost')
                     reject(error);
                 }
             });
@@ -125,6 +144,7 @@ class TCPConnection {
                 } else {
                     console.log('setSubtitles error', error);
                     this.socket.end();
+                    this.ipcMain.emit('connection-server-lost')
                     reject(error);
                 }
             });
@@ -145,6 +165,7 @@ class TCPConnection {
                 } else {
                     console.log('setActionReaction error', error);
                     this.socket.end();
+                    this.ipcMain.emit('connection-server-lost')
                     reject(error);
                 }
             });
@@ -165,6 +186,7 @@ class TCPConnection {
                 } else {
                     console.log('setAutoAudioLeveler error', error);
                     this.socket.end();
+                    this.ipcMain.emit('connection-server-lost')
                     reject(error);
                 }
             });
@@ -185,6 +207,7 @@ class TCPConnection {
                 } else {
                     console.log('removeActReact error', error);
                     this.socket.end();
+                    this.ipcMain.emit('connection-server-lost')
                     reject(error);
                 }
             });

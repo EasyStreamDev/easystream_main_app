@@ -9,32 +9,7 @@ console.log("notRelease", notRelease)
 
 let loadingScreen;
 let mainWindow;
-let tcpConn = new TCPConnection("localhost", 47920);
-
-// Try to connect every 5 seconds 
-let refreshIntervalId = setInterval(() => {
-
-  tcpConn
-    .connect()
-    .then((res) => {
-      console.log("TCPConnection is connected");
-      launchingApplication();
-      console.log("res", res);
-      clearInterval(refreshIntervalId);
-      return res;
-    })
-    .catch((err) => {
-      if (isDev) {
-        console.log("DEV MODE");
-        clearInterval(refreshIntervalId);
-        return null;
-      } else {
-        console.log("Can't locate the server", err);
-        return null;
-      }
-    });
-
-}, 5000);
+let tcpConn;
 
 const createWindow = () => {
   // Create the browser window.
@@ -45,8 +20,10 @@ const createWindow = () => {
       enableRemoteModule: isDev,
     },
     autoHideMenuBar: true,
+    title: "EasyStream",
     minWidth: 800,
     minHeight: 600,
+    icon: __dirname + '/icon.png',
     /// show to false mean than the window will proceed with its lifecycle, but will not render until we will show it up
     show: false,
   });
@@ -229,11 +206,16 @@ ipcMain.on("removeActReact", (event, arg) => {
   }
 });
 
-ipcMain.on("disconnectSocket", (event, arg) => {
-  return tcpConn.getAllMics().then((res) => {
-    console.log("disconnectSocket : " + res);
-    event.returnValue = res;
-  });
+ipcMain.on("connection-server-lost", (evt, arg) => {
+  // Quit main app
+  if (mainWindow)
+    mainWindow.close();
+  tcpConn = null;
+
+  // Load Loading page
+  if (loadingScreen)
+    loadingScreen.close()
+  createLoadingScreen()
 });
 
 ipcMain.on("close-me", (evt, arg) => {
@@ -241,12 +223,41 @@ ipcMain.on("close-me", (evt, arg) => {
 });
 
 const createLoadingScreen = () => {
+
+  tcpConn = new TCPConnection("localhost", 47920, ipcMain);
+  // Try to connect every 5 seconds 
+  let refreshIntervalId = setInterval(() => {
+
+    tcpConn
+      .connect()
+      .then((res) => {
+        console.log("TCPConnection is connected");
+        launchingApplication();
+        console.log("res", res);
+        clearInterval(refreshIntervalId);
+        return res;
+      })
+      .catch((err) => {
+        if (isDev) {
+          console.log("DEV MODE");
+          clearInterval(refreshIntervalId);
+          return null;
+        } else {
+          console.log("Can't locate the server", err);
+          return null;
+        }
+      });
+
+  }, 5000);
+
   /// create a browser window
   loadingScreen = new BrowserWindow(
     Object.assign({
       /// define width and height for the window
       width: 440,
-      height: 250,
+      height: 260,
+      title: "EasyStream",
+      icon: __dirname + '/icon.png',
       /// remove the window frame, so it will become a frameless window
       frame: false,
       /// and set the transparency, to remove any window background color
@@ -256,7 +267,7 @@ const createLoadingScreen = () => {
         enableRemoteModule: isDev,
         contextIsolation: false,
       },
-    })
+    }),
   );
   loadingScreen.setResizable(false);
   loadingScreen.loadURL(`file://${path.join(__dirname, "./loading.html")}`);
