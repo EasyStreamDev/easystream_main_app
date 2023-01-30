@@ -9,32 +9,7 @@ console.log("notRelease", notRelease)
 
 let loadingScreen;
 let mainWindow;
-let tcpConn = new TCPConnection("localhost", 47920);
-
-// Try to connect every 5 seconds 
-let refreshIntervalId = setInterval(() => {
-
-  tcpConn
-    .connect()
-    .then((res) => {
-      console.log("TCPConnection is connected");
-      launchingApplication();
-      console.log("res", res);
-      clearInterval(refreshIntervalId);
-      return res;
-    })
-    .catch((err) => {
-      if (isDev) {
-        console.log("DEV MODE");
-        clearInterval(refreshIntervalId);
-        return null;
-      } else {
-        console.log("Can't locate the server", err);
-        return null;
-      }
-    });
-
-}, 5000);
+let tcpConn;
 
 const createWindow = () => {
   // Create the browser window.
@@ -229,11 +204,14 @@ ipcMain.on("removeActReact", (event, arg) => {
   }
 });
 
-ipcMain.on("disconnectSocket", (event, arg) => {
-  return tcpConn.getAllMics().then((res) => {
-    console.log("disconnectSocket : " + res);
-    event.returnValue = res;
-  });
+ipcMain.on("connection-server-lost", (evt, arg) => {
+  // Quit main app
+  mainWindow.close();
+  tcpConn.disconnectSocket();
+  tcpConn = null;
+
+  // Load Loading page
+  createLoadingScreen()
 });
 
 ipcMain.on("close-me", (evt, arg) => {
@@ -241,12 +219,39 @@ ipcMain.on("close-me", (evt, arg) => {
 });
 
 const createLoadingScreen = () => {
+
+  tcpConn = new TCPConnection("localhost", 47920, ipcMain);
+  // Try to connect every 5 seconds 
+  let refreshIntervalId = setInterval(() => {
+
+    tcpConn
+      .connect()
+      .then((res) => {
+        console.log("TCPConnection is connected");
+        launchingApplication();
+        console.log("res", res);
+        clearInterval(refreshIntervalId);
+        return res;
+      })
+      .catch((err) => {
+        if (isDev) {
+          console.log("DEV MODE");
+          clearInterval(refreshIntervalId);
+          return null;
+        } else {
+          console.log("Can't locate the server", err);
+          return null;
+        }
+      });
+
+  }, 5000);
+
   /// create a browser window
   loadingScreen = new BrowserWindow(
     Object.assign({
       /// define width and height for the window
       width: 440,
-      height: 250,
+      height: 260,
       /// remove the window frame, so it will become a frameless window
       frame: false,
       /// and set the transparency, to remove any window background color
