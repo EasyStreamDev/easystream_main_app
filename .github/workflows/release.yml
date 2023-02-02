@@ -38,11 +38,3 @@ jobs:
       run: yarn run build-dist
       env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    - uses: "marvinpinto/action-automatic-releases@latest"
-      with:
-        repo_token: "${{ secrets.GITHUB_TOKEN }}"
-        prerelease: true
-        title: "Development Build"
-        files: |
-          dist/*.exe
-          dist/*.AppImage
