@@ -1,6 +1,6 @@
 {
   "name": "easystream",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "EasyStream, the solution to stream easily.",
   "author": {
     "email": "easystream@epitech.eu",
@@ -28,8 +28,10 @@
     "babel-eslint": "^10.1.0",
     "concurrently": "^5.2.0",
     "electron-is-dev": "^1.2.0",
+    "electron-log": "^5.0.0-beta.16",
     "electron-renderer": "^2.0.4",
     "electron-squirrel-startup": "^1.0.0",
+    "electron-updater": "^5.3.0",
     "electron-webpack": "^2.8.2",
     "electronmon": "^1.1.2",
     "material-ui-numeric-input": "^3.1.1",
@@ -56,7 +58,7 @@
     "front-dev": "concurrently \"ELECTRON_IS_DEV=1 yarn react-start\" \"wait-on http://localhost:3000 && ELECTRON_IS_DEV=1 yarn electron-start\"",
     "pack": "electron-builder --dir",
     "dist": "electron-builder build -wl",
-    "build-dist": "yarn build && electron-builder build -wl",
+    "build-dist": "yarn build && electron-builder --windows --linux --publish=always",
     "start": "electron-forge start",
     "package": "electron-forge package",
     "make": "electron-forge make",
@@ -128,7 +130,14 @@
       "category": "Utility",
       "icon": "build/logo.png"
     },
-    "extends": null
+    "extends": null,
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "EasyStreamDev",
+        "repo": "easystream_main_app"
+      }
+    ]
   },
   "postinstall": "electron-builder install-app-deps"
 }
