@@ -125,8 +125,8 @@ export const WordDetection = (props: any) => {
       const result: removeActReactAnswer = await ipcRenderer.sendSync('removeActReact', params)
       if (result.statusCode === 200) {
         console.log("Remove ActReaction", result.data.actReactId)
-        setaction_reactionArray(eventArr);
-        LocalStorage.setItemObject("action_reactionArray", eventArr)
+        updateActionReactionArray()
+        alert("Remove Action & Reaction successfully")
       } else {
         alert("Error server. Please check connection.")
       }

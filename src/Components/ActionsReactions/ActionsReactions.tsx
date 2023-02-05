@@ -66,11 +66,33 @@ export const ActionsReactions = () => {
 		});
   }
 
-  const sendActionReactionToServer = (newActionReaction: action_reaction): Promise<actionReactionFormat> => {
+  const removeActionReactionFromServer = (actionReactionId: number): Promise<removeActReactAnswer> => {
     return new Promise(async (resolve, reject) => {
-			const result: actionReactionFormat = await ipcRenderer.sendSync('setActionReaction', newActionReaction);
+			const result: removeActReactAnswer = await ipcRenderer.sendSync('removeActReact', { "actReactId": actionReactionId });
 			resolve(result);
 		});
+  }
+
+  const removeActionReaction = (actionReactionId: number) => {
+    removeActionReactionFromServer(actionReactionId)
+    .then(res => {
+      if (res.statusCode === 200) {
+        
+        // Update actions & reactions
+        getActionReactionFromServer()
+        .then(res => {
+          if (res.statusCode === 200) {
+            console.log("New Array", res);
+            setActionsReactionsList(res.data.actReacts)
+          }
+        })
+        
+        alert("Action Reaction has been deleted successfully")
+      } else {
+        alert("Internal error.")
+      }
+    })
+    return 0
   }
 
   useEffect(() => {
@@ -89,11 +111,6 @@ export const ActionsReactions = () => {
     
     sleep().then((res) => setload(res));
   }, []);
-
-  const blop = () => {
-    // TODO
-    return 0;
-  };
 
   function addpoint() {
     {setInterval(() => {
@@ -156,7 +173,7 @@ export const ActionsReactions = () => {
                         </CardContent>
                         <CardActions disableSpacing className="rightAlignItem">
                           <IconButton
-                            onClick={() => blop()}
+                            onClick={() => removeActionReaction(item.actReactId)}
                             aria-label="delete"
                           >
                             <BsTrash />
