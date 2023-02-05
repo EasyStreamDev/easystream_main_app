@@ -1,5 +1,5 @@
-import './Modal.css'
-import React from "react";
+import './KeyPressedModal.css'
+import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
@@ -14,6 +14,12 @@ import { BorderColorRounded } from '@material-ui/icons';
 import { MuiThemeProvider, createTheme } from '@material-ui/core/styles';
 import Select from "@material-ui/core/Select";
 import { makeStyles } from "@material-ui/core/styles";
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+
 
 const themeUnFocus = createTheme({
   overrides: {
@@ -86,8 +92,25 @@ const useStyles = makeStyles({
   }
 })
 
-export const MyModal = (props: any) => {
+export const KeyPressedModal = (props: any) => {
   const classes = useStyles()
+  const [open, setOpen] = useState(false);
+  const [key, setKey] = useState('');
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleKeyPress = (event: any) => {
+    setKey(event.key);
+    props.handleChange(event.key);
+    handleClose();
+  };
+
   return (
     <Modal
       open={props.open}
@@ -96,63 +119,35 @@ export const MyModal = (props: any) => {
       aria-describedby="modal-modal-description"
     >
         <Box sx={style.Box}>
-          <input
+
+          <Button variant="outlined" color="primary" onClick={handleClickOpen}>
+          Click to select key
+          </Button>
+          <Dialog
+            open={open}
+            onClose={handleClose}
+            onKeyPress={handleKeyPress}
+          >
+            <DialogTitle>Key Press</DialogTitle>
+            <DialogContent>
+              <DialogContentText>
+                Please press any key
+              </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleClose} color="primary">
+                Cancel
+              </Button>
+            </DialogActions>
+          </Dialog>
+
+          <div
             style={{
-              color: "white",
-              backgroundColor: "#393E46",
-              outline: "none",
-              borderStyle: "Hidden",
-              borderRadius: "20px",
-              paddingTop: "1vh",
-              paddingBottom: "1vh",
-              paddingLeft: "1vw",
-              marginBottom: "2vh",
-              width: "100%",
-            }}
-            placeholder="Type a keyword then press Enter"
-            color="#f56f28"
-            name="input-box"
-            type="text"
-            onKeyUp={(event) => {
-              props.handleChange(event);
+              marginBottom: 25
             }}
           />
-          {props.newEvent.keywords.map((item: string, index: number) => {
-            return (
-              <Box
-                className="typography-item"
-                key={index}
-                sx={{ color: "white", columns: 2, cursor: "pointer" }}
-                onClick={() => {
-                  props.deleteKeyWord(index);
-                }}
-              >
-                <Typography
-                  id="modal-modal-title"
-                  variant="h6"
-                  component="h2"
-                  key={index}
-                  sx={{
-                    color: "white",
-                    mb: "3vh",
-                    maxWidth: "10px",
-                    display: "flex",
-                    alignItems: "center",
-                    textAlign: "center",
-                    wordWrap: "break-word",
-                    width: "10px",
-                    whiteSpace: "nowrap",
-                    paddingLeft: "1vw",
-                  }}
-                >
-                  {item}
-                </Typography>
-                <i style={style.Icon}>
-                  <BsTrash />
-                </i>
-              </Box>
-            );
-          })}
+
+          <h4>Key pressed: {key}</h4>
 
           <div
             style={{

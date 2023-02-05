@@ -90,6 +90,20 @@ export const SidebarData = [
           path: '/actions-reactions/reactions',
           icon: <AiIcons.AiFillSetting />,
           cName: 'sub-nav'
+        },
+        {
+          title: 'Word Detection',
+          fullTitle: 'Actions & Reactions > Word Detection',
+          path: '/actions-reactions/word-detection',
+          icon: <AiIcons.AiFillSetting />,
+          cName: 'sub-nav'
+        },
+        {
+          title: 'Key Pressed',
+          fullTitle: 'Actions & Reactions > Key Pressed',
+          path: '/actions-reactions/key-pressed',
+          icon: <AiIcons.AiFillSetting />,
+          cName: 'sub-nav'
         }
       ]
     },

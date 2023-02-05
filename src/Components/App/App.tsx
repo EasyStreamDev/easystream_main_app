@@ -12,6 +12,7 @@ import { Subtitles } from '../Subtitles/Subtitles'
 import { MicsLevel } from '../MicsLevel/MicsLevel';
 import { ActionsReactions } from "../ActionsReactions/ActionsReactions"
 import { WordDetection } from '../ActionsReactions/WordDetection/WordDetection';
+import { KeyPressed } from '../ActionsReactions/KeyPressed/KeyPressed';
 import { CreateReactions } from '../ActionsReactions/CreateReactions/CreateReactions';
 import { Scenes } from '../Scenes/Scenes';
 import { CreateActions } from '../ActionsReactions/CreateActions/CreateActions';
@@ -35,6 +36,7 @@ export default function App() {
 						<Route path='/actions-reactions/home' element={<ActionsReactions/>} />
 						<Route path='/actions-reactions/actions' element={<CreateActions/>} />
 						<Route path='/actions-reactions/word-detection' element={<WordDetection/>} /> 
+						<Route path='/actions-reactions/key-pressed' element={<KeyPressed/>} /> 
 						<Route path='/actions-reactions/reactions' element={<CreateReactions/>} />
 					</Routes>
 				</div>

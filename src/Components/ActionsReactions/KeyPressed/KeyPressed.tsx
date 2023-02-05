@@ -1,8 +1,8 @@
 import React, { Component, useEffect, useState } from "react";
-import { AddNewWord } from "../AddNewWord/AddNewWord";
 import BoxEvent from "../../BoxEvent/BoxEvent";
 import { LocalStorage } from '../../../LocalStorage/LocalStorage';
 import { getActReactCouplesFormat, actionReactionFormat, removeActReactAnswer } from '../../../Socket/interfaces';
+import { AddNewKeyPressed } from "../AddNewKeyPressed/AddNewKeyPressed";
 const ipcRenderer = window.require('electron').ipcRenderer
 
 export enum ActionType {
@@ -40,7 +40,7 @@ export interface action_reaction {
 
 interface event {
   id: number;
-  keywords: String[];
+  key: string;
   source: {
     id?: number,
     name?: String,
@@ -49,11 +49,11 @@ interface event {
   };
 }
 
-export const WordDetection = (props: any) => {
+export const KeyPressed = (props: any) => {
   const [ action_reactionArray, setaction_reactionArray ] = React.useState<action_reaction_identified[]>([])
   const [newEvent, setnewEvent] = React.useState<event>({
     id: action_reactionArray.length,
-    keywords: [],
+    key: "",
     source: {},
   });
   const [sources] = React.useState(LocalStorage.getItemObject("actionsList") || [])
@@ -87,9 +87,9 @@ export const WordDetection = (props: any) => {
   function addNewEvent(event: any) {
     let newActionReaction: action_reaction = {
       action: {
-        type: ActionType.WORD_DETECT as string,
+        type: ActionType.KEY_PRESSED as string,
         params: {
-          words: event.keywords
+          key: event.key
         }
       },
       reaction: {
@@ -99,6 +99,7 @@ export const WordDetection = (props: any) => {
       }
     }
 
+    console.log(newActionReaction)
     sendActionReactionToServer(newActionReaction)
     .then(res => {
       if (res.statusCode === 200) {
@@ -182,12 +183,12 @@ export const WordDetection = (props: any) => {
       <>
       {
         action_reactionArray.map((item: any, index: number) => {
-          if (item.action.type === "WORD_DETECT") {
-            return <BoxEvent key={index} keyObj={item} i={index} eventArray={action_reactionArray} seteventArray={updateEventFromBoxEvent}/>;
-          }
+            if (item.action.type === "KEY_PRESSED") {
+                return <BoxEvent keyObj={item} key={index} i={index} eventArray={action_reactionArray} seteventArray={updateEventFromBoxEvent}/>;
+            }
         })
       }
-      <AddNewWord
+      <AddNewKeyPressed
         addNewEvent={addNewEvent}
         sources={sources}
         newEvent={newEvent}

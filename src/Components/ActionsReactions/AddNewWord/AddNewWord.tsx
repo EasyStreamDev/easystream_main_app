@@ -4,7 +4,7 @@ import {
   IoIosAddCircleOutline,
 } from "react-icons/io";
 import CSS from "csstype";
-import { MyModal } from "../Modal/Modal";
+import { WordDetectionModal } from "./WordDetectionModal/WordDetectionModal";
 import { SelectChangeEvent } from "@mui/material/Select";
 
 const boxStyles: CSS.Properties = {
@@ -46,7 +46,7 @@ export const AddNewWord = (props: any) => {
   const handleClose = () => setOpen(false);
 
   const save = () => {
-    if (props.newEvent.keywords.length !== 0 && props.newEvent.source && props.newEvent.source.name) {
+    if (props.newEvent.length !== 0 && props.newEvent.source && props.newEvent.source.name) {
       props.addNewEvent(props.newEvent);
       handleClose();
     } else {
@@ -106,7 +106,7 @@ export const AddNewWord = (props: any) => {
           </i>
         </h3>
       </Box>
-      <MyModal
+      <WordDetectionModal
         handleOpen={handleOpen}
         handleClose={handleClose}
         save={save}
