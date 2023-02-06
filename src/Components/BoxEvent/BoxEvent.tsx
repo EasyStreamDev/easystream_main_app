@@ -81,7 +81,28 @@ export default function BoxEvent(props: any) {
             <span style={TextStylesTitle}> will be done.</span>
           </Box>
 
-        : <></>
+        : (
+          props.keyObj.action.type === "KEY_PRESSED" ? 
+            
+            <Box style={boxStyles}>
+              <span key="if-you-type" style={TextStylesTitle}>If you type the letter : </span>
+              {
+                  props.keyObj.action.params.key
+              }
+              <BsTrash
+                style={IconStyles}
+                onClick={() => { deleteEvent(props.i) }}
+              />
+              <br></br>
+              <span key="the-actions" style={TextStylesTitle}>The reaction : </span>
+                <span key={props.keyObj.reactionId } style={TextStyles}>[{props.keyObj.reaction?.name ? props.keyObj.reaction?.name : "NAME ERROR" }]</span>
+              <span style={TextStylesTitle}> will be done.</span>
+            </Box>
+
+          :
+            <></>
+
+        )
       }
     </>
   );

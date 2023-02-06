@@ -104,11 +104,30 @@ ipcMain.on("getActReactCouples", (event, arg) => {
                 }
             },
             reaction: {
-                name: "Changement de caméra sur la caméra 1",
+                name: "Changement de scene sur la scene 2",
                 reactionId: 1,
-                type: "CAMERA_SWITCH",
+                type: "SCENE_SWITCH",
                 params: {
-                  "video-source": "camera_1"
+                  scene: "scene_2"
+                }
+            }
+          },
+          {
+            actReactId: 2,
+            isActive: true,
+            action: {
+                actionId: 2,
+                type: "KEY_PRESSED",
+                params: {
+                  key: "m"
+                }
+            },
+            reaction: {
+                name: "Changement de scene sur la scene 3",
+                reactionId: 4,
+                type: "SCENE_SWITCH",
+                params: {
+                  scene: "scene_3"
                 }
             }
           },

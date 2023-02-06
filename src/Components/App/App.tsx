@@ -9,16 +9,19 @@ import {
 } from "react-router-dom";
 import { Home } from "../Home/Home";
 import { Subtitles } from "../Subtitles/Subtitles";
-import { Report } from "../Report/Report";
 import { MicsLevel } from "../MicsLevel/MicsLevel";
-import { WordDetection } from "../WordDetection/WordDetection";
-import { GeneralActions } from "../Actions/GeneralActions";
+import { WordDetection } from "../ActionsReactions/WordDetection/WordDetection";
 import { Scenes } from "../Scenes/Scenes";
 import { Login } from "../Login/login";
 import Layout from "../Layout/Layout";
 import RequireAuth from "../Auth/RequireAuth";
 import { SubscriptionTypeEnumObject } from "../../Types";
 import Unauthorized from "../Unauthorized/Unauthorized";
+import { ActionsReactions } from "../ActionsReactions/ActionsReactions"
+import { KeyPressed } from '../ActionsReactions/KeyPressed/KeyPressed';
+import { CreateActions } from '../ActionsReactions/CreateActions/CreateActions';
+import { CreateReactions } from '../ActionsReactions/CreateReactions/CreateReactions'
+import { Feedback } from '../Other/Feedback/Feedback';
 
 const ipcRenderer = window.require("electron").ipcRenderer;
 
@@ -34,8 +37,14 @@ export default function App() {
             <Route path="/" element={<Layout />}>
               <Route path="/" element={<Home />} />
               <Route path="/login" element={<Login />} />
-              <Route path="/reports" element={<Report />} />
               <Route path="/unauthorized" element={<Unauthorized />} />
+              <Route path='/' element={<Home/>}/>
+						  <Route path='/other/feedback' element={<Feedback/>} />
+						  <Route path='/video/subtitles' element={<Subtitles/>} />
+						  <Route path='/actions-reactions/home' element={<ActionsReactions/>} />
+						  <Route path='/actions-reactions/actions' element={<CreateActions/>} />
+						  <Route path='/actions-reactions/key-pressed' element={<KeyPressed/>} /> 
+						  <Route path='/actions-reactions/reactions' element={<CreateReactions/>} />
 
               <Route
                 element={
@@ -50,7 +59,6 @@ export default function App() {
                 }
               >
                 <Route path="/audio/mics-level" element={<MicsLevel />} />
-                <Route path="/action/general" element={<GeneralActions />} />
               </Route>
 
               <Route
@@ -88,7 +96,7 @@ export default function App() {
                 }
               >
                 <Route
-                  path="/audio/word-detection"
+                  path='/actions-reactions/word-detection'
                   element={<WordDetection />}
                 />
               </Route>

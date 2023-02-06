@@ -1,15 +1,9 @@
 import React, { Component, useEffect, useState } from "react";
-import { AddNewWord } from "../AddNewWord/AddNewWord";
-
-import { Button } from "@mui/material";
-
-import useAxiosPrivate from "../../hooks/useAxiosPrivate";
-
 import BoxEvent from "../../BoxEvent/BoxEvent";
 import { LocalStorage } from '../../../LocalStorage/LocalStorage';
 import { getActReactCouplesFormat, actionReactionFormat, removeActReactAnswer } from '../../../Socket/interfaces';
+import { AddNewKeyPressed } from "../AddNewKeyPressed/AddNewKeyPressed";
 const ipcRenderer = window.require('electron').ipcRenderer
-const SAVE_WORD_DETECTION_URL = "/applicationSavedFeature/saveWordsDetection";
 
 export enum ActionType {
   WORD_DETECT = "WORD_DETECT",
@@ -46,7 +40,7 @@ export interface action_reaction {
 
 interface event {
   id: number;
-  keywords: String[];
+  key: string;
   source: {
     id?: number,
     name?: String,
@@ -55,39 +49,16 @@ interface event {
   };
 }
 
-export const WordDetection = (props: any) => {
+export const KeyPressed = (props: any) => {
   const [ action_reactionArray, setaction_reactionArray ] = React.useState<action_reaction_identified[]>([])
   const [newEvent, setnewEvent] = React.useState<event>({
     id: action_reactionArray.length,
-    keywords: [],
+    key: "",
     source: {},
   });
   const [sources] = React.useState(LocalStorage.getItemObject("actionsList") || [])
   const [load, setload] = React.useState(true);
   const [point, setpoint] = React.useState(".");
-  const axiosPrivate = useAxiosPrivate();
-
-  const style = {
-    Button: {
-      borderColor: "#f56f28",
-      color: "#FFFFFF",
-      marginTop: "20px",
-      "&:hover": {
-        borderColor: "#f56f28",
-        color: "#f56f28",
-      },
-    },
-  };
-
-  const save = () => {
-    const mics = ''
-    console.log(action_reactionArray)
-    // axiosPrivate.post(SAVE_WORD_DETECTION_URL, {
-    //   mics,
-    //   headers: { "Content-Type": "application/json" },
-    //   // withCredentials: true,
-    // });
-  }
 
   const updateActionReactionArray = () => {
     getActionReactionFromServer()
@@ -116,9 +87,9 @@ export const WordDetection = (props: any) => {
   function addNewEvent(event: any) {
     let newActionReaction: action_reaction = {
       action: {
-        type: ActionType.WORD_DETECT as string,
+        type: ActionType.KEY_PRESSED as string,
         params: {
-          words: event.keywords
+          key: event.key
         }
       },
       reaction: {
@@ -128,6 +99,7 @@ export const WordDetection = (props: any) => {
       }
     }
 
+    console.log(newActionReaction)
     sendActionReactionToServer(newActionReaction)
     .then(res => {
       if (res.statusCode === 200) {
@@ -211,25 +183,17 @@ export const WordDetection = (props: any) => {
       <>
       {
         action_reactionArray.map((item: any, index: number) => {
-          if (item.action.type === "WORD_DETECT") {
-            return <BoxEvent key={index} keyObj={item} i={index} eventArray={action_reactionArray} seteventArray={updateEventFromBoxEvent}/>;
-          }
+            if (item.action.type === "KEY_PRESSED") {
+                return <BoxEvent keyObj={item} key={index} i={index} eventArray={action_reactionArray} seteventArray={updateEventFromBoxEvent}/>;
+            }
         })
       }
-      <AddNewWord
+      <AddNewKeyPressed
         addNewEvent={addNewEvent}
         sources={sources}
         newEvent={newEvent}
         setnewEvent={setnewEvent}
       />
-      <Button
-          variant="outlined"
-          sx={style.Button}
-          onClick={save}
-        >
-          {" "}
-          Save{" "}
-        </Button>
       </>
       )
     }
