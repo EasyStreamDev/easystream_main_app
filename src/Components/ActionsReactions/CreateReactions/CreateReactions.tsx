@@ -185,35 +185,43 @@ export const GeneralActions = () => {
               <>
                 <h4>No action found.</h4>
               </>
-            ) : (actionsList.map((item: any, index: any) => {
-              return (
-                <Card key={index} className="card-event" sx={{ minWidth: 150, minHeight: 100, margin: 2 }}>
-                  <CardContent>
-                    <Typography variant="h5" component="div">
-                      { getIcon(item.action) } "{ item.name }"
-                    </Typography>
-                    <Typography sx={{ mb: 1.5 }} color="text.secondary">
-                      { getAction(item.action) }
-                    </Typography>
-                    <Typography variant="body2">
-                      {
-                        item.params ? 
-                          Object.keys(item.params).map(key => {
-                            return `${key}: ${item.params[key]}`;
-                          }).join("\n")
-                        :
-                          ""
-                      }
-                    </Typography>
-                  </CardContent>
-                  <CardActions disableSpacing className="rightAlignItem">
-                    <IconButton onClick={() => deleteAction(item.id)} aria-label="delete">
-                      <BsTrash />
-                    </IconButton>
-                  </CardActions>
-                </Card>
-              )
-            }))
+            ) : (
+              <div className="reactions-list">
+                <div className="item-container">
+                {
+                  actionsList.map((item: any, index: any) => {
+                    return (
+                      <Card key={index} className="card-event" sx={{ minWidth: 150, minHeight: 100, margin: 2 }}>
+                        <CardContent>
+                          <Typography variant="h5" component="div">
+                            { getIcon(item.action) } "{ item.name }"
+                          </Typography>
+                          <Typography sx={{ mb: 1.5 }} color="text.secondary">
+                            { getAction(item.action) }
+                          </Typography>
+                          <Typography variant="body2">
+                            {
+                              item.params ? 
+                                Object.keys(item.params).map(key => {
+                                  return `${key}: ${item.params[key]}`;
+                                }).join("\n")
+                                :
+                                ""
+                            }
+                          </Typography>
+                        </CardContent>
+                        <CardActions disableSpacing className="rightAlignItem">
+                          <IconButton onClick={() => deleteAction(item.id)} aria-label="delete">
+                            <BsTrash />
+                          </IconButton>
+                        </CardActions>
+                      </Card>
+                    )
+                  })
+                }
+                </div>
+              </div>
+            )
           }
 
         </div>

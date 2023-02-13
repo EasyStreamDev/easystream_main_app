@@ -6,6 +6,17 @@ body {
     text-align: center;
 }
 
+.reactions-list {
+    max-height: 430px;
+}
+
+.item-container {
+    overflow:scroll;
+    overflow-y:scroll;
+    overflow-x:hidden;
+    max-height: 430px;
+}
+
 .card-event {
     background-color: black;
     border-color: grey;
