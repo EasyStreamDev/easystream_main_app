@@ -3,7 +3,7 @@ import { AddNewWord } from "../AddNewWord/AddNewWord";
 
 import { Button } from "@mui/material";
 
-import useAxiosPrivate from "../../hooks/useAxiosPrivate";
+import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
 
 import BoxEvent from "../../BoxEvent/BoxEvent";
 import { LocalStorage } from '../../../LocalStorage/LocalStorage';
