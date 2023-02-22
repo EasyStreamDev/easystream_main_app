@@ -12,7 +12,7 @@ export class LocalStorage {
             localStorage.removeItem('__localstorage_support_test__');
         } catch(e) {
             // If exception is thrown, then there is problem in local storage support.
-            console.warn('LocalStorage Not supported for this browser.');
+            console.log('LocalStorage Not supported for this browser.');
             return false;
         }
 
