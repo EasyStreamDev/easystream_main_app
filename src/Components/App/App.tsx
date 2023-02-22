@@ -38,7 +38,6 @@ export default function App() {
               <Route path="/" element={<Home />} />
               <Route path="/login" element={<Login />} />
               <Route path="/unauthorized" element={<Unauthorized />} />
-              <Route path='/' element={<Home/>}/>
 						  <Route path='/other/feedback' element={<Feedback/>} />
 						  <Route path='/video/subtitles' element={<Subtitles/>} />
 						  <Route path='/actions-reactions/home' element={<ActionsReactions/>} />
