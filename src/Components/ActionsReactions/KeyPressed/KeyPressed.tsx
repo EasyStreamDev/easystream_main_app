@@ -3,6 +3,7 @@ import BoxEvent from "../../BoxEvent/BoxEvent";
 import { LocalStorage } from '../../../LocalStorage/LocalStorage';
 import { getActReactCouplesFormat, actionReactionFormat, removeActReactAnswer } from '../../../Socket/interfaces';
 import { AddNewKeyPressed } from "../AddNewKeyPressed/AddNewKeyPressed";
+import { Link } from "react-router-dom";
 const ipcRenderer = window.require('electron').ipcRenderer
 
 export enum ActionType {
@@ -194,6 +195,7 @@ export const KeyPressed = (props: any) => {
         newEvent={newEvent}
         setnewEvent={setnewEvent}
       />
+      <Link style={{ "paddingTop": "20px" }} to="/actions-reactions/home">Go Back</Link>
       </>
       )
     }
