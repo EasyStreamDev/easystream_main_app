@@ -1,5 +1,6 @@
 import React, { Component, useEffect, useState } from "react";
 import { AddNewWord } from "../AddNewWord/AddNewWord";
+import { Link } from "react-router-dom";
 
 import { Button } from "@mui/material";
 
@@ -230,6 +231,8 @@ export const WordDetection = (props: any) => {
           {" "}
           Save{" "}
         </Button>
+        <Link style={{ "paddingTop": "20px" }} to="/actions-reactions/home">Go Back</Link>
+
       </>
       )
     }

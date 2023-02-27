@@ -16,6 +16,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { LocalStorage } from '../../../LocalStorage/LocalStorage';
+import { Link } from "react-router-dom";
 
 import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
 
@@ -216,6 +217,8 @@ export const CreateReactions = () => {
           }
 
         </div>
+
+        <Link className="pt-20" to="/actions-reactions/home">Go Back</Link>
 
         <Dialog open={open} onClose={handleCancel}>
           <DialogTitle>Add Reaction</DialogTitle>
