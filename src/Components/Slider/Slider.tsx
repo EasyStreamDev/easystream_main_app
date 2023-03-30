@@ -91,11 +91,12 @@ export default function CustomizedSlider(props: any) {
 
   return (
     <Box sx={{ width: 720 }}>
-      <Box sx={{ pt: 4, pb: 4, ml: -1 }}>
+      <Box sx={{ pt: 4, pb: 4 }}>
         <Typography gutterBottom>{props.name}</Typography>
       </Box>
       <Box sx={{ display: "flex", flexDirection: "row", p: 1, m: 1 }}>
         <MicroSlider
+          key={`slider-compressor}`}
           onChangeCommitted={(_, val: any) => {
             props.sendData(val);
           }}
@@ -110,7 +111,7 @@ export default function CustomizedSlider(props: any) {
             (props.isActive) ? props.sendActive(false) : props.sendActive(true);
           }}
         >
-          {props.isActive ? <BsMic /> : <BsMicMute />}
+          {props.isActive ? <BsMic style={ { color: "green" } } /> : <BsMicMute style={ { color: "red" } } />}
         </Box>
       </Box>
     </Box>
