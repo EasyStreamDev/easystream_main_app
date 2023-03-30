@@ -1,17 +1,20 @@
 import React, { Component, useEffect, useState } from "react";
 import ReactRanger from "react-ranger";
 import CustomizedSlider from "../Slider/Slider";
-import { AllMics, Mic } from '../../Socket/interfaces';
-import { resultFormat } from '../../Socket/interfaces';
+import { AllMics, Mic } from "../../Socket/interfaces";
+import { resultFormat } from "../../Socket/interfaces";
 import { Button } from "@mui/material";
+import "./CompressorLevel.css";
 
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 
-const ipcRenderer = window.require('electron').ipcRenderer
+const ipcRenderer = window.require("electron").ipcRenderer;
 const SAVE_MICROPHONE_URL = "/applicationSavedFeature/saveMicrophones";
 
 export const CompressorLevel = () => {
-  const [exampleCompressorArray, setExampleCompressorArray] = React.useState<Mic[]>([]);
+  const [exampleCompressorArray, setExampleCompressorArray] = React.useState<
+    Mic[]
+  >([]);
   const [load, setload] = React.useState(true);
   const [point, setpoint] = React.useState(".");
   const axiosPrivate = useAxiosPrivate();
@@ -29,21 +32,24 @@ export const CompressorLevel = () => {
   };
 
   let timeoutCommit: NodeJS.Timeout | undefined = undefined;
-  
+
   const getAllCompressors = (): Promise<AllMics> => {
-		return new Promise(async (resolve, reject) => {
-			const result: AllMics = await ipcRenderer.sendSync('getAllMics', 'ping');
-			resolve(result);
-		})
-	}
+    return new Promise(async (resolve, reject) => {
+      const result: AllMics = await ipcRenderer.sendSync("getAllMics", "ping");
+      resolve(result);
+    });
+  };
 
   const setVolumeToCompressor = (mic: Mic): Promise<resultFormat> => {
-		return new Promise(async (resolve, reject) => {
-			const result: resultFormat = await ipcRenderer.sendSync('setMicLevel', mic);
-			console.log('setVolumeToCompressor invoke', result);
-			resolve(result)
-		});
-	}
+    return new Promise(async (resolve, reject) => {
+      const result: resultFormat = await ipcRenderer.sendSync(
+        "setMicLevel",
+        mic
+      );
+      console.log("setVolumeToCompressor invoke", result);
+      resolve(result);
+    });
+  };
 
   const getData = (index: number, value: number) => {
     let copy = exampleCompressorArray.slice();
@@ -52,12 +58,11 @@ export const CompressorLevel = () => {
     setExampleCompressorArray(copy);
 
     // Update to server
-    clearTimeout(timeoutCommit)
+    clearTimeout(timeoutCommit);
     timeoutCommit = setTimeout(() => {
-      setVolumeToCompressor(copy[index])
+      setVolumeToCompressor(copy[index]);
     }, 3000);
   };
-
 
   const setActive = (index: number, value: boolean) => {
     let copy = exampleCompressorArray.slice();
@@ -65,42 +70,43 @@ export const CompressorLevel = () => {
     setExampleCompressorArray(copy);
 
     // Update to server
-    clearTimeout(timeoutCommit)
+    clearTimeout(timeoutCommit);
     timeoutCommit = setTimeout(() => {
-      setVolumeToCompressor(copy[index])
+      setVolumeToCompressor(copy[index]);
     }, 3000);
   };
 
   useEffect(() => {
     async function sleep(): Promise<boolean> {
       return new Promise((resolve) => {
-        getAllCompressors()
-        .then(res => {
+        getAllCompressors().then((res) => {
           if (res.statusCode === 200) {
-            setExampleCompressorArray(res.data.mics)
+            setExampleCompressorArray(res.data.mics);
             resolve(false);
           }
-        })
-      })
+        });
+      });
     }
-    
+
     sleep().then((res) => setload(res));
   }, []);
 
   function addpoint() {
-    {setInterval(() => {
-      (point.length >= 3 ? setpoint(".") : setpoint(point + "."));
-    }, 1000)}
+    {
+      setInterval(() => {
+        point.length >= 3 ? setpoint(".") : setpoint(point + ".");
+      }, 1000);
+    }
   }
 
   const save = () => {
-    const mics = [...exampleCompressorArray] 
+    const mics = [...exampleCompressorArray];
     axiosPrivate.post(SAVE_MICROPHONE_URL, {
       mics,
       headers: { "Content-Type": "application/json" },
       // withCredentials: true,
     });
-  }
+  };
 
   return (
     <>
@@ -111,22 +117,38 @@ export const CompressorLevel = () => {
           {addpoint()}
         </>
       ) : (
-        exampleCompressorArray && exampleCompressorArray.length > 0 ? (
-          exampleCompressorArray.map((item, index) => {
-            return (
-              <CustomizedSlider
-                key={item.micName}
-                isActive={item.isActive}
-                name={item.micName}
-                value={item.level}
-                sendData={(val: number) => getData(index, val)}
-                sendActive={(val: boolean) => setActive(index, val)}
-              />
-            );
-          })
-        ) : (
-          <></>
-        )
+        <>
+          <div className="container events-container">
+            <h2>List of mics</h2>
+            {exampleCompressorArray.length === 0 ? (
+              <>
+                <h4>No mic found.</h4>
+              </>
+            ) : (
+              <div className="actions-reactions-list">
+                <div className="item-container">
+                  {exampleCompressorArray &&
+                  exampleCompressorArray.length > 0 ? (
+                    exampleCompressorArray.map((item, index) => {
+                      return (
+                        <CustomizedSlider
+                          key={item.micName}
+                          isActive={item.isActive}
+                          name={item.micName}
+                          value={item.level}
+                          sendData={(val: number) => getData(index, val)}
+                          sendActive={(val: boolean) => setActive(index, val)}
+                        />
+                      );
+                    })
+                  ) : (
+                    <></>
+                  )}
+                </div>
+              </div>
+            )}
+          </div>
+        </>
       )}
     </>
   );

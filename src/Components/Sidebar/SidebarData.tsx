@@ -20,8 +20,8 @@ export const SidebarData = [
   
       subNav: [
         {
-          title: 'Mic Level',
-          fullTitle: 'Audio > Mic Level',
+          title: 'Compressor Level',
+          fullTitle: 'Audio > Compressor Level',
           path: '/audio/compressor-level',
           icon: <BsIcons.BsFillVolumeUpFill />,
           cName: 'sub-nav'
