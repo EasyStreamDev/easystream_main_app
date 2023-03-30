@@ -9,7 +9,7 @@ import {
 } from "react-router-dom";
 import { Home } from "../Home/Home";
 import { Subtitles } from "../Subtitles/Subtitles";
-import { MicsLevel } from "../MicsLevel/MicsLevel";
+import { CompressorLevel } from "../CompressorLevel/CompressorLevel";
 import { WordDetection } from "../ActionsReactions/WordDetection/WordDetection";
 import { Scenes } from "../Scenes/Scenes";
 import { Login } from "../Login/login";
@@ -57,7 +57,7 @@ export default function App() {
                   />
                 }
               >
-                <Route path="/audio/mics-level" element={<MicsLevel />} />
+                <Route path="/audio/compressor-level" element={<CompressorLevel />} />
               </Route>
 
               <Route

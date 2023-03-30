@@ -10,8 +10,8 @@ import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 const ipcRenderer = window.require('electron').ipcRenderer
 const SAVE_MICROPHONE_URL = "/applicationSavedFeature/saveMicrophones";
 
-export const MicsLevel = () => {
-  const [exampleMicsArray, setExampleMicsArray] = React.useState<Mic[]>([]);
+export const CompressorLevel = () => {
+  const [exampleCompressorArray, setExampleCompressorArray] = React.useState<Mic[]>([]);
   const [load, setload] = React.useState(true);
   const [point, setpoint] = React.useState(".");
   const axiosPrivate = useAxiosPrivate();
@@ -30,55 +30,54 @@ export const MicsLevel = () => {
 
   let timeoutCommit: NodeJS.Timeout | undefined = undefined;
   
-  const getAllMics = (): Promise<AllMics> => {
+  const getAllCompressors = (): Promise<AllMics> => {
 		return new Promise(async (resolve, reject) => {
 			const result: AllMics = await ipcRenderer.sendSync('getAllMics', 'ping');
 			resolve(result);
 		})
 	}
 
-  // setVolumeToMic('Audio Input Capture (PulseAudio)', 100)
-  const setVolumeToMic = (mic: Mic): Promise<resultFormat> => {
+  const setVolumeToCompressor = (mic: Mic): Promise<resultFormat> => {
 		return new Promise(async (resolve, reject) => {
 			const result: resultFormat = await ipcRenderer.sendSync('setMicLevel', mic);
-			console.log('setVolumeToMic invoke', result);
+			console.log('setVolumeToCompressor invoke', result);
 			resolve(result)
 		});
 	}
 
   const getData = (index: number, value: number) => {
-    let copy = exampleMicsArray.slice();
+    let copy = exampleCompressorArray.slice();
     copy[index].level = value;
     console.log("Value", copy[index]);
-    setExampleMicsArray(copy);
+    setExampleCompressorArray(copy);
 
     // Update to server
     clearTimeout(timeoutCommit)
     timeoutCommit = setTimeout(() => {
-      setVolumeToMic(copy[index])
+      setVolumeToCompressor(copy[index])
     }, 3000);
   };
 
 
   const setActive = (index: number, value: boolean) => {
-    let copy = exampleMicsArray.slice();
+    let copy = exampleCompressorArray.slice();
     copy[index].isActive = value;
-    setExampleMicsArray(copy);
+    setExampleCompressorArray(copy);
 
     // Update to server
     clearTimeout(timeoutCommit)
     timeoutCommit = setTimeout(() => {
-      setVolumeToMic(copy[index])
+      setVolumeToCompressor(copy[index])
     }, 3000);
   };
 
   useEffect(() => {
     async function sleep(): Promise<boolean> {
       return new Promise((resolve) => {
-        getAllMics()
+        getAllCompressors()
         .then(res => {
           if (res.statusCode === 200) {
-            setExampleMicsArray(res.data.mics)
+            setExampleCompressorArray(res.data.mics)
             resolve(false);
           }
         })
@@ -95,7 +94,7 @@ export const MicsLevel = () => {
   }
 
   const save = () => {
-    const mics = [...exampleMicsArray] 
+    const mics = [...exampleCompressorArray] 
     axiosPrivate.post(SAVE_MICROPHONE_URL, {
       mics,
       headers: { "Content-Type": "application/json" },
@@ -112,8 +111,8 @@ export const MicsLevel = () => {
           {addpoint()}
         </>
       ) : (
-        exampleMicsArray && exampleMicsArray.length > 0 ? (
-          exampleMicsArray.map((item, index) => {
+        exampleCompressorArray && exampleCompressorArray.length > 0 ? (
+          exampleCompressorArray.map((item, index) => {
             return (
               <CustomizedSlider
                 key={item.micName}
