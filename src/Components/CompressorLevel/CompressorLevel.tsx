@@ -4,6 +4,9 @@ import CustomizedSlider from "../Slider/Slider";
 import { AllMics, Mic } from "../../Socket/interfaces";
 import { resultFormat } from "../../Socket/interfaces";
 import { Button } from "@mui/material";
+import IconButton from '@mui/material/IconButton';
+import Tooltip from '@mui/material/Tooltip';
+import { MdHelpOutline } from "react-icons/md";
 import "./CompressorLevel.css";
 
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
@@ -119,7 +122,13 @@ export const CompressorLevel = () => {
       ) : (
         <>
           <div className="container events-container">
-            <h2>List of mics</h2>
+            <h2>List of mics:
+            <Tooltip title="Here, you can adjust the level of compressor applied on your mics. Example: higher is the compressor level, more your voice will be eased.">
+              <IconButton>
+                <MdHelpOutline style={ { color: "white" } } />
+              </IconButton>
+            </Tooltip>
+            </h2>
             {exampleCompressorArray.length === 0 ? (
               <>
                 <h4>No mic found.</h4>
