@@ -123,7 +123,7 @@ export const ActionsReactions = () => {
       let words = params.words.join(" or ")
       return "If you say " + words
     } else if (type === "APP_LAUNCH") {
-      return "TODO"
+      return "If the application " + params.app_name + " launches"
     } else if (type === "KEY_PRESSED") {
       let key = params.key
       return 'If you type the touch "' + key + '"'
