@@ -215,6 +215,7 @@ ipcMain.on("setAutoAudioLeveler", (event, arg) => {
 
 ipcMain.on("removeActReact", (event, arg) => {
   if (isDev) {
+    console.log("removeActReact")
     let res = {
       statusCode: 200,
       message: "OK",
