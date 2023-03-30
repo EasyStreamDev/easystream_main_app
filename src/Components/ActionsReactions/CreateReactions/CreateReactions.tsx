@@ -5,7 +5,7 @@ import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-import { AiOutlineBug, AiOutlinePlayCircle, AiOutlineSound, AiOutlineStop, AiOutlineVideoCamera } from 'react-icons/ai';
+import { AiFillVideoCamera, AiOutlineBug, AiOutlinePlayCircle, AiOutlineSound, AiOutlineStop, AiOutlineVideoCamera } from 'react-icons/ai';
 import { MdPanoramaHorizontal } from 'react-icons/md';
 import { IconButton, InputLabel, MenuItem, Select, SelectChangeEvent } from '@mui/material';
 import { BsTrash } from 'react-icons/bs';
@@ -23,11 +23,12 @@ import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
 const SAVE_GENERATE_EVENT_URL = "/applicationSavedFeature/saveGenerateEvent";
 
 export enum ReactionType {
-  CAMERA_SWITCH = "CAMERA_SWITCH",
   SCENE_SWITCH = "SCENE_SWITCH",
-  START_LIVE = "START_LIVE",
-  STOP_LIVE = "STOP_LIVE",
-  TOGGLE_AUDIO_COMPRESSOR = "TOGGLE_AUDIO_COMPRESSOR"
+  TOGGLE_AUDIO_COMPRESSOR = "TOGGLE_AUDIO_COMPRESSOR",
+  START_STREAM = "START_STREAM",
+  STOP_STREAM = "STOP_STREAM",
+  START_REC = "START_REC",
+  STOP_REC = "STOP_REC",
 }
 
 export const CreateReactions = () => {
@@ -59,14 +60,16 @@ export const CreateReactions = () => {
         let parameter = '';
         if (action.action === ReactionType.TOGGLE_AUDIO_COMPRESSOR)
             parameter = "audio_source";
-          if (action.action === ReactionType.CAMERA_SWITCH)
-            parameter = "video_source";
-          if (action.action === ReactionType.SCENE_SWITCH)
-            parameter = "scene_name";
-          if (action.action === ReactionType.START_LIVE)
-            parameter = "seconds";
-          if (action.action === ReactionType.STOP_LIVE)
-            parameter = "seconds";
+        if (action.action === ReactionType.SCENE_SWITCH)
+          parameter = "scene_name";
+        if (action.action === ReactionType.START_STREAM)
+          parameter = "delay";
+        if (action.action === ReactionType.STOP_STREAM)
+          parameter = "delay";
+        if (action.action === ReactionType.START_REC)
+          parameter = "delay";
+        if (action.action === ReactionType.STOP_REC)
+          parameter = "delay";
 
         return {
           name: action.name,
@@ -109,14 +112,16 @@ export const CreateReactions = () => {
               "audio-source": newActionParam,
               "toggle": true
             };
-          if (newActionSelected === ReactionType.CAMERA_SWITCH)
-            newElem.params = { "video_source": newActionParam };
           if (newActionSelected === ReactionType.SCENE_SWITCH)
             newElem.params = { "scene": newActionParam };
-          if (newActionSelected === ReactionType.START_LIVE)
-            newElem.params = { "seconds": newActionParam };
-          if (newActionSelected === ReactionType.STOP_LIVE)
-            newElem.params = { "seconds": newActionParam };
+          if (newActionSelected === ReactionType.START_STREAM)
+            newElem.params = { "delay": newActionParam };
+          if (newActionSelected === ReactionType.STOP_STREAM)
+            newElem.params = { "delay": newActionParam };
+          if (newActionSelected === ReactionType.START_REC)
+            newElem.params = { "delay": newActionParam };
+          if (newActionSelected === ReactionType.STOP_REC)
+            newElem.params = { "delay": newActionParam };
         }
 
         const newList = actionsList.concat([newElem]);
@@ -149,28 +154,32 @@ export const CreateReactions = () => {
     function getAction(actionEnum: any) {
       if (actionEnum === ReactionType.TOGGLE_AUDIO_COMPRESSOR)
         return "Toggle the audio compressor";
-      if (actionEnum === ReactionType.CAMERA_SWITCH)
-        return "Change the camera"
       if (actionEnum === ReactionType.SCENE_SWITCH)
         return "Change the scene"
-      if (actionEnum === ReactionType.START_LIVE)
-        return "Start the live"
-      if (actionEnum === ReactionType.STOP_LIVE)
-        return "Stop the live"
+      if (actionEnum === ReactionType.START_STREAM)
+        return "Start the stream"
+      if (actionEnum === ReactionType.STOP_STREAM)
+        return "Stop the stream"
+      if (actionEnum === ReactionType.START_REC)
+        return "Start the record"
+      if (actionEnum === ReactionType.STOP_REC)
+        return "Stop the record"
       return ""
     }
 
     function getIcon(actionEnum: ReactionType) {
       if (actionEnum === ReactionType.TOGGLE_AUDIO_COMPRESSOR)
         return <AiOutlineSound />
-      if (actionEnum === ReactionType.CAMERA_SWITCH)
-        return <AiOutlineVideoCamera />
       if (actionEnum === ReactionType.SCENE_SWITCH)
         return <MdPanoramaHorizontal />
-      if (actionEnum === ReactionType.START_LIVE)
+      if (actionEnum === ReactionType.START_STREAM)
         return <AiOutlinePlayCircle />
-      if (actionEnum === ReactionType.STOP_LIVE)
+      if (actionEnum === ReactionType.STOP_STREAM)
         return <AiOutlineStop />
+      if (actionEnum === ReactionType.START_REC)
+        return <AiFillVideoCamera />
+      if (actionEnum === ReactionType.STOP_REC)
+        return <AiOutlineVideoCamera />
       return <AiOutlineBug />
     }
 
@@ -185,35 +194,43 @@ export const CreateReactions = () => {
               <>
                 <h4>No action found.</h4>
               </>
-            ) : (actionsList.map((item: any, index: any) => {
-              return (
-                <Card key={index} className="card-event" sx={{ minWidth: 150, minHeight: 100, margin: 2 }}>
-                  <CardContent>
-                    <Typography variant="h5" component="div">
-                      { getIcon(item.action) } "{ item.name }"
-                    </Typography>
-                    <Typography sx={{ mb: 1.5 }} color="text.secondary">
-                      { getAction(item.action) }
-                    </Typography>
-                    <Typography variant="body2">
-                      {
-                        item.params ? 
-                          Object.keys(item.params).map(key => {
-                            return `${key}: ${item.params[key]}`;
-                          }).join("\n")
-                        :
-                          ""
-                      }
-                    </Typography>
-                  </CardContent>
-                  <CardActions disableSpacing className="rightAlignItem">
-                    <IconButton onClick={() => deleteAction(item.id)} aria-label="delete">
-                      <BsTrash />
-                    </IconButton>
-                  </CardActions>
-                </Card>
-              )
-            }))
+            ) : (
+              <div className="reactions-list">
+                <div className="item-container">
+                {
+                  actionsList.map((item: any, index: any) => {
+                    return (
+                      <Card key={index} className="card-event" sx={{ minWidth: 150, minHeight: 100, margin: 2 }}>
+                        <CardContent>
+                          <Typography variant="h5" component="div">
+                            { getIcon(item.action) } "{ item.name }"
+                          </Typography>
+                          <Typography sx={{ mb: 1.5 }} color="text.secondary">
+                            { getAction(item.action) }
+                          </Typography>
+                          <Typography variant="body2">
+                            {
+                              item.params ? 
+                                Object.keys(item.params).map(key => {
+                                  return `${key}: ${item.params[key]}`;
+                                }).join("\n")
+                                :
+                                ""
+                            }
+                          </Typography>
+                        </CardContent>
+                        <CardActions disableSpacing className="rightAlignItem">
+                          <IconButton onClick={() => deleteAction(item.id)} aria-label="delete">
+                            <BsTrash />
+                          </IconButton>
+                        </CardActions>
+                      </Card>
+                    )
+                  })
+                }
+                </div>
+              </div>
+            )
           }
 
         </div>

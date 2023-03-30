@@ -125,7 +125,20 @@ export const ActionsReactions = () => {
     } else if (type === "APP_LAUNCH") {
       return "TODO"
     } else if (type === "KEY_PRESSED") {
-      return "TODO"
+      let key = params.key
+      return 'If you type the touch "' + key + '"'
+    } else {
+      return "ERROR"
+    }
+  }
+
+  const get_action_type = (type: ActionType) => {
+    if (type === "WORD_DETECT") {
+      return "Word Detection"
+    } else if (type === "APP_LAUNCH") {
+      return "Application Launch"
+    } else if (type === "KEY_PRESSED") {
+      return "Key Pressed"
     } else {
       return "ERROR"
     }
@@ -163,7 +176,7 @@ export const ActionsReactions = () => {
                       >
                         <CardContent>
                           <Typography variant="h5" component="div">
-                            [{item.action.type}] #{item.actReactId}
+                            { get_action_type(item.action.type) } #{item.actReactId}
                           </Typography>
                           <Typography variant="body2">
                             Action: { interpret_action(item.action.type, item.action.params) }
