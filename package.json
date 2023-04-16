@@ -58,7 +58,7 @@
     "front-dev": "concurrently \"ELECTRON_IS_DEV=1 yarn react-start\" \"wait-on http://localhost:3000 && ELECTRON_IS_DEV=1 yarn electron-start\"",
     "pack": "electron-builder --dir",
     "dist": "electron-builder build -wl",
-    "build-dist": "yarn build && electron-builder --windows --linux",
+    "build-dist": "yarn build && electron-builder --windows --linux --publish=always",
     "start": "electron-forge start",
     "package": "electron-forge package",
     "make": "electron-forge make",
