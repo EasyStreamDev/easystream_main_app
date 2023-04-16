@@ -6,6 +6,7 @@ let notRelease = process.env.NOT_RELEASE || false;
 const { TCPConnection } = require("../src/Socket/socket.js");
 const {autoUpdater} = require("electron-updater");
 const log = require('electron-log');
+const localIpAddress = require("local-ip-address")
 
 autoUpdater.logger = log;
 autoUpdater.logger.transports.file.level = 'info';
@@ -58,6 +59,11 @@ const createWindow = () => {
     mainWindow.show();
   });
 };
+
+ipcMain.on("getLocalIP", (event, _) => {
+  event.returnValue = localIpAddress();
+  return true;
+});
 
 ipcMain.on("getAllMics", (event, arg) => {
   if (isDev) {
