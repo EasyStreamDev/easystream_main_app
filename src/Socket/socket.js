@@ -50,7 +50,7 @@ class TCPConnection {
     }
 
     sendData(obj, callback){
-        obj = JSON.stringify(obj);
+        obj = JSON.stringify(obj) + "\r\n";
         this.socket.write(obj);
         this.socket.once('data', (data) => {
             try {
