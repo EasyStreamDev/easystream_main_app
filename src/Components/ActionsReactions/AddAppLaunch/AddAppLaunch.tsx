@@ -4,7 +4,7 @@ import {
   IoIosAddCircleOutline,
 } from "react-icons/io";
 import CSS from "csstype";
-import { KeyPressedModal } from "./KeyPressedModal/KeyPressedModal"
+import { AppLaunchModal } from "./AppLaunchModal/AppLaunchModal"
 import { SelectChangeEvent } from "@mui/material/Select";
 
 const boxStyles: CSS.Properties = {
@@ -39,7 +39,7 @@ interface event {
   source: String[];
 }
 
-export const AddNewKeyPressed = (props: any) => {
+export const AddAppLaunch = (props: any) => {
   const [open, setOpen] = React.useState(false);
   const [sources, setsources] = React.useState("");
   const handleOpen = () => setOpen(true);
@@ -50,7 +50,7 @@ export const AddNewKeyPressed = (props: any) => {
       props.addNewEvent(props.newEvent);
       handleClose();
     } else {
-      alert("Please insert at least one keyword and one source.")
+      alert("Please insert at least one source.")
     }
   };
 
@@ -60,7 +60,15 @@ export const AddNewKeyPressed = (props: any) => {
   };
 
   const handleChange = (e: any) => {
-    props.newEvent.key = e
+    if (e.key === "Enter" && e.currentTarget.value !== "") {
+      
+      let cpy = {...props.newEvent};
+      
+      cpy.keywords[0] = (e.currentTarget.value);
+      e.currentTarget.value = "";
+      props.setnewEvent(cpy);
+      return
+    }
   };
 
   const addSource = (event: SelectChangeEvent) => {
@@ -74,13 +82,13 @@ export const AddNewKeyPressed = (props: any) => {
     <>
       <Box style={boxStyles} onClick={handleOpen}>
         <h3 style={TextStyles}>
-          Click to add new Key Pressed Event
+          Click to add new App Launch Event
           <i style={IconStyles}>
             <IoIosAddCircleOutline />
           </i>
         </h3>
       </Box>
-      <KeyPressedModal
+      <AppLaunchModal
         handleOpen={handleOpen}
         handleClose={handleClose}
         save={save}

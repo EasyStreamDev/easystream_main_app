@@ -22,6 +22,7 @@ import { KeyPressed } from '../ActionsReactions/KeyPressed/KeyPressed';
 import { CreateActions } from '../ActionsReactions/CreateActions/CreateActions';
 import { CreateReactions } from '../ActionsReactions/CreateReactions/CreateReactions'
 import { Feedback } from '../Other/Feedback/Feedback';
+import { AppLaunch } from '../ActionsReactions/AppLaunch/AppLaunch';
 
 const ipcRenderer = window.require("electron").ipcRenderer;
 
@@ -43,6 +44,7 @@ export default function App() {
 						  <Route path='/actions-reactions/home' element={<ActionsReactions/>} />
 						  <Route path='/actions-reactions/actions' element={<CreateActions/>} />
 						  <Route path='/actions-reactions/key-pressed' element={<KeyPressed/>} /> 
+						  <Route path='/actions-reactions/app-launch' element={<AppLaunch/>} /> 
 						  <Route path='/actions-reactions/reactions' element={<CreateReactions/>} />
 
               <Route
