@@ -31,7 +31,7 @@ export const Home = () => {
 	
     return (
       <>
-	  	<h1 className="ip">
+	  	<h1 className="ip icon-visibility">
 			your ip: { visibility ? ip : "*********" }
 			<IconButton className="icon-visibility" onClick={ () => setvisibility(!visibility) } aria-label="visibility">
 				{ visibility ? <Visibility/> : <VisibilityOff/> }

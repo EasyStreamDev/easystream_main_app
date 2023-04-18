@@ -100,7 +100,7 @@ export const AddNewWord = (props: any) => {
     <>
       <Box style={boxStyles} onClick={handleOpen}>
         <h3 style={TextStyles}>
-          Click to add new Event
+          Click to add new Word Detection Event
           <i style={IconStyles}>
             <IoIosAddCircleOutline />
           </i>
