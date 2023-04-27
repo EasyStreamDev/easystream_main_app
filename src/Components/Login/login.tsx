@@ -114,63 +114,74 @@ export const Login = () => {
 
   return (
     <>
-      <p
-        ref={errRef}
-        className={errMsg ? "errmsg" : "offscreen"}
-        aria-live="assertive"
+      <div style={{
+        width: "25vw",
+        maxWidth: "800px",
+        minWidth: "300px",
+        justifyContent: 'center',
+        alignItems: 'center',
+        flexDirection: 'column',
+        display: 'flex',
+      }}
       >
-        {errMsg}
-      </p>
-      <h1>Login</h1>
-      <TextField
-        id="outlined-basic"
-        label="Email"
-        variant="outlined"
-        onChange={(e) => {
-          setEmail(e.target.value);
-        }}
-        ref={emailRef}
-        value={email}
-        className={classes.TextField}
-        required
-        sx={{ mb: 2, width: "200px", input: { color: "#FFFFFF" } }}
-        InputLabelProps={{
-          sx: {
-            color: "#FFFFFF",
-            [`&.${inputLabelClasses.shrink}`]: {
-              color: "#f56f28",
+        <p
+          ref={errRef}
+          className={errMsg ? "errmsg" : "offscreen"}
+          aria-live="assertive"
+        >
+          {errMsg}
+        </p>
+        <h1>Login</h1>
+        <TextField
+          id="outlined-basic"
+          label="Email"
+          variant="outlined"
+          onChange={(e) => {
+            setEmail(e.target.value);
+          }}
+          ref={emailRef}
+          value={email}
+          className={classes.TextField}
+          required
+          sx={{ mb: 2, width: "200px", input: { color: "#FFFFFF" } }}
+          InputLabelProps={{
+            sx: {
+              color: "#FFFFFF",
+              [`&.${inputLabelClasses.shrink}`]: {
+                color: "#f56f28",
+              },
             },
-          },
-        }}
-      />
-      <TextField
-        id="outlined-basic"
-        label="Password"
-        variant="outlined"
-        onChange={(e) => {
-          setPwd(e.target.value);
-        }}
-        required
-        value={pwd}
-        className={classes.TextField}
-        sx={{ mb: 2, width: "200px", input: { color: "#FFFFFF" } }}
-        InputLabelProps={{
-          sx: {
-            color: "#FFFFFF",
-            [`&.${inputLabelClasses.shrink}`]: {
-              color: "#f56f28",
+          }}
+        />
+        <TextField
+          id="outlined-basic"
+          label="Password"
+          variant="outlined"
+          onChange={(e) => {
+            setPwd(e.target.value);
+          }}
+          required
+          value={pwd}
+          className={classes.TextField}
+          sx={{ mb: 2, width: "200px", input: { color: "#FFFFFF" } }}
+          InputLabelProps={{
+            sx: {
+              color: "#FFFFFF",
+              [`&.${inputLabelClasses.shrink}`]: {
+                color: "#f56f28",
+              },
             },
-          },
-        }}
-      />
-      <Button
-        variant="outlined"
-        sx={style.Button}
+          }}
+        />
+        <Button 
+        variant="outlined" 
+        sx={style.Button} 
         onClick={handleSubmit}
-      >
-        {" "}
-        Login{" "}
-      </Button>
+        >
+          {" "}
+          Login{" "}
+        </Button>
+      </div>
     </>
   );
 };
