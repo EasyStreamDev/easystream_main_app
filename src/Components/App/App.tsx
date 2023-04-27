@@ -36,6 +36,7 @@ export default function App() {
         <div className="App-content">
           <Routes>
             <Route path="/" element={<Layout />}>
+              <Route path="/*" element={<Home />} />
               <Route path="/" element={<Home />} />
               <Route path="/login" element={<Login />} />
               <Route path="/unauthorized" element={<Unauthorized />} />
