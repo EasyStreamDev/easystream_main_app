@@ -21,6 +21,7 @@ class TCPConnection {
                 try {
                     console.log("BLOP2")
                     data = data.toString().replace('\t','').replace('\r','').replace('\n','').replace(/\0/g, ''); // Remove all useless characters
+                    console.log("TEMA ça", data)
                     const payload = JSON.parse(data);
                     console.log(payload);
                 } catch (error) {
