@@ -62,7 +62,7 @@ class TCPConnection {
                     if (payload.message === 'BROADCAST') {
                         let type = payload.date.type
 
-                        if (type === 'audioSourceCreated' || type === 'audioSourceRemoved' || type === 'audioSourceNameChanged') {
+                        if (type === 'audioSourceCreated' || type === 'audioSourceRemoved' || type === 'audioSourceNameChanged' || type === 'micLevelChanged') {
                             console.log("J'ai été call dans la SOCKET pour update les compressors")
                             this.ipcMain.emit('compressor-level-updated')
                         } else if (type === 'sceneCreated' || type === 'sceneRemoved' || type === 'sceneNameChanged') {
