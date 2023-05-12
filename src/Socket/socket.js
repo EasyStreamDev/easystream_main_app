@@ -1,5 +1,4 @@
 const net = require('net');
-const { emit } = require('process');
 
 class TCPConnection {
     constructor(host, port, ipcMain) {
@@ -53,17 +52,13 @@ class TCPConnection {
             });
             this.socket.on('data', (data) => {
                 try {
-                    console.log('Je reçois en effet des données', data)
                     data = data.toString().replace('\t','').replace('\r','').replace('\n','').replace(/\0/g, ''); // Remove all useless characters
                     const payload = JSON.parse(data);
 
-                    console.log("J'ai fini de paser les données", payload)
-                    
                     if (payload.message === 'BROADCAST') {
                         let type = payload.data.type
 
                         if (type === 'audioSourceCreated' || type === 'audioSourceRemoved' || type === 'audioSourceNameChanged' || type === 'micLevelChanged') {
-                            console.log("J'ai été call dans la SOCKET pour update les compressors")
                             this.ipcMain.emit('compressor-level-updated')
                         } else if (type === 'sceneCreated' || type === 'sceneRemoved' || type === 'sceneNameChanged') {
                             this.ipcMain.emit('scenes-updated')
@@ -83,8 +78,6 @@ class TCPConnection {
                 if (!error) {
                     console.log('Server connection closed');
                     this.socket.end();
-                    // this.ipcMain.emit('connection-server-lost')
-                    // reject(new Error("Server connection closed"));
                 }
             });
         });
@@ -284,137 +277,6 @@ class TCPConnection {
     }
 
 }
-
-// function TCPConnection(host, port) {
-//     EventEmitter.call(this);
-
-//     return new Promise((resolve, reject) => {
-//         try {
-//             this.socket = net.connect(port, host, (test, error) => {
-//                 console.log('test ->', test);
-//                 console.log('error ->', error);
-//                 console.log('TCPConnection initialized');
-//                 setTimeout(() => {
-//                     resolve(this.socket);
-//                 }, 3000);
-//             });
-//             this.socket.once('data', function (data) {
-//                 data = data.toString().replace('\t','').replace('\r','').replace('\n','').replace(/\0/g, ''); // Remove all useless characters
-//                 const payload = JSON.parse(data);
-//                 console.log(payload);
-//             });
-//             this.socket.once('error', (error) => {
-//                 reject(error);
-//                 this.socket.end();
-//             });
-//         } catch (error) {
-//             reject(error);
-//         }
-//     });
-// }
-
-// util.inherits(TCPConnection, EventEmitter);
-
-// function sendData(socket, obj, callback){
-//     obj = JSON.stringify(obj);
-//     socket.write(obj);
-//     socket.once('data', (data) => {
-//         data = data.toString().replace('\t','').replace('\r','').replace('\n','').replace(/\0/g, ''); // Remove all useless characters
-//         callback(data, null)
-//     });
-//     socket.on('error', (error) => {
-//         callback(null, error)
-//     });
-// };
-
-// Get All Mics
-// function getAllMics(socket) {
-//     let obj = {
-//         command: 'getAllMics',
-//         args: []
-//     };
-//     console.log('obj done');
-//     return new Promise((resolve, reject) => {
-//         sendData(socket, obj, (data, error) => {
-//             if (data) {
-//                 console.log('getAllMics resolve', data);
-//                 resolve(data);
-//             } else {
-//                 console.log('getAllMics error', error);
-//                 socket.end();
-//                 reject(error);
-//             }
-//         });
-//     });
-// }
-
-// Get Mic
-// function getMic(socket, name) {
-//     let obj = {
-//         command: 'getMic',
-//         args: [name]
-//     };
-//     return new Promise((resolve, reject) => {
-//         sendData(socket, obj, (data, error) => {
-//             if (data) {
-//                 console.log('getMic resolve', data);
-//                 resolve(data);
-//             } else {
-//                 console.log('getMic error', error);
-//                 socket.end();
-//                 reject(error);
-//             }
-//         });
-//     });
-// }
-
-// Get All Events
-// function getAllEvents(socket) {
-//     let obj = {
-//         command: 'getAllEvents',
-//         args: []
-//     };
-//     return new Promise((resolve, reject) => {
-//         sendData(socket, obj, (data, error) => {
-//             if (data) {
-//                 console.log('getAllEvents resolve', data);
-//                 resolve(data);
-//             } else {
-//                 console.log('getAllEvents error', error);
-//                 socket.end();
-//                 reject(error);
-//             }
-//         });
-//     });
-// }
-
-// Get Event
-// function getEvent(socket, id) {
-//     let obj = {
-//         command: 'getEvent',
-//         args: [id]
-//     };
-//     return new Promise((resolve, reject) => {
-//         console.log('getEvent emit');
-//         sendData(socket, obj, (data, error) => {
-//             if (data) {
-//                 console.log('getEvent resolve', data);
-//                 resolve(data);
-//             } else {
-//                 console.log('getEvent error', error);
-//                 socket.end();
-//                 reject(error);
-//             }
-//         });
-//     });
-// }
-
-// function disconnectSocket(socket) {
-//     console.log('enterring disconnectSocket');
-//     if (socket && socket.connecting) {
-//         socket.end();
-//     }
-// }
 
 module.exports = {
     TCPConnection,

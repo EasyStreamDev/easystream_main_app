@@ -81,7 +81,6 @@ export const CompressorLevel = () => {
 
   useEffect(() => {
     ipcRenderer.on('compressor-level-updated', (evt: any, message: any) => {
-      console.log("J'ai été call dans le FRONT pour update les compressors")
       getAllCompressors().then((res) => {
         if (res.statusCode === 200) {
           setExampleCompressorArray(res.data.mics);

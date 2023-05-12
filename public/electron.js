@@ -241,7 +241,6 @@ ipcMain.on("removeActReact", (event, arg) => {
 });
 
 ipcMain.on("compressor-level-updated", (evt, arg) => { // Get from socket broadcast
-    console.log("J'ai été call dans le BACK pour update les compressors")
     mainWindow.webContents.send('compressor-level-updated'); // To renderer
 });
 
