@@ -60,7 +60,7 @@ class TCPConnection {
                     console.log("J'ai fini de paser les données", payload)
                     
                     if (payload.message === 'BROADCAST') {
-                        let type = payload.date.type
+                        let type = payload.data.type
 
                         if (type === 'audioSourceCreated' || type === 'audioSourceRemoved' || type === 'audioSourceNameChanged' || type === 'micLevelChanged') {
                             console.log("J'ai été call dans la SOCKET pour update les compressors")
