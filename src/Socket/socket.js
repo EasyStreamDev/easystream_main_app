@@ -1,4 +1,5 @@
 const net = require('net');
+const { emit } = require('process');
 
 class TCPConnection {
     constructor(host, port, ipcMain) {
@@ -6,67 +7,81 @@ class TCPConnection {
         this.port = port;
         this.socket = null;
         this.ipcMain = ipcMain
-        this.chunk = ""
     }
 
     connect() {
         return new Promise((resolve, reject) => {
             this.socket = net.createConnection({port: this.port, host: this.host}, () => {
                 console.log('TCPConnection initialized');
-                setTimeout(() => {
-                    resolve(this.socket);
-                }, 3000);
+                resolve(this.socket);
             });
-            this.socket.on('data', function (data) {
+            this.socket.once('data', function (data) {
                 try {
-                
-                    this.chunk += data.toString(); // Add string on the end of the variable 'this.chunk'
-                    this.chunk = this.chunk.replace('\t','').replace('\r','').replace('\n','').replace(/\0/g, ''); // Remove all useless characters
-                    let d_index = this.chunk.indexOf('}{'); // Find the delimiter
-
-                    // While loop to keep going until no delimiter can be found
-                    while (this.chunk !== "") {
-
-                        if (d_index === -1)
-                            d_index = this.chunk.length
-                        // console.log(d_index)
-            
-                        try {
-                            let string = this.chunk.substring(0,d_index+1); // Create string up until the delimiter
-                            let json = JSON.parse(string); // Parse the current string
-                            console.log(json)
-                            // process(json); // Function that does something with the current this.chunk of valid json.        
-                        } catch (error) {
-                            console.error(error)
-                        }
-
-                        this.chunk = this.chunk.substring(d_index+1); // Cuts off the processed this.chunk
-                        //console.log(this.chunk)
-                        d_index = this.chunk.indexOf('{}'); // Find the new delimiter
-                    }
-
-                //     console.log("BLOP")
-                //     console.log("BLOP2")
-                //     data = data.toString().replace('\t','').replace('\r','').replace('\n','').replace(/\0/g, ''); // Remove all useless characters
-                //     console.log("TEMA ça", data)
-                //     const payload = JSON.parse(data);
-                //     console.log(payload);
+                    data = data.toString().replace('\t','').replace('\r','').replace('\n','').replace(/\0/g, ''); // Remove all useless characters
+                    const payload = JSON.parse(data);
+                    console.log(payload);
                 } catch (error) {
                     console.error(error)
                 }
             });
-            this.socket.on('error', (error) => {
+            this.socket.once('error', (error) => {
                 console.log("TCP server error");
                 this.socket.end();
                 reject(error);
             });
-            this.socket.on('close', (error) => {
+            this.socket.once('close', (error) => {
                 console.log("C'est CLOSE", error)
                 if (!error) {
                     console.log('Server connection closed');
                     this.socket.end();
                     this.ipcMain.emit('connection-server-lost')
                     reject(new Error("Server connection closed"));
+                }
+            });
+        });
+    }
+
+    connectBroadcast() {
+        return new Promise((resolve, reject) => {
+            this.socket = net.createConnection({port: this.port, host: this.host}, () => {
+                console.log('TCPConnection broadcast initialized');
+                this.setBrocast({ "enable": true }).then(
+                    () => {
+                        resolve(this.socket);
+                    }
+                )
+            });
+            this.socket.on('data', function (data) {
+                try {
+                    data = data.toString().replace('\t','').replace('\r','').replace('\n','').replace(/\0/g, ''); // Remove all useless characters
+                    const payload = JSON.parse(data);
+                    
+                    if (payload.message === 'BROADCAST') {
+                        let type = payload.date.type
+
+                        if (type === 'audioSourceCreated' || type === 'audioSourceRemoved' || type === 'audioSourceNameChanged') {
+                            console.log("J'ai été call dans la SOCKET pour update les compressors")
+                            this.ipcMain.emit('compressor-level-updated')
+                        } else if (type === 'sceneCreated' || type === 'sceneRemoved' || type === 'sceneNameChanged') {
+                            this.ipcMain.emit('scenes-updated')
+                        }
+                    }
+                } catch (error) {
+                    console.error(error)
+                }
+            });
+            this.socket.once('error', (error) => {
+                console.log("TCP server error");
+                this.socket.end();
+                reject(error);
+            });
+            this.socket.once('close', (error) => {
+                console.log("C'est CLOSE", error)
+                if (!error) {
+                    console.log('Server connection closed');
+                    this.socket.end();
+                    // this.ipcMain.emit('connection-server-lost')
+                    // reject(new Error("Server connection closed"));
                 }
             });
         });
@@ -236,6 +251,27 @@ class TCPConnection {
                     resolve(data);
                 } else {
                     console.log('removeActReact error', error);
+                    this.socket.end();
+                    this.ipcMain.emit('connection-server-lost')
+                    reject(error);
+                }
+            });
+        });
+    }
+
+    setBrocast(args) {
+        let obj = {
+            command: 'subscribeBroadcast',
+            params: args
+        };
+        console.log('subscribeBroadcast -> ', JSON.stringify(obj));
+        return new Promise((resolve, reject) => {
+            this.sendData(obj, (data, error) => {
+                if (data) {
+                    console.log('subscribeBroadcast resolve', data);
+                    resolve(data);
+                } else {
+                    console.log('subscribeBroadcast error', error);
                     this.socket.end();
                     this.ipcMain.emit('connection-server-lost')
                     reject(error);
