@@ -21,6 +21,7 @@ class TCPConnection {
                 try {
                 
                     this.chunk += data.toString(); // Add string on the end of the variable 'this.chunk'
+                    this.chunk = this.chunk.replace('\t','').replace('\r','').replace('\n','').replace(/\0/g, ''); // Remove all useless characters
                     let d_index = this.chunk.indexOf('}{'); // Find the delimiter
 
                     // While loop to keep going until no delimiter can be found
