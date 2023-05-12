@@ -54,17 +54,17 @@ export const CompressorLevel = () => {
     });
   };
 
-  const getData = (index: number, value: number) => {
+  const setCompressorValue = (index: number, value: number) => {
     let copy = exampleCompressorArray.slice();
     copy[index].level = value;
     console.log("Value", copy[index]);
     setExampleCompressorArray(copy);
 
-    // Update to server
-    clearTimeout(timeoutCommit);
-    timeoutCommit = setTimeout(() => {
-      setVolumeToCompressor(copy[index]);
-    }, 3000);
+    // // Update to server
+    // clearTimeout(timeoutCommit);
+    // timeoutCommit = setTimeout(() => {
+    setVolumeToCompressor(copy[index]);
+    // }, 3000);
   };
 
   const setActive = (index: number, value: boolean) => {
@@ -72,11 +72,11 @@ export const CompressorLevel = () => {
     copy[index].isActive = value;
     setExampleCompressorArray(copy);
 
-    // Update to server
-    clearTimeout(timeoutCommit);
-    timeoutCommit = setTimeout(() => {
+    // // Update to server
+    // clearTimeout(timeoutCommit);
+    // timeoutCommit = setTimeout(() => {
       setVolumeToCompressor(copy[index]);
-    }, 3000);
+    // }, 3000);
   };
 
   useEffect(() => {
@@ -145,7 +145,7 @@ export const CompressorLevel = () => {
                           isActive={item.isActive}
                           name={item.micName}
                           value={item.level}
-                          sendData={(val: number) => getData(index, val)}
+                          sendData={(val: number) => setCompressorValue(index, val)}
                           sendActive={(val: boolean) => setActive(index, val)}
                         />
                       );
