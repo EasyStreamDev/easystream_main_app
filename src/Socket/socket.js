@@ -6,6 +6,7 @@ class TCPConnection {
         this.port = port;
         this.socket = null;
         this.ipcMain = ipcMain
+        this.chunk = ""
     }
 
     connect() {
@@ -17,13 +18,38 @@ class TCPConnection {
                 }, 3000);
             });
             this.socket.on('data', function (data) {
-                console.log("BLOP")
                 try {
-                    console.log("BLOP2")
-                    data = data.toString().replace('\t','').replace('\r','').replace('\n','').replace(/\0/g, ''); // Remove all useless characters
-                    console.log("TEMA ça", data)
-                    const payload = JSON.parse(data);
-                    console.log(payload);
+                
+                    this.chunk += data.toString(); // Add string on the end of the variable 'this.chunk'
+                    let d_index = this.chunk.indexOf('}{'); // Find the delimiter
+
+                    // While loop to keep going until no delimiter can be found
+                    while (this.chunk !== "") {
+
+                        if (d_index === -1)
+                            d_index = this.chunk.length
+                        // console.log(d_index)
+            
+                        try {
+                            let string = this.chunk.substring(0,d_index+1); // Create string up until the delimiter
+                            let json = JSON.parse(string); // Parse the current string
+                            console.log(json)
+                            // process(json); // Function that does something with the current this.chunk of valid json.        
+                        } catch (error) {
+                            console.error(error)
+                        }
+
+                        this.chunk = this.chunk.substring(d_index+1); // Cuts off the processed this.chunk
+                        //console.log(this.chunk)
+                        d_index = this.chunk.indexOf('{}'); // Find the new delimiter
+                    }
+
+                //     console.log("BLOP")
+                //     console.log("BLOP2")
+                //     data = data.toString().replace('\t','').replace('\r','').replace('\n','').replace(/\0/g, ''); // Remove all useless characters
+                //     console.log("TEMA ça", data)
+                //     const payload = JSON.parse(data);
+                //     console.log(payload);
                 } catch (error) {
                     console.error(error)
                 }
