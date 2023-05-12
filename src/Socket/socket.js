@@ -15,7 +15,7 @@ class TCPConnection {
                 console.log('TCPConnection initialized');
                 resolve(this.socket);
             });
-            this.socket.once('data', function (data) {
+            this.socket.once('data', (data) => {
                 try {
                     data = data.toString().replace('\t','').replace('\r','').replace('\n','').replace(/\0/g, ''); // Remove all useless characters
                     const payload = JSON.parse(data);
@@ -51,7 +51,7 @@ class TCPConnection {
                     }
                 )
             });
-            this.socket.on('data', function (data) {
+            this.socket.on('data', (data) => {
                 try {
                     console.log('Je reçois en effet des données', data)
                     data = data.toString().replace('\t','').replace('\r','').replace('\n','').replace(/\0/g, ''); // Remove all useless characters
