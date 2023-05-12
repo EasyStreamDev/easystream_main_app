@@ -53,8 +53,11 @@ class TCPConnection {
             });
             this.socket.on('data', function (data) {
                 try {
+                    console.log('Je reçois en effet des données', data)
                     data = data.toString().replace('\t','').replace('\r','').replace('\n','').replace(/\0/g, ''); // Remove all useless characters
                     const payload = JSON.parse(data);
+
+                    console.log("J'ai fini de paser les données", payload)
                     
                     if (payload.message === 'BROADCAST') {
                         let type = payload.date.type
