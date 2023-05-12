@@ -16,7 +16,7 @@ class TCPConnection {
                     resolve(this.socket);
                 }, 3000);
             });
-            this.socket.once('data', function (data) {
+            this.socket.on('data', function (data) {
                 console.log("BLOP")
                 try {
                     console.log("BLOP2")
@@ -27,12 +27,12 @@ class TCPConnection {
                     console.error(error)
                 }
             });
-            this.socket.once('error', (error) => {
+            this.socket.on('error', (error) => {
                 console.log("TCP server error");
                 this.socket.end();
                 reject(error);
             });
-            this.socket.once('close', (error) => {
+            this.socket.on('close', (error) => {
                 console.log("C'est CLOSE", error)
                 if (!error) {
                     console.log('Server connection closed');
