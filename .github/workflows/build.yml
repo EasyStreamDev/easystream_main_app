@@ -23,7 +23,8 @@ jobs:
         sudo dpkg --add-architecture i386
         sudo apt update
         sudo apt-get install ca-certificates
-        wget -qO- https://dl.winehq.org/wine-builds/winehq.key --no-check-certificate | sudo apt-key add -
+        sudo mkdir -pm755 /etc/apt/keyrings
+        sudo wget -O /etc/apt/keyrings/winehq-archive.key https://dl.winehq.org/wine-builds/winehq.key
         sudo apt install software-properties-common
         sudo apt-add-repository 'deb http://dl.winehq.org/wine-builds/ubuntu/ bionic main'
         wget -qO- https://download.opensuse.org/repositories/Emulators:/Wine:/Debian/xUbuntu_18.04/Release.key --no-check-certificate | sudo apt-key add -
