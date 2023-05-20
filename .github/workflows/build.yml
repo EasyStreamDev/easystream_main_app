@@ -41,6 +41,12 @@ jobs:
         sudo aptitude install -y libsane:i386
         sudo aptitude install -y libodbc1:i386
         
+        sudo rm -rvf /var/lib/apt/lists/*
+        sudo apt-get install -f
+        sudo apt-get update
+        sudo apt-get upgrade
+        sudo apt-get dist-upgrade
+        
         sudo apt-get install -y wine-stable-i386
         
         sudo apt-get install -y --no-install-recommends winehq-stable
