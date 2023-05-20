@@ -28,9 +28,14 @@ jobs:
         sudo wget -O /etc/apt/keyrings/winehq-archive.key https://dl.winehq.org/wine-builds/winehq.key
         
         sudo wget -NP /etc/apt/sources.list.d/ https://dl.winehq.org/wine-builds/ubuntu/dists/jammy/winehq-jammy.sources
+        
         sudo apt update
+        sudo apt-get install ubuntu-desktop
+        sudo apt-get -y upgrade
+        sudo apt update
+        
         sudo apt-get install -y wine-stable-i386
-        sudo apt-get install -y --install-recommends winehq-stable
+        sudo apt-get install -y --install-recommends winehq-devel
         sudo apt-get install -y fakeroot
     - name: Install mono
       run: |
