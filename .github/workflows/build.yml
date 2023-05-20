@@ -30,15 +30,8 @@ jobs:
         sudo wget -NP /etc/apt/sources.list.d/ https://dl.winehq.org/wine-builds/ubuntu/dists/focal/winehq-focal.sources
         
         sudo apt update
-        sudo apt-get install libjack-jackd2-dev
-
-        sudo apt-get install librtaudio-dev
-        sudo apt --fix-broken install
         
-        sudo apt-get -y upgrade
-        sudo apt update
-        
-        sudo apt-get install -y --install-recommends winehq-devel
+        sudo apt-get -y install winehq-stable=7.0.0.0~focal-1
         sudo apt-get install -y fakeroot
     - name: Install mono
       run: |
