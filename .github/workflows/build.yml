@@ -31,6 +31,8 @@ jobs:
         sudo wget -NP /etc/apt/sources.list.d/ https://dl.winehq.org/wine-builds/ubuntu/dists/$(lsb_release -sc)/winehq-$(lsb_release -sc).sources
         
         sudo apt update
+        sudo apt-get instal upgrade -y
+        sudo apt update
         
         sudo apt-get install -y --install-recommends winehq-stable
         wine --version
