@@ -18,6 +18,7 @@ console.log("notRelease", notRelease)
 let loadingScreen;
 let mainWindow;
 let tcpConn;
+let boadcastConn;
 
 const createWindow = () => {
   // Create the browser window.
@@ -150,7 +151,7 @@ ipcMain.on("getActReactCouples", (event, arg) => {
   }
 });
 
-ipcMain.on("setMicLevel", (event, arg) => {
+ipcMain.on("setCompressorLevel", (event, arg) => {
   if (isDev) {
     let res = {
       message: "OK",
@@ -203,22 +204,6 @@ ipcMain.on("setActionReaction", (event, arg) => {
   }
 });
 
-ipcMain.on("setAutoAudioLeveler", (event, arg) => {
-  if (isDev) {
-    let res = {
-      message: "OK",
-      statusCode: 200,
-    };
-    event.returnValue = res;
-    return res;
-  } else {
-    return tcpConn.setAutoAudioLeveler(arg).then((res) => {
-      console.log("setAutoAudioLeveler : " + res);
-      event.returnValue = res;
-    });
-  }
-});
-
 ipcMain.on("removeActReact", (event, arg) => {
   if (isDev) {
     console.log("removeActReact")
@@ -239,15 +224,22 @@ ipcMain.on("removeActReact", (event, arg) => {
   }
 });
 
+ipcMain.on("compressor-level-updated", (evt, arg) => { // Get from socket broadcast
+    mainWindow.webContents.send('compressor-level-updated'); // To renderer
+});
+
+ipcMain.on("scenes-updated", (evt, arg) => { // Get from socket broadcast
+  mainWindow.webContents.send('scenes-updated'); // To renderer
+});
+
 ipcMain.on("connection-server-lost", (evt, arg) => {
   // Quit main app
   if (mainWindow)
     mainWindow.close();
   tcpConn = null;
+  boadcastConn = null;
 
   // Load Loading page
-  if (loadingScreen)
-    loadingScreen.close()
   createLoadingScreen()
 });
 
@@ -258,19 +250,33 @@ ipcMain.on("close-me", (evt, arg) => {
 const createLoadingScreen = () => {
 
   tcpConn = new TCPConnection("localhost", 47920, ipcMain);
+  boadcastConn = new TCPConnection("localhost", 47920, ipcMain)
   // Try to connect every 5 seconds 
   let refreshIntervalId = setInterval(() => {
 
     tcpConn
       .connect()
       .then((res) => {
-        console.log("TCPConnection is connected");
-        launchingApplication();
-        console.log("res", res);
         clearInterval(refreshIntervalId);
-        return res;
-      })
-      .catch((err) => {
+        boadcastConn.connectBroadcast()
+        .then((broadcast_res) => {
+          console.log("TCPConnection and Broadcast is connected");
+          launchingApplication();
+          clearInterval(refreshIntervalId);
+          return res;
+        }).catch((err) => {
+          tcpConn.disconnectSocket()
+          if (isDev) {
+            console.log("DEV MODE");
+            clearInterval(refreshIntervalId);
+            return null;
+          } else {
+            console.log("Can't locate the server", err);
+            setInterval(refreshIntervalId, 5000)
+            return null;
+          }
+        })
+      }).catch((err) => {
         if (isDev) {
           console.log("DEV MODE");
           clearInterval(refreshIntervalId);
@@ -281,33 +287,35 @@ const createLoadingScreen = () => {
         }
       });
 
-  }, 5000);
+  }, 3000);
 
-  /// create a browser window
-  loadingScreen = new BrowserWindow(
-    Object.assign({
-      /// define width and height for the window
-      width: 440,
-      height: 260,
-      title: "EasyStream",
-      icon: __dirname + '/icon.png',
-      /// remove the window frame, so it will become a frameless window
-      frame: false,
-      /// and set the transparency, to remove any window background color
-      transparent: true,
-      webPreferences: {
-        nodeIntegration: true,
-        enableRemoteModule: isDev,
-        contextIsolation: false,
-      },
-    }),
-  );
-  loadingScreen.setResizable(false);
-  loadingScreen.loadURL(`file://${path.join(__dirname, "./loading.html")}`);
-  loadingScreen.on("closed", () => (loadingScreen = null));
-  loadingScreen.webContents.on("did-finish-load", () => {
-    loadingScreen.show();
-  });
+  if (!loadingScreen) {
+    /// create a browser window
+    loadingScreen = new BrowserWindow(
+      Object.assign({
+        /// define width and height for the window
+        width: 440,
+        height: 260,
+        title: "EasyStream",
+        icon: __dirname + '/icon.png',
+        /// remove the window frame, so it will become a frameless window
+        frame: false,
+        /// and set the transparency, to remove any window background color
+        transparent: true,
+        webPreferences: {
+          nodeIntegration: true,
+          enableRemoteModule: isDev,
+          contextIsolation: false,
+        },
+      }),
+    );
+    loadingScreen.setResizable(false);
+    loadingScreen.loadURL(`file://${path.join(__dirname, "./loading.html")}`);
+    loadingScreen.on("closed", () => (loadingScreen = null));
+    loadingScreen.webContents.on("did-finish-load", () => {
+      loadingScreen.show();
+    });
+  }
 };
 
 const launchingApplication = () => {
@@ -375,6 +383,7 @@ app.on("window-all-closed", () => {
 
 app.on("before-quit", () => {
   tcpConn.disconnectSocket();
+  boadcastConn.disconnectSocket();
 });
 
 // In this file you can include the rest of your app's specific main process

@@ -46,7 +46,7 @@ export const CompressorLevel = () => {
   const setVolumeToCompressor = (mic: Mic): Promise<resultFormat> => {
     return new Promise(async (resolve, reject) => {
       const result: resultFormat = await ipcRenderer.sendSync(
-        "setMicLevel",
+        "setCompressorLevel",
         mic
       );
       console.log("setVolumeToCompressor invoke", result);
@@ -54,17 +54,13 @@ export const CompressorLevel = () => {
     });
   };
 
-  const getData = (index: number, value: number) => {
+  const setCompressorValue = (index: number, value: number) => {
     let copy = exampleCompressorArray.slice();
     copy[index].level = value;
     console.log("Value", copy[index]);
     setExampleCompressorArray(copy);
 
-    // Update to server
-    clearTimeout(timeoutCommit);
-    timeoutCommit = setTimeout(() => {
-      setVolumeToCompressor(copy[index]);
-    }, 3000);
+    setVolumeToCompressor(copy[index]);
   };
 
   const setActive = (index: number, value: boolean) => {
@@ -72,14 +68,17 @@ export const CompressorLevel = () => {
     copy[index].isActive = value;
     setExampleCompressorArray(copy);
 
-    // Update to server
-    clearTimeout(timeoutCommit);
-    timeoutCommit = setTimeout(() => {
-      setVolumeToCompressor(copy[index]);
-    }, 3000);
+    setVolumeToCompressor(copy[index]);
   };
 
   useEffect(() => {
+    ipcRenderer.on('compressor-level-updated', (evt: any, message: any) => {
+      getAllCompressors().then((res) => {
+        if (res.statusCode === 200) {
+          setExampleCompressorArray(res.data.mics);
+        }
+      });
+    })
     async function sleep(): Promise<boolean> {
       return new Promise((resolve) => {
         getAllCompressors().then((res) => {
@@ -145,7 +144,7 @@ export const CompressorLevel = () => {
                           isActive={item.isActive}
                           name={item.micName}
                           value={item.level}
-                          sendData={(val: number) => getData(index, val)}
+                          sendData={(val: number) => setCompressorValue(index, val)}
                           sendActive={(val: boolean) => setActive(index, val)}
                         />
                       );
