@@ -21,15 +21,16 @@ jobs:
     - name: Install windows dependencies
       run: |
         sudo dpkg --add-architecture i386
+        sudo apt update
         
-        sudo mkdir -pm755 /etc/apt/keyrings
-        sudo wget -O /etc/apt/keyrings/winehq-archive.key https://dl.winehq.org/wine-builds/winehq.key
+        wget -qO- https://dl.winehq.org/wine-builds/winehq.key | sudo apt-key add -
         
         sudo apt install software-properties-common
         
-        sudo wget -NP /etc/apt/sources.list.d/ https://dl.winehq.org/wine-builds/ubuntu/dists/focal/winehq-focal.sources
+        sudo apt-add-repository "deb http://dl.winehq.org/wine-builds/ubuntu/ $(lsb_release -cs) main"
         sudo apt update
         sudo apt-get install -y --install-recommends winehq-stable
+        wine --version
         sudo apt-get install -y fakeroot
     - name: Install mono
       run: |
