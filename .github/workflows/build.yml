@@ -12,7 +12,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-20.04
     steps:
     - uses: actions/checkout@v2
     - uses: actions/setup-node@master
@@ -20,22 +20,18 @@ jobs:
         node-version: 16
     - name: Install windows dependencies
       run: |
+        sudo apt-get update -y
+        sudo apt-get install -y --no-install-recommends software-properties-common ca-certificates language-pack-en language-pack-zh-han* locales locales-all wget
+        
         sudo dpkg --add-architecture i386
-        sudo apt update
         
-        sudo mkdir -p /etc/apt/keyrings
-        sudo wget -O /etc/apt/keyrings/winehq-archive.key https://dl.winehq.org/wine-builds/winehq.key
+        mkdir -pm755 /etc/apt/keyrings
+        wget -O /etc/apt/keyrings/winehq-archive.key https://dl.winehq.org/wine-builds/winehq.key
         
-        sudo apt install software-properties-common
+        wget -nc -P /etc/apt/sources.list.d/ https://dl.winehq.org/wine-builds/ubuntu/dists/$(lsb_release -sc)/winehq-$(lsb_release -sc).sources
         
-        sudo wget -NP /etc/apt/sources.list.d/ https://dl.winehq.org/wine-builds/ubuntu/dists/$(lsb_release -sc)/winehq-$(lsb_release -sc).sources
+        sudo apt-get update -y
         
-        sudo apt update
-        sudo apt-get upgrade -y
-        sudo apt update
-        
-        sudo apt list --upgradable
-        sudo apt-get dist-upgrade
         sudo apt-get install -y --install-recommends winehq-stable
         wine --version
         sudo apt-get install -y fakeroot
