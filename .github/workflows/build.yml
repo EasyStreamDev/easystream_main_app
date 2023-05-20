@@ -12,7 +12,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-20.04
     steps:
     - uses: actions/checkout@v2
     - uses: actions/setup-node@master
@@ -27,14 +27,18 @@ jobs:
         sudo mkdir -pm755 /etc/apt/keyrings
         sudo wget -O /etc/apt/keyrings/winehq-archive.key https://dl.winehq.org/wine-builds/winehq.key
         
-        sudo wget -NP /etc/apt/sources.list.d/ https://dl.winehq.org/wine-builds/ubuntu/dists/jammy/winehq-jammy.sources
+        sudo wget -NP /etc/apt/sources.list.d/ https://dl.winehq.org/wine-builds/ubuntu/dists/focal/winehq-focal.sources
         
         sudo apt update
-        sudo apt-get install ubuntu-desktop
+        sudo apt-get install libjack-jackd2-dev
+
+        sudo apt-get install librtaudio-dev
+        sudo dpkg -i sdrpp_ubuntu_focal_amd64.deb
+        sudo apt --fix-broken install
+        
         sudo apt-get -y upgrade
         sudo apt update
         
-        sudo apt-get install -y wine-stable-i386
         sudo apt-get install -y --install-recommends winehq-devel
         sudo apt-get install -y fakeroot
     - name: Install mono
