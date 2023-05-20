@@ -33,7 +33,16 @@ jobs:
         
         sudo apt-get -y purge software-properties-common libdbus-glib-1-2 python3-dbus python3-gi python3-pycurl python3-software-properties
         
+        sudo apt-get install aptitude
+        sudo aptitude install libglib2.0-0:i386
+        sudo aptitude install libgphoto2-6:i386
+        sudo aptitude install libgstreamer-plugins-base1.0-0:i386
+        sudo aptitude install libgstreamer1.0-0:i386
+        sudo aptitude install libsane:i386
+        sudo aptitude install libodbc1:i386
+        
         sudo apt-get install -y wine-stable-i386
+        
         sudo apt-get install -y --no-install-recommends winehq-stable
         
         wine --version
