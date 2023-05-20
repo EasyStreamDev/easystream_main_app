@@ -27,6 +27,7 @@ jobs:
         sudo wget -O /etc/apt/keyrings/winehq-archive.key https://dl.winehq.org/wine-builds/winehq.key
         sudo apt install software-properties-common
         sudo wget -NP /etc/apt/sources.list.d/ https://dl.winehq.org/wine-builds/ubuntu/dists/jammy/winehq-jammy.sources
+        sudo apt-add-repository 'deb https://dl.winehq.org/wine-builds/ubuntu/ jammy main universe'
         sudo apt update
         sudo apt-get install -y --install-recommends winehq-devel
         sudo apt-get install -y fakeroot
