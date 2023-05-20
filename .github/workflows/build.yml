@@ -12,7 +12,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-20.04
     steps:
     - uses: actions/checkout@v2
     - uses: actions/setup-node@master
@@ -21,21 +21,20 @@ jobs:
     - name: Install windows dependencies
       run: |
         sudo apt-get update -y
-        sudo apt-get install -y --no-install-recommends software-properties-common ca-certificates language-pack-en language-pack-zh-han* locales locales-all wget
+        sudo apt-get install -y --no-install-recommends software-properties-common
         
         sudo dpkg --add-architecture i386
         
-        wget -nc https://dl.winehq.org/wine-builds/ubuntu/dists/jammy/winehq-jammy.sources
-        sudo mv winehq-jammy.sources /etc/apt/sources.list.d/
+        curl -L https://download.opensuse.org/repositories/Emulators:/Wine:/Debian/xUbuntu_18.04/Release.key > winehq.key
+        sudo apt-key add winehq.key
         
-        sudo mkdir -pm755 /etc/apt/keyrings
-        sudo wget -O /etc/apt/keyrings/winehq-archive.key https://dl.winehq.org/wine-builds/winehq.key
-        
-        
-        
+        sudo apt-add-repository 'deb https://download.opensuse.org/repositories/Emulators:/Wine:/Debian/xUbuntu_18.04/ ./'
         sudo apt-get update -y
         
-        sudo apt-get install -y --install-recommends winehq-devel
+        sudo apt-get -y purge software-properties-common libdbus-glib-1-2 python3-dbus python3-gi python3-pycurl python3-software-properties
+        
+        sudo apt-get install -y --no-install-recommends winehq-stable
+        
         wine --version
         sudo apt-get install -y fakeroot
     - name: Install mono
