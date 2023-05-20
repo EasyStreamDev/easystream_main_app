@@ -12,7 +12,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     steps:
     - uses: actions/checkout@v2
     - uses: actions/setup-node@master
@@ -23,12 +23,15 @@ jobs:
         sudo dpkg --add-architecture i386
         sudo apt update
         
-        wget -qO- https://dl.winehq.org/wine-builds/winehq.key | sudo apt-key add -
+        sudo mkdir -p /etc/apt/keyrings
+        sudo wget -O /etc/apt/keyrings/winehq-archive.key https://dl.winehq.org/wine-builds/winehq.key
         
         sudo apt install software-properties-common
         
-        sudo apt-add-repository "deb http://dl.winehq.org/wine-builds/ubuntu/ $(lsb_release -cs) main"
+        sudo wget -NP /etc/apt/sources.list.d/ https://dl.winehq.org/wine-builds/ubuntu/dists/$(lsb_release -sc)/winehq-$(lsb_release -sc).sources
+        
         sudo apt update
+        
         sudo apt-get install -y --install-recommends winehq-stable
         wine --version
         sudo apt-get install -y fakeroot
