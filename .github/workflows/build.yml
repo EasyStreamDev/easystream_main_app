@@ -27,9 +27,9 @@ jobs:
         
         sudo apt install software-properties-common
         
-        sudo apt-add-repository 'deb http://dl.winehq.org/wine-builds/ubuntu/ focal main'
+        sudo wget -NP /etc/apt/sources.list.d/ https://dl.winehq.org/wine-builds/ubuntu/dists/focal/winehq-focal.sources
         sudo apt update
-        sudo apt-get install -y --install-recommends winehq-devel
+        sudo apt-get install -y --install-recommends winehq-stable
         sudo apt-get install -y fakeroot
     - name: Install mono
       run: |
