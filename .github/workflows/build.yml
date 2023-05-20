@@ -33,7 +33,6 @@ jobs:
         sudo apt-get install libjack-jackd2-dev
 
         sudo apt-get install librtaudio-dev
-        sudo dpkg -i sdrpp_ubuntu_focal_amd64.deb
         sudo apt --fix-broken install
         
         sudo apt-get -y upgrade
