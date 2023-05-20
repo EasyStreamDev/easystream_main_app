@@ -46,7 +46,7 @@ export const CompressorLevel = () => {
   const setVolumeToCompressor = (mic: Mic): Promise<resultFormat> => {
     return new Promise(async (resolve, reject) => {
       const result: resultFormat = await ipcRenderer.sendSync(
-        "setMicLevel",
+        "setCompressorLevel",
         mic
       );
       console.log("setVolumeToCompressor invoke", result);
@@ -60,11 +60,7 @@ export const CompressorLevel = () => {
     console.log("Value", copy[index]);
     setExampleCompressorArray(copy);
 
-    // // Update to server
-    // clearTimeout(timeoutCommit);
-    // timeoutCommit = setTimeout(() => {
     setVolumeToCompressor(copy[index]);
-    // }, 3000);
   };
 
   const setActive = (index: number, value: boolean) => {
@@ -72,11 +68,7 @@ export const CompressorLevel = () => {
     copy[index].isActive = value;
     setExampleCompressorArray(copy);
 
-    // // Update to server
-    // clearTimeout(timeoutCommit);
-    // timeoutCommit = setTimeout(() => {
-      setVolumeToCompressor(copy[index]);
-    // }, 3000);
+    setVolumeToCompressor(copy[index]);
   };
 
   useEffect(() => {

@@ -151,7 +151,7 @@ ipcMain.on("getActReactCouples", (event, arg) => {
   }
 });
 
-ipcMain.on("setMicLevel", (event, arg) => {
+ipcMain.on("setCompressorLevel", (event, arg) => {
   if (isDev) {
     let res = {
       message: "OK",
@@ -199,22 +199,6 @@ ipcMain.on("setActionReaction", (event, arg) => {
   } else {
     return tcpConn.setActionReaction(arg).then((res) => {
       console.log("setActionReaction : " + res);
-      event.returnValue = res;
-    });
-  }
-});
-
-ipcMain.on("setAutoAudioLeveler", (event, arg) => {
-  if (isDev) {
-    let res = {
-      message: "OK",
-      statusCode: 200,
-    };
-    event.returnValue = res;
-    return res;
-  } else {
-    return tcpConn.setAutoAudioLeveler(arg).then((res) => {
-      console.log("setAutoAudioLeveler : " + res);
       event.returnValue = res;
     });
   }
