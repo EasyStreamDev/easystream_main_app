@@ -56,12 +56,18 @@ yarn run front-with-obs # Linux
 yarn run front-with-obs-windows # Windows (You must setup env variable ELECTRON_IS_DEV=0)
 ```
 
-Command to push release a new version
+Command to push release a new version:
 ```bash
 npm version v<version>
 git tag v<version>
 git push --follow-tags
 ```
+
+Then, you just have to run:
+```bash
+yarn run build-dist
+```
+It will create a draft release uploading all the important files.
 
 # Build Linux / Windows
 
