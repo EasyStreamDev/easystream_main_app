@@ -7,23 +7,20 @@ import * as serviceWorker from './serviceWorker'
 // components
 import App from './Components/App/App'
 import {
-	BrowserRouter,
+	HashRouter,
 	Route,
 	Routes,
 } from 'react-router-dom'
 import { AuthProvider } from './context/AuthProvider'
 
 ReactDOM.render(
-	<React.StrictMode>
-		<BrowserRouter>
-			<AuthProvider>
-				<Routes>
-					<Route path="/*" element={<App />} />
-				</Routes>
-			</AuthProvider>
-		</BrowserRouter>
-
-	</React.StrictMode>,
+	<HashRouter>
+		<AuthProvider>
+			<Routes>
+				<Route path="/*" element={<App />} />
+			</Routes>
+		</AuthProvider>
+	</HashRouter>,
 	document.getElementById('root')
 )
 
