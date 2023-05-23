@@ -46,7 +46,8 @@ export const AddNewWord = (props: any) => {
   const handleClose = () => setOpen(false);
 
   const save = () => {
-    if (props.newEvent.length !== 0 && props.newEvent.source && props.newEvent.source.name) {
+    console.log(props.newEvent)
+    if (props.newEvent.keywords.length !== 0 && props.newEvent.source && props.newEvent.source.name) {
       props.addNewEvent(props.newEvent);
       handleClose();
     } else {
