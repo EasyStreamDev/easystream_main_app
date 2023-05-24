@@ -52,6 +52,7 @@ class TCPConnection {
             });
             this.socket.on('data', (data) => {
                 try {
+                    console.log("BLOP", data)
                     data = data.toString().replace('\t','').replace('\r','').replace('\n','').replace(/\0/g, ''); // Remove all useless characters
                     const payload = JSON.parse(data);
 
