@@ -40,7 +40,6 @@ export default function App() {
               <Route path="/" element={<Home />} />
               <Route path="/login" element={<Login />} />
               <Route path="/unauthorized" element={<Unauthorized />} />
-						  <Route path='/other/feedback' element={<Feedback/>} />
 						  <Route path='/video/subtitles' element={<Subtitles/>} />
 						  <Route path='/actions-reactions/home' element={<ActionsReactions/>} />
 						  <Route path='/actions-reactions/actions' element={<CreateActions/>} />
@@ -61,6 +60,7 @@ export default function App() {
                 }
               >
                 <Route path="/audio/compressor-level" element={<CompressorLevel />} />
+                <Route path='/other/feedback' element={<Feedback/>} />
               </Route>
 
               <Route
