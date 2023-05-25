@@ -101,7 +101,7 @@ export default function CustomizedSlider(props: any) {
             props.sendData(val);
           }}
           aria-label="Micro"
-          defaultValue={props.value}
+          value={ props.value ?? 0}
           marks={marks}
           valueLabelDisplay="on"
         />
