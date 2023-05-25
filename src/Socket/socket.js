@@ -54,22 +54,29 @@ class TCPConnection {
                 try {
                     console.log("BEFORE toString", data)
                     data = data.toString()
-                    console.log("AFTER toString", data)
-                    data = data.replace('\t','').replace('\r','').replace('\n','').replace(/\0/g, ''); // Remove all useless characters
-                    console.log("AFTER purge", data)
+                    data = data.replace('\t','').replace('\r','').replace(/\0/g, ''); // Remove all useless characters
 
-                    const payload = JSON.parse(data);
-                    console.log("AFTER JSON parse", data)
+                    // Split the data by newline character
+                    const jsonStrings = data.split('\n');
+                    
+                    // Add the JSON strings to the queue
+                    jsonStrings.forEach((jsonString) => {
+                        if (jsonString.trim() !== '') {
 
-                    if (payload.message === 'BROADCAST') {
-                        let type = payload.data.type
-
-                        if (type === 'audioSourceCreated' || type === 'audioSourceRemoved' || type === 'audioSourceNameChanged' || type === 'micLevelChanged') {
-                            this.ipcMain.emit('compressor-level-updated')
-                        } else if (type === 'sceneCreated' || type === 'sceneRemoved' || type === 'sceneNameChanged') {
-                            this.ipcMain.emit('scenes-updated')
+                            let payload = JSON.parse(jsonString);
+        
+                            if (payload.message === 'BROADCAST') {
+                                let type = payload.data.type
+        
+                                if (type === 'audioSourceCreated' || type === 'audioSourceRemoved' || type === 'audioSourceNameChanged' || type === 'micLevelChanged') {
+                                    this.ipcMain.emit('compressor-level-updated')
+                                } else if (type === 'sceneCreated' || type === 'sceneRemoved' || type === 'sceneNameChanged') {
+                                    this.ipcMain.emit('scenes-updated')
+                                }
+                            }
                         }
-                    }
+                    });
+
                 } catch (error) {
                     console.error(error)
                 }
