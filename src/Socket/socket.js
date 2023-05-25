@@ -52,8 +52,14 @@ class TCPConnection {
             });
             this.socket.on('data', (data) => {
                 try {
-                    data = data.toString().replace('\t','').replace('\r','').replace('\n','').replace(/\0/g, ''); // Remove all useless characters
+                    console.log("BEFORE toString", data)
+                    data = data.toString()
+                    console.log("AFTER toString", data)
+                    data = data.replace('\t','').replace('\r','').replace('\n','').replace(/\0/g, ''); // Remove all useless characters
+                    console.log("AFTER purge", data)
+
                     const payload = JSON.parse(data);
+                    console.log("AFTER JSON parse", data)
 
                     if (payload.message === 'BROADCAST') {
                         let type = payload.data.type
