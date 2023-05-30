@@ -1,9 +1,7 @@
 import React, { Component, useEffect, useState } from "react";
-import ReactRanger from "react-ranger";
 import CustomizedSlider from "../Slider/Slider";
 import { AllMics, Mic } from "../../Socket/interfaces";
 import { resultFormat } from "../../Socket/interfaces";
-import { Button } from "@mui/material";
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import { MdHelpOutline } from "react-icons/md";
@@ -12,7 +10,6 @@ import "./CompressorLevel.css";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 
 const ipcRenderer = window.require("electron").ipcRenderer;
-const SAVE_MICROPHONE_URL = "/applicationSavedFeature/saveMicrophones";
 
 export const CompressorLevel = () => {
   const [exampleCompressorArray, setExampleCompressorArray] = React.useState<
@@ -101,15 +98,6 @@ export const CompressorLevel = () => {
     }
   }
 
-  const save = () => {
-    const mics = [...exampleCompressorArray];
-    axiosPrivate.post(SAVE_MICROPHONE_URL, {
-      mics,
-      headers: { "Content-Type": "application/json" },
-      // withCredentials: true,
-    });
-  };
-
   return (
     <>
       {load ? (
@@ -120,7 +108,7 @@ export const CompressorLevel = () => {
         </>
       ) : (
         <>
-          <div className="container events-container">
+          <div className="container compressor-container">
             <h2>List of mics:
             <Tooltip title="Here, you can adjust the level of compressor applied on your mics. Example: higher is the compressor level, more your voice will be eased.">
               <IconButton>

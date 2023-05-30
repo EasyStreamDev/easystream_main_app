@@ -10,7 +10,6 @@ import BoxEvent from "../../BoxEvent/BoxEvent";
 import { LocalStorage } from '../../../LocalStorage/LocalStorage';
 import { getActReactCouplesFormat, actionReactionFormat, removeActReactAnswer } from '../../../Socket/interfaces';
 const ipcRenderer = window.require('electron').ipcRenderer
-const SAVE_WORD_DETECTION_URL = "/applicationSavedFeature/saveWordsDetection";
 
 export enum ActionType {
   WORD_DETECT = "WORD_DETECT",
@@ -79,16 +78,6 @@ export const WordDetection = (props: any) => {
       },
     },
   };
-
-  const save = () => {
-    const mics = ''
-    console.log(action_reactionArray)
-    // axiosPrivate.post(SAVE_WORD_DETECTION_URL, {
-    //   mics,
-    //   headers: { "Content-Type": "application/json" },
-    //   // withCredentials: true,
-    // });
-  }
 
   const updateActionReactionArray = () => {
     getActionReactionFromServer()
@@ -223,14 +212,6 @@ export const WordDetection = (props: any) => {
         newEvent={newEvent}
         setnewEvent={setnewEvent}
       />
-      <Button
-          variant="outlined"
-          sx={style.Button}
-          onClick={save}
-        >
-          {" "}
-          Save{" "}
-        </Button>
         <Link style={{ "paddingTop": "20px" }} to="/actions-reactions/home">Go Back</Link>
 
       </>

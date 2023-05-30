@@ -18,10 +18,6 @@ import DialogTitle from '@mui/material/DialogTitle';
 import { LocalStorage } from '../../../LocalStorage/LocalStorage';
 import { Link } from "react-router-dom";
 
-import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
-
-const SAVE_GENERATE_EVENT_URL = "/applicationSavedFeature/saveGenerateEvent";
-
 export enum ReactionType {
   SCENE_SWITCH = "SCENE_SWITCH",
   TOGGLE_AUDIO_COMPRESSOR = "TOGGLE_AUDIO_COMPRESSOR",
@@ -40,8 +36,6 @@ export const CreateReactions = () => {
     const [newActionSelected, setNewActionSelected] = React.useState("CAMERA_SWITCH");
     const [newActionParam, setNewActionParam] = React.useState("")
 
-    const axiosPrivate = useAxiosPrivate();
-
     const style = {
       Button: {
         borderColor: "#f56f28",
@@ -52,37 +46,6 @@ export const CreateReactions = () => {
           color: "#f56f28",
         },
       },
-    }
-
-    const save = () => {
-      const generateEvents = actionsList.map((action: any) => {
-        
-        let parameter = '';
-        if (action.action === ReactionType.TOGGLE_AUDIO_COMPRESSOR)
-            parameter = "audio_source";
-        if (action.action === ReactionType.SCENE_SWITCH)
-          parameter = "scene_name";
-        if (action.action === ReactionType.START_STREAM)
-          parameter = "delay";
-        if (action.action === ReactionType.STOP_STREAM)
-          parameter = "delay";
-        if (action.action === ReactionType.START_REC)
-          parameter = "delay";
-        if (action.action === ReactionType.STOP_REC)
-          parameter = "delay";
-
-        return {
-          name: action.name,
-          action: action.action,
-          parameter,
-        }
-      })
-      console.log(generateEvents)
-      axiosPrivate.post(SAVE_GENERATE_EVENT_URL, {
-        generateEvents,
-        headers: { "Content-Type": "application/json" },
-        // withCredentials: true,
-      });
     }
 
     const handleOnChangeSelect = (action: SelectChangeEvent<unknown>) => {
@@ -301,14 +264,6 @@ export const CreateReactions = () => {
             Add Reaction
           </Button>
         </div>
-        <Button
-          variant="outlined"
-          sx={style.Button}
-          onClick={save}
-        >
-          {" "}
-          Save{" "}
-        </Button>
       </>
     );
 }

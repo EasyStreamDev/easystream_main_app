@@ -4,6 +4,7 @@ body {
 
 .events-container {
     text-align: center;
+    width: 100%;
 }
 
 .reactions-list {

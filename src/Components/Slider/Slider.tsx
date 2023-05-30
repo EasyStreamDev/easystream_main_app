@@ -1,5 +1,5 @@
-import * as React from "react";
-import Slider, { SliderThumb } from "@mui/material/Slider";
+import React from "react";
+import Slider from "@mui/material/Slider";
 import { styled } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
@@ -87,33 +87,49 @@ const MicroSlider = styled(Slider)(({ theme }) => ({
   },
 }));
 
-export default function CustomizedSlider(props: any) {
+const CustomizedSlider = (props: any) => {
+  const handleSliderChange = (_: any, value: any) => {
+    props.sendData(value);
+  };
+
+  const handleMicToggle = () => {
+    props.sendActive(!props.isActive);
+  };
 
   return (
-    <Box sx={{ width: 720 }}>
+    <Box sx={{ width: "100%" }}>
       <Box sx={{ pt: 4, pb: 4 }}>
         <Typography gutterBottom>{props.name}</Typography>
       </Box>
-      <Box sx={{ display: "flex", flexDirection: "row", p: 1, m: 1 }}>
-        <MicroSlider
-          key={`slider-compressor}`}
-          onChangeCommitted={(_, val: any) => {
-            props.sendData(val);
-          }}
-          aria-label="Micro"
-          value={ props.value ?? 0}
-          marks={marks}
-          valueLabelDisplay="on"
-        />
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          p: 1,
+          m: 1,
+        }}
+      >
+        <Box sx={{ width: "100%", maxWidth: 720 }}>
+          <MicroSlider
+            key={`slider-compressor}`}
+            onChangeCommitted={handleSliderChange}
+            aria-label="Micro"
+            value={props.value ?? 0}
+            marks={marks}
+            valueLabelDisplay="on"
+          />
+        </Box>
         <Box
-          sx={{ ml: 4 }}
-          onClick={() => {
-            (props.isActive) ? props.sendActive(false) : props.sendActive(true);
-          }}
+          sx={{ mt: 2 }}
+          onClick={handleMicToggle}
+          style={{ color: props.isActive ? "green" : "red" }}
         >
-          {props.isActive ? <BsMic style={ { color: "green" } } /> : <BsMicMute style={ { color: "red" } } />}
+          {props.isActive ? <BsMic /> : <BsMicMute />}
         </Box>
       </Box>
     </Box>
   );
-}
+};
+
+export default CustomizedSlider;

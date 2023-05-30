@@ -166,7 +166,7 @@ export const ActionsReactions = () => {
           :
           (
             <div className="actions-reactions-list">
-              <div className="item-container">
+              <div className="item-container action-reaction-cards">
                 {
                   actionsReactionsList.map((item: any, index: any) => {
                     return (
