@@ -47,7 +47,7 @@
   margin-left: -300px;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 10px) {
   .nav-menu.hidden {
       margin-left: -200px;
   } 
