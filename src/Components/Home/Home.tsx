@@ -7,6 +7,7 @@ import {
 import "./Home.css";
 import { Button, IconButton } from "@mui/material";
 import { Visibility, VisibilityOff } from "@material-ui/icons";
+import OutlinedCard from "./CardsHome";
 const ipcRenderer = window.require("electron").ipcRenderer;
 
 
@@ -28,6 +29,39 @@ export const Home = () => {
 		});
 	
 	  }, []);
+
+	const architecture = [
+		{
+			"url": "/actions-reactions/home",
+			"title": "Actions & Reactions",
+			"description": "Bind actions and reactions together to create autonomous systems !",
+		},
+		{
+			"url": "/audio/compressor-level",
+			"title": "Compressor Level",
+			"description": "Use the Easystream useful compressor to help you configuring the audio.",
+		},
+		{
+			"url": "/video/scenes",
+			"title": "Scenes",
+			"description": "Let Easystream change scene automatically.",
+		},
+		{
+			"url": "/video/subtitles",
+			"title": "Subtitles",
+			"description": "Adapt you to your audience activating the auto generated subtitles !",
+		},
+		{
+			"url": "/login",
+			"title": "Login",
+			"description": "Login you to access to all your features !",
+		},
+		{
+			"url": "/other/feedback",
+			"title": "Feedback",
+			"description": "Don't hesitate to send us some feedback to upgrade our plugin <3",
+		},
+	]
 	
     return (
       <>
@@ -38,13 +72,44 @@ export const Home = () => {
 			</IconButton>
 		</h1>
 
-        <h1> Home</h1>
+		<div className="container-home">
+
+			{
+				architecture.map((item: any, index: any) => {
+					return (
+						<div key={item.url} className="items-home">
+							<Link className="m-2" to={item.url}>
+								<OutlinedCard url={item.url} title={item.title} description={item.description}></OutlinedCard>
+							</Link>
+						</div>
+					)
+				})
+			}
+
+			{/* <div className="items-home">
+				<OutlinedCard url="/audio/compressor-level"></OutlinedCard>
+			</div>
+			<div className="items-home">
+				<OutlinedCard url="/video/scenes"></OutlinedCard>
+			</div>
+			<div className="items-home">
+				<OutlinedCard url="/video/subtitles"></OutlinedCard>
+			</div>
+			<div className="items-home">
+				<OutlinedCard url="/login"></OutlinedCard>
+			</div>
+			<div className="items-home">
+				<OutlinedCard url="/other/feedback"></OutlinedCard>
+			</div> */}
+
+		</div>
+        {/* <h1> Home</h1>
 				<Link className="m-2" to="/actions-reactions/home">ActionsReactions</Link>
 				<Link className="m-2" to="/audio/compressor-level">Compressor Level</Link>
 				<Link className="m-2" to="/video/scenes">Scenes</Link>
 				<Link className="m-2" to="/video/subtitles">Subtitles</Link>
 				<Link className="m-2" to="/login">Login</Link>
-        <Link className="m-2" to="/other/feedback">Feedback</Link>
+        <Link className="m-2" to="/other/feedback">Feedback</Link> */}
       </>
     );
 }

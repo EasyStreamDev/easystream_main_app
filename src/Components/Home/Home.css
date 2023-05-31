@@ -7,3 +7,24 @@
 .icon-visibility {
     color: white;
 }
+
+.container-home {
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: row;
+        justify-content: center;
+        align-items: auto;
+        align-content: start
+}
+
+.items-home {
+    flex: 0 0 auto;
+    margin: 1.5rem;
+    height: 5rem;
+    width: 450px;
+    text-align: center;
+}
+
+.home-card {
+    height: 100%;
+}
