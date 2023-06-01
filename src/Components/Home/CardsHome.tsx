@@ -7,11 +7,8 @@ import Typography from '@mui/material/Typography';
 const card = (props: any) => {
     return (
     <React.Fragment>
-        <CardContent sx={{ "color": "white" }}>
-            <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-                { props.type }
-            </Typography>
-            <Typography sx={{ fontWeight: "bold" }} variant="h5" component="div">
+        <CardContent sx={{ "color": "white", "padding": "2vh", "paddingBottom": "15px !important" }}>
+            <Typography sx={{ fontWeight: "bold" }} variant="h5">
                 { props.title }
             </Typography>
             <Typography variant="body2">
@@ -24,8 +21,9 @@ const card = (props: any) => {
 
 export default function OutlinedCard(props: any) {
   return (
-    <Box>
+    <Box sx={{ height: "90%" }}>
       <Card variant="outlined" sx={{ backgroundColor: "#565d68", border: "3px solid orange",
+      height: "100%", display: "flex", alignItems: "center", justifyContent: "center",
       ':hover': {
             boxShadow: 20,
             transform: "scale(1.01)"

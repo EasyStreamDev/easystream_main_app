@@ -86,30 +86,7 @@ export const Home = () => {
 				})
 			}
 
-			{/* <div className="items-home">
-				<OutlinedCard url="/audio/compressor-level"></OutlinedCard>
-			</div>
-			<div className="items-home">
-				<OutlinedCard url="/video/scenes"></OutlinedCard>
-			</div>
-			<div className="items-home">
-				<OutlinedCard url="/video/subtitles"></OutlinedCard>
-			</div>
-			<div className="items-home">
-				<OutlinedCard url="/login"></OutlinedCard>
-			</div>
-			<div className="items-home">
-				<OutlinedCard url="/other/feedback"></OutlinedCard>
-			</div> */}
-
 		</div>
-        {/* <h1> Home</h1>
-				<Link className="m-2" to="/actions-reactions/home">ActionsReactions</Link>
-				<Link className="m-2" to="/audio/compressor-level">Compressor Level</Link>
-				<Link className="m-2" to="/video/scenes">Scenes</Link>
-				<Link className="m-2" to="/video/subtitles">Subtitles</Link>
-				<Link className="m-2" to="/login">Login</Link>
-        <Link className="m-2" to="/other/feedback">Feedback</Link> */}
       </>
     );
 }
