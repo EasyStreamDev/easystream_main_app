@@ -30,8 +30,8 @@ const createWindow = () => {
     },
     autoHideMenuBar: true,
     title: "EasyStream",
-    minWidth: 800,
-    minHeight: 600,
+    minWidth: 900,
+    minHeight: 700,
     icon: __dirname + '/icon.png',
     /// show to false mean than the window will proceed with its lifecycle, but will not render until we will show it up
     show: false,
