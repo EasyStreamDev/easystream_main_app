@@ -27,10 +27,11 @@ body {
     top: calc(100% - 20%);
     left: calc(100% - 20%);
     position: absolute;
+    margin-right: 3vw;
 }
 
 .add_button {
-    font-size: 25px !important;
+    font-size: 1.6vw !important;
 }
 
 .rightAlignItem {
