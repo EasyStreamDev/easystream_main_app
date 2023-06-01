@@ -22,16 +22,10 @@ import {
   SelectChangeEvent,
 } from "@mui/material";
 import { BsTrash } from "react-icons/bs";
-import TextField from "@mui/material/TextField";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
-import DialogTitle from "@mui/material/DialogTitle";
-import { LocalStorage } from "../../LocalStorage/LocalStorage";
 import { Link } from "react-router-dom";
 import { getActReactCouplesFormat, actionReactionFormat, removeActReactAnswer } from '../../Socket/interfaces';
 import { ActionType, action_reaction, action_reaction_identified } from "./WordDetection/WordDetection";
+import { toast } from "react-toastify";
 const ipcRenderer = window.require('electron').ipcRenderer
 
 export enum ReactionType {
@@ -87,9 +81,13 @@ export const ActionsReactions = () => {
           }
         })
         
-        alert("Action Reaction has been deleted successfully")
+        toast("Action Reaction has been deleted successfully.", {
+          type: "success"
+        });
       } else {
-        alert("Internal error.")
+        toast("Internal error.", {
+          type: "error"
+        });
       }
     })
     return 0

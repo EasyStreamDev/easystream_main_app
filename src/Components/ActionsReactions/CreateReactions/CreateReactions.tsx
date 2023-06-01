@@ -17,6 +17,7 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { LocalStorage } from '../../../LocalStorage/LocalStorage';
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 
 export enum ReactionType {
   SCENE_SWITCH = "SCENE_SWITCH",
@@ -66,7 +67,9 @@ export const CreateReactions = () => {
       if (newActionName !== "") {
 
         if (!(newActionSelected in ReactionType)) {
-          alert("Missing reaction type.")
+          toast("Missing reaction type.", {
+            type: "error"
+          });
           return
         }
 
@@ -95,17 +98,23 @@ export const CreateReactions = () => {
         }
 
         if (!newActionParam && newActionSelected === ReactionType.SCENE_SWITCH) {
-          alert("Missing scene name as parameter.")
+          toast("Missing scene name as parameter.", {
+            type: "error"
+          });
           return
         }
 
         if (!newActionParam && newActionSelected === ReactionType.TOGGLE_AUDIO_COMPRESSOR) {
-          alert("Missing audio source identifier name as parameter.")
+          toast("Missing audio source identifier name as parameter.", {
+            type: "error"
+          });
           return
         }
 
         if (!newActionParam && ((newActionSelected === ReactionType.START_STREAM) || (newActionSelected === ReactionType.STOP_STREAM) || (newActionSelected === ReactionType.START_REC) || (newActionSelected === ReactionType.STOP_REC))) {
-          alert("Missing delay (in seconds) as parameter.")
+          toast("Missing delay (in seconds) as parameter.", {
+            type: "error"
+          });
           return
         }
 
@@ -113,7 +122,9 @@ export const CreateReactions = () => {
 
         setActionsList(newList);
         LocalStorage.setItemObject("actionsList", newList)
-        alert("Reaction saved");
+        toast("Reaction saved !", {
+          type: "success"
+        });
 
         setNewActionName("");
         setNewActionSelected("SCENE_SWITCH");
@@ -121,8 +132,9 @@ export const CreateReactions = () => {
         setOpen(false);
 
       } else {
-        // Put alert
-        alert("Missing name of the reaction");
+        toast("Missing name of the reaction.", {
+          type: "error"
+        });
       }
     };
 

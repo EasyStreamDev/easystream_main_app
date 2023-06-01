@@ -1,6 +1,7 @@
 import React, { Component, useEffect, useState } from "react";
 import { AddAppLaunch } from "../AddAppLaunch/AddAppLaunch";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 
 import { Button } from "@mui/material";
 
@@ -123,9 +124,13 @@ export const AppLaunch = (props: any) => {
     .then(res => {
       if (res.statusCode === 200) {
         updateActionReactionArray()
-        alert("Action & Reaction submitted successfully !")
+        toast("Action & Reaction submitted successfully !", {
+          type: "success"
+        });
       } else {
-        alert("Error server")
+        toast("Error server.", {
+          type: "error"
+        });
       }
     });
   }
@@ -146,9 +151,13 @@ export const AppLaunch = (props: any) => {
       if (result.statusCode === 200) {
         console.log("Remove ActReaction", result.data.actReactId)
         updateActionReactionArray()
-        alert("Remove Action & Reaction successfully")
+        toast("Remove Action & Reaction successfully done !", {
+          type: "success"
+        });
       } else {
-        alert("Error server. Please check connection.")
+        toast("Error server. Please check connection.", {
+          type: "error"
+        });
       }
     })
   }

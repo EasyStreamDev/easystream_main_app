@@ -6,6 +6,7 @@ import {
 import CSS from "csstype";
 import { AppLaunchModal } from "./AppLaunchModal/AppLaunchModal"
 import { SelectChangeEvent } from "@mui/material/Select";
+import { toast } from "react-toastify";
 
 const boxStyles: CSS.Properties = {
   border: "solid",
@@ -50,7 +51,9 @@ export const AddAppLaunch = (props: any) => {
       props.addNewEvent(props.newEvent);
       handleClose();
     } else {
-      alert("Please insert at least one source.")
+      toast("Please insert at least one source.", {
+        type: "error"
+      });
     }
   };
 

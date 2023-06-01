@@ -1,6 +1,7 @@
 import React from 'react';
 import { useState } from "react";
 import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
+import { toast } from "react-toastify";
 
 export const Feedback = () => {
   const [message, setMessage] = useState("");
@@ -14,10 +15,15 @@ export const Feedback = () => {
       const response = await axiosPrivate.post("/feedBacks/create", {
         message,
       });
-      alert("Your feedback has been sent")
+      toast("Your feedback has been sent successfully !", {
+        type: "success"
+      });
       setMessage("");
     } catch (err) {
       console.error(err);
+      toast("Internet connection issues. Please check your connection.", {
+        type: "error"
+      });
     }
   }
 

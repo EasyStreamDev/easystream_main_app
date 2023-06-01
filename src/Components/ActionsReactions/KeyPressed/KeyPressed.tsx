@@ -4,6 +4,7 @@ import { LocalStorage } from '../../../LocalStorage/LocalStorage';
 import { getActReactCouplesFormat, actionReactionFormat, removeActReactAnswer } from '../../../Socket/interfaces';
 import { AddNewKeyPressed } from "../AddNewKeyPressed/AddNewKeyPressed";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 const ipcRenderer = window.require('electron').ipcRenderer
 
 export enum ActionType {
@@ -105,9 +106,13 @@ export const KeyPressed = (props: any) => {
     .then(res => {
       if (res.statusCode === 200) {
         updateActionReactionArray()
-        alert("Action & Reaction submitted successfully !")
+        toast("Action & Reaction submitted successfully !", {
+          type: "success"
+        });
       } else {
-        alert("Error server")
+        toast("Error server.", {
+          type: "error"
+        });
       }
     });
   }
@@ -128,9 +133,13 @@ export const KeyPressed = (props: any) => {
       if (result.statusCode === 200) {
         console.log("Remove ActReaction", result.data.actReactId)
         updateActionReactionArray()
-        alert("Remove Action & Reaction successfully")
+        toast("Remove Action & Reaction successfully done !", {
+          type: "success"
+        });
       } else {
-        alert("Error server. Please check connection.")
+        toast("Error server. Please check connection.", {
+          type: "error"
+        });
       }
     })
   }

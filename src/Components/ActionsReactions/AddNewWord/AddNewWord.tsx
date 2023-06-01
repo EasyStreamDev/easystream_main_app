@@ -6,6 +6,7 @@ import {
 import CSS from "csstype";
 import { WordDetectionModal } from "./WordDetectionModal/WordDetectionModal";
 import { SelectChangeEvent } from "@mui/material/Select";
+import { toast } from "react-toastify";
 
 const boxStyles: CSS.Properties = {
   border: "solid",
@@ -51,7 +52,9 @@ export const AddNewWord = (props: any) => {
       props.addNewEvent(props.newEvent);
       handleClose();
     } else {
-      alert("Please insert at least one keyword and one source.")
+      toast("Please insert at least one keyword and one source.", {
+        type: "error"
+      });
     }
   };
 
@@ -64,7 +67,9 @@ export const AddNewWord = (props: any) => {
     if (e.key === "Enter" && e.currentTarget.value !== "") {
       if (props.newEvent.keywords.length >= 10) {
         e.currentTarget.value = ""
-        alert("You cannot have more than 10 keywords");
+        toast("You cannot have more than 10 keywords.", {
+          type: "error"
+        });
         return
       }
       
@@ -76,7 +81,9 @@ export const AddNewWord = (props: any) => {
       return
     }
     if (e.currentTarget.value.length >= 20) {
-      alert("You cannot have more than 20 characters");
+      toast("You cannot have more than 20 characters.", {
+        type: "error"
+      });
       e.currentTarget.value = (e.currentTarget.value).slice(0, 20);
     }
   };

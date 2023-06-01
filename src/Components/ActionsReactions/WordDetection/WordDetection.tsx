@@ -2,13 +2,12 @@ import React, { Component, useEffect, useState } from "react";
 import { AddNewWord } from "../AddNewWord/AddNewWord";
 import { Link } from "react-router-dom";
 
-import { Button } from "@mui/material";
-
 import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
 
 import BoxEvent from "../../BoxEvent/BoxEvent";
 import { LocalStorage } from '../../../LocalStorage/LocalStorage';
 import { getActReactCouplesFormat, actionReactionFormat, removeActReactAnswer } from '../../../Socket/interfaces';
+import { toast } from "react-toastify";
 const ipcRenderer = window.require('electron').ipcRenderer
 
 export enum ActionType {
@@ -122,9 +121,13 @@ export const WordDetection = (props: any) => {
     .then(res => {
       if (res.statusCode === 200) {
         updateActionReactionArray()
-        alert("Action & Reaction submitted successfully !")
+        toast("Action & Reaction submitted successfully !", {
+          type: "success"
+        });
       } else {
-        alert("Error server")
+        toast("Error server.", {
+          type: "error"
+        });
       }
     });
   }
@@ -145,9 +148,13 @@ export const WordDetection = (props: any) => {
       if (result.statusCode === 200) {
         console.log("Remove ActReaction", result.data.actReactId)
         updateActionReactionArray()
-        alert("Remove Action & Reaction successfully")
+        toast("Remove Action & Reaction successfully done !", {
+          type: "success"
+        });
       } else {
-        alert("Error server. Please check connection.")
+        toast("Error server. Please check connection.", {
+          type: "error"
+        });
       }
     })
   }
