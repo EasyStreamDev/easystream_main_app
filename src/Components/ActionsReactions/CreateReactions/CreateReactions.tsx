@@ -33,7 +33,7 @@ export const CreateReactions = () => {
 
     const [open, setOpen] = React.useState(false);
     const [newActionName, setNewActionName] = React.useState("");
-    const [newActionSelected, setNewActionSelected] = React.useState("CAMERA_SWITCH");
+    const [newActionSelected, setNewActionSelected] = React.useState("SCENE_SWITCH");
     const [newActionParam, setNewActionParam] = React.useState("")
 
     const style = {
@@ -64,11 +64,18 @@ export const CreateReactions = () => {
       console.log("newActionSelected", newActionSelected);
       console.log("newActionParam", newActionParam);
       if (newActionName !== "") {
+
+        if (!(newActionSelected in ReactionType)) {
+          alert("Missing reaction type.")
+          return
+        }
+
         let newElem: any = {
           id: actionsList.length > 0 ? Math.max(...actionsList.map((o: any) => o.id)) + 1 : 1,
           name: newActionName,
           action: newActionSelected as ReactionType,
         }
+
         if (newActionParam) {
           if (newActionSelected === ReactionType.TOGGLE_AUDIO_COMPRESSOR)
             newElem.params = {
@@ -87,19 +94,36 @@ export const CreateReactions = () => {
             newElem.params = { "delay": newActionParam };
         }
 
+        if (!newActionParam && newActionSelected === ReactionType.SCENE_SWITCH) {
+          alert("Missing scene name as parameter.")
+          return
+        }
+
+        if (!newActionParam && newActionSelected === ReactionType.TOGGLE_AUDIO_COMPRESSOR) {
+          alert("Missing audio source identifier name as parameter.")
+          return
+        }
+
+        if (!newActionParam && ((newActionSelected === ReactionType.START_STREAM) || (newActionSelected === ReactionType.STOP_STREAM) || (newActionSelected === ReactionType.START_REC) || (newActionSelected === ReactionType.STOP_REC))) {
+          alert("Missing delay (in seconds) as parameter.")
+          return
+        }
+
         const newList = actionsList.concat([newElem]);
 
         setActionsList(newList);
         LocalStorage.setItemObject("actionsList", newList)
         alert("Reaction saved");
+
+        setNewActionName("");
+        setNewActionSelected("SCENE_SWITCH");
+        setNewActionParam("");
+        setOpen(false);
+
       } else {
         // Put alert
-        alert("Missing parameters");
+        alert("Missing name of the reaction");
       }
-      setNewActionName("");
-      setNewActionSelected("CAMERA_SWITCH");
-      setNewActionParam("");
-      setOpen(false);
     };
 
     const handleCancel = () => {
@@ -224,7 +248,7 @@ export const CreateReactions = () => {
             </div>
 
             <div className="form-item">
-              <InputLabel id="select-event-label">Action</InputLabel>
+              <InputLabel id="select-event-label">Reaction</InputLabel>
               <Select
                 labelId="select-event-label"
                 id="select-event"
