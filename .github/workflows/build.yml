@@ -31,8 +31,6 @@ jobs:
         sudo apt update
 
         sudo apt install wine
-
-        sudo apt install winehq-devel
         
         wine --version
         sudo apt-get install -y fakeroot
