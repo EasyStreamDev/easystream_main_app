@@ -21,6 +21,7 @@ jobs:
         node-version: 16
     - name: Install windows dependencies
       run: |
+        dpkg --add-architecture i386
         sudo apt-get update -y
         sudo apt-get install -y --no-install-recommends software-properties-common
         
@@ -30,7 +31,7 @@ jobs:
         sudo wget -NP /etc/apt/sources.list.d/ https://dl.winehq.org/wine-builds/ubuntu/dists/kinetic/winehq-kinetic.sources
         sudo apt update
 
-        sudo apt install wine
+        sudo apt install wine32
         
         wine --version
         sudo apt-get install -y fakeroot
