@@ -29,7 +29,8 @@ jobs:
         sudo wget -O /etc/apt/keyrings/winehq-archive.key https://dl.winehq.org/wine-builds/winehq.key
 
         sudo wget -NP /etc/apt/sources.list.d/ https://dl.winehq.org/wine-builds/ubuntu/dists/kinetic/winehq-kinetic.sources
-        sudo apt update
+
+        sudo apt update && sudo apt upgrade
 
         sudo apt install wine-stable wine64 wine32:i386 wine64
         
