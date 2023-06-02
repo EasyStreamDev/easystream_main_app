@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - fix-gh-build-action
     tags-ignore:
       - '**'
   pull_request:
