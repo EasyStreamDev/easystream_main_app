@@ -32,7 +32,11 @@ jobs:
 
         sudo apt update && sudo apt upgrade
 
-        sudo apt install --install-recommends wine-stable wine64 wine32:i386 wine64
+        sudo add-apt-repository 'deb https://dl.winehq.org/wine-builds/ubuntu/ focal main'
+
+        sudo apt --fix-broken install
+
+        sudo apt update && sudo apt install --install-recommends wine-stable wine64 wine32:i386 wine64
         
         wine --version
         sudo apt-get install -y fakeroot
