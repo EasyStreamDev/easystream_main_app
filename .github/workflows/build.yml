@@ -31,7 +31,7 @@ jobs:
         sudo wget -NP /etc/apt/sources.list.d/ https://dl.winehq.org/wine-builds/ubuntu/dists/kinetic/winehq-kinetic.sources
         sudo apt update
 
-        sudo apt install wine32
+        sudo apt install wine-stable wine64 wine32:i386 wine64
         
         wine --version
         sudo apt-get install -y fakeroot
