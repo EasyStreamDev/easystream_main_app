@@ -32,7 +32,7 @@ jobs:
 
         sudo apt update && sudo apt upgrade
 
-        sudo apt install wine-stable wine64 wine32:i386 wine64
+        sudo apt install --install-recommends wine-stable wine64 wine32:i386 wine64
         
         wine --version
         sudo apt-get install -y fakeroot
