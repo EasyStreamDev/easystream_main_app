@@ -14,7 +14,7 @@ jobs:
   build:
     runs-on: ubuntu-20.04
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - uses: actions/setup-node@master
       with:
         node-version: 16
@@ -23,33 +23,13 @@ jobs:
         sudo apt-get update -y
         sudo apt-get install -y --no-install-recommends software-properties-common
         
-        sudo dpkg --add-architecture i386
-        
-        curl -L https://download.opensuse.org/repositories/Emulators:/Wine:/Debian/xUbuntu_20.04/Release.key > winehq.key
-        sudo apt-key add winehq.key
-        
-        sudo apt-add-repository 'deb https://download.opensuse.org/repositories/Emulators:/Wine:/Debian/xUbuntu_20.04/ ./'
-        sudo apt-get update -y
-        
-        sudo apt-get -y purge software-properties-common libdbus-glib-1-2 python3-dbus python3-gi python3-pycurl python3-software-properties
-        
-        sudo apt-get install aptitude
-        sudo aptitude install -y libglib2.0-0:i386
-        sudo aptitude install -y libgphoto2-6:i386
-        sudo aptitude install -y libgstreamer-plugins-base1.0-0:i386
-        sudo aptitude install -y libgstreamer1.0-0:i386
-        sudo aptitude install -y libsane:i386
-        sudo aptitude install -y libodbc1:i386
-        
-        sudo rm -rvf /var/lib/apt/lists/*
-        sudo apt-get install -f
-        sudo apt-get update
-        sudo apt-get upgrade
-        sudo apt-get dist-upgrade
-        
-        sudo apt-get install -y wine-stable-i386
-        
-        sudo apt-get install -y --no-install-recommends winehq-stable
+        sudo mkdir -pm755 /etc/apt/keyrings
+        sudo wget -O /etc/apt/keyrings/winehq-archive.key https://dl.winehq.org/wine-builds/winehq.key
+
+        sudo wget -NP /etc/apt/sources.list.d/ https://dl.winehq.org/wine-builds/ubuntu/dists/kinetic/winehq-kinetic.sources
+        sudo apt update
+
+        sudo apt install --install-recommends winehq-devel
         
         wine --version
         sudo apt-get install -y fakeroot
