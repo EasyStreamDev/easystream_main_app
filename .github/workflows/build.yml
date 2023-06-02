@@ -30,7 +30,9 @@ jobs:
         sudo wget -NP /etc/apt/sources.list.d/ https://dl.winehq.org/wine-builds/ubuntu/dists/kinetic/winehq-kinetic.sources
         sudo apt update
 
-        sudo apt install --install-recommends winehq-devel
+        sudo apt install wine
+
+        sudo apt install winehq-devel
         
         wine --version
         sudo apt-get install -y fakeroot
