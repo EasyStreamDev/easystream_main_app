@@ -36,6 +36,8 @@ jobs:
 
         sudo apt --fix-broken install
 
+        sudo sed -i s@/usr/share/keyrings/@/etc/apt/keyrings/@ /etc/apt/sources.list.d/winehq-focal.sources
+
         sudo apt update && sudo apt install --install-recommends wine-stable wine64 wine32:i386 wine64
         
         wine --version
