@@ -26,8 +26,6 @@ import { AppLaunch } from '../ActionsReactions/AppLaunch/AppLaunch';
 import { ToastContainer } from "react-toastify";
 import "react-toastify/ReactToastify.min.css";
 
-const ipcRenderer = window.require("electron").ipcRenderer;
-
 export default function App() {
   return (
     <>
