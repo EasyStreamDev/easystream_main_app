@@ -240,11 +240,7 @@ export const CreateReactions = () => {
           <DialogTitle>Add Reaction</DialogTitle>
           <DialogContent>
             <DialogContentText>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-            Aenean hendrerit, nisl ut mollis placerat, lorem risus feugiat purus, quis tincidunt nisi ipsum eu risus.
-            Nulla at mollis tortor. Morbi accumsan mauris ac euismod tempor.
-            Curabitur non consequat dolor. Nunc ut blandit tortor.
-            Pellentesque viverra volutpat est, vel hendrerit neque elementum nec.
+            Reactions are activated when Actions are triggered. Here you can create your own reactions !
             </DialogContentText>
 
             <div className="form-item">
