@@ -8,9 +8,6 @@ jest.mock("react-router-dom", () => ({
 }));
 
 describe("Unauthorized", () => {
-  beforeEach(() => {
-    useNavigate.mockClear();
-  });
 
   test("renders unauthorized message", () => {
     render(<Unauthorized />);
