@@ -53,7 +53,6 @@ export const ActionsReactions = () => {
   const [load, setload] = React.useState(true);
   const [point, setpoint] = React.useState(".");
 
-  
   /**
    * Function to update the array of actions and reactions from the server
    */
@@ -68,7 +67,7 @@ export const ActionsReactions = () => {
 
   /**
    * Function to retrieve the actions and reactions from the server
-   * @returns 
+   * @returns
    */
   const getActionReactionFromServer = (): Promise<getActReactCouplesFormat> => {
     return new Promise(async (resolve, reject) => {
@@ -82,8 +81,8 @@ export const ActionsReactions = () => {
 
   /**
    * Function to remove an action and reaction from the server
-   * @param actionReactionId 
-   * @returns 
+   * @param actionReactionId
+   * @returns
    */
   const removeActionReactionFromServer = (
     actionReactionId: number
@@ -99,8 +98,8 @@ export const ActionsReactions = () => {
 
   /**
    * Function to remove an action and reaction
-   * @param actionReactionId 
-   * @returns 
+   * @param actionReactionId
+   * @returns
    */
   const removeActionReaction = (actionReactionId: number) => {
     removeActionReactionFromServer(actionReactionId).then((res) => {
@@ -155,9 +154,9 @@ export const ActionsReactions = () => {
 
   /**
    * Function to interpret the action type
-   * @param type 
-   * @param params 
-   * @returns 
+   * @param type
+   * @param params
+   * @returns
    */
   const interpret_action = (type: ActionType, params: any) => {
     if (type === "WORD_DETECT") {
@@ -175,8 +174,8 @@ export const ActionsReactions = () => {
 
   /**
    * Function to get the action type
-   * @param type 
-   * @returns 
+   * @param type
+   * @returns
    */
   const get_action_type = (type: ActionType) => {
     if (type === "WORD_DETECT") {
