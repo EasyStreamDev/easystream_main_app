@@ -21,7 +21,7 @@ const card = (props: any) => (
       <Typography variant="body2">
         {/* / Render the description prop
             // Render the description prop */}
-        {props.description} /
+        {props.description}
       </Typography>
     </CardContent>
   </React.Fragment>
