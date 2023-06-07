@@ -38,7 +38,7 @@
     "material-ui-numeric-input": "^3.1.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-icons": "^4.3.1",
+    "react-icons": "^4.9.0",
     "react-input-number": "^5.0.19",
     "react-numeric-input": "^2.2.3",
     "react-ranger": "^2.1.0",

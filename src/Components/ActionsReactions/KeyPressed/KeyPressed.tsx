@@ -233,7 +233,7 @@ export const KeyPressed = (props: any) => {
             newEvent={newEvent}
             setnewEvent={setnewEvent}
           />
-          <Link style={{ paddingTop: "20px" }} to="/actions-reactions/home">
+          <Link style={{ paddingTop: "20px" }} to="/actions-reactions/actions">
             <Button variant="outlined" startIcon={<BsArrowReturnLeft />} color="info">
               Go Back
             </Button>
