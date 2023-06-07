@@ -20,7 +20,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
-
+// Create a theme for the UnFocus mode
 const themeUnFocus = createTheme({
   overrides: {
     MuiSelect: {
@@ -33,6 +33,7 @@ const themeUnFocus = createTheme({
   }
 });
 
+// Styles for the components
 const style = {
   Box: {
     position: "absolute" as "absolute",
@@ -63,6 +64,7 @@ const style = {
   },
 };
 
+// Styles for the select component
 const useStyles = makeStyles({
   select: {
     "&:before": {
@@ -103,6 +105,7 @@ export const AppLaunchModal = (props: any) => {
       aria-describedby="modal-modal-description"
     >
         <Box sx={style.Box}>
+          {/* Input box for app name */}
           <input
             style={{
               color: "white",
@@ -124,27 +127,30 @@ export const AppLaunchModal = (props: any) => {
               props.handleChange(event);
             }}
           />
+
+          {/* App name */}
           <Typography
-                  id="modal-modal-title"
-                  variant="h6"
-                  component="h2"
-                  key={props.newEvent.keywords[0]}
-                  sx={{
-                    color: "white",
-                    mb: "3vh",
-                    maxWidth: "10px",
-                    display: "flex",
-                    alignItems: "center",
-                    textAlign: "center",
-                    wordWrap: "break-word",
-                    width: "10px",
-                    whiteSpace: "nowrap",
-                    paddingLeft: "1vw",
-                  }}
-                >
-                  {props.newEvent.keywords[0]}
+            id="modal-modal-title"
+            variant="h6"
+            component="h2"
+            key={props.newEvent.keywords[0]}
+            sx={{
+              color: "white",
+              mb: "3vh",
+              maxWidth: "10px",
+              display: "flex",
+              alignItems: "center",
+              textAlign: "center",
+              wordWrap: "break-word",
+              width: "10px",
+              whiteSpace: "nowrap",
+              paddingLeft: "1vw",
+            }}
+          >
+            {props.newEvent.keywords[0]}
           </Typography>
 
+          {/* Divider */}
           <div
             style={{
               color: "#f56f28",
@@ -155,75 +161,76 @@ export const AppLaunchModal = (props: any) => {
             }}
           />
 
-          {
-            props.sources.length === 0 ? (
-              <>
-                <h4>No action found.</h4>
-                <h5>You can create action in "Generate Action".</h5>
-              </>
-            ) : (
-              <FormControl fullWidth sx={{ pb: "1vh", borderColor: "white" }}>
-                <InputLabel
-                  id="demo-simple-select-label"
-                  className={classes.selectLabel}>
-                  sources
-                </InputLabel>
-                <Select
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
-                  inputProps={{
-                    classes: {
-                      icon: classes.icon,
-                      root: classes.root,
-                    },
-                  }}
-                  value={props.sources}
-                  label="sources"
-                  onChange={props.addSource}>
-                  {
-                    props.sources.map((source: any, index: number) => (
-                      <MenuItem value={source.name} key={index}>
-                        {source.name}
-                      </MenuItem>
-                    ))
-                  }
-                </Select>
-              </FormControl>
-            )
-          }
-          {
-            props.newEvent.source && props.newEvent.source.name ? (
-              <Box
+          {/* Sources */}
+          {props.sources.length === 0 ? (
+            <>
+              <h4>No action found.</h4>
+              <h5>You can create action in "Generate Action".</h5>
+            </>
+          ) : (
+            <FormControl fullWidth sx={{ pb: "1vh", borderColor: "white" }}>
+              <InputLabel
+                id="demo-simple-select-label"
+                className={classes.selectLabel}>
+                sources
+              </InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                inputProps={{
+                  classes: {
+                    icon: classes.icon,
+                    root: classes.root,
+                  },
+                }}
+                value={props.sources}
+                label="sources"
+                onChange={props.addSource}>
+                {
+                  props.sources.map((source: any, index: number) => (
+                  <MenuItem value={source.name} key={index}>
+                    {source.name}
+                  </MenuItem>
+                ))
+                }
+              </Select>
+            </FormControl>
+          )}
+
+          {/* Selected source */}
+          {props.newEvent.source && props.newEvent.source.name ? (
+            <Box
+              key={props.newEvent.source.name}
+              className="typography-item"
+              sx={{ color: "white", columns: 2, cursor: "pointer" }}
+            >
+              <Typography
+                id="modal-modal-title"
+                variant="h6"
+                component="h2"
                 key={props.newEvent.source.name}
-                className="typography-item"
-                sx={{ color: "white", columns: 2, cursor: "pointer" }}
-                >
-                <Typography
-                  id="modal-modal-title"
-                  variant="h6"
-                  component="h2"
-                  key={props.newEvent.source.name}
-                  sx={{
-                    color: "white",
-                    display: "flex",
-                    alignItems: "center",
-                    textAlign: "center",
-                    wordWrap: "break-word",
-                    width: "10px",
-                    maxWidth: "10px",
-                    whiteSpace: "nowrap",
-                    mb: "3vh",
-                    paddingLeft: "1vw",
-                  }}>
-                  {props.newEvent.source.name}
-                </Typography>
-              </Box>
-            ) : (
-              <>
-                <h4>Source not selected.</h4>
-              </>
-            )
-          }
+                sx={{
+                  color: "white",
+                  display: "flex",
+                  alignItems: "center",
+                  textAlign: "center",
+                  wordWrap: "break-word",
+                  width: "10px",
+                  maxWidth: "10px",
+                  whiteSpace: "nowrap",
+                  mb: "3vh",
+                  paddingLeft: "1vw",
+                }}>
+                {props.newEvent.source.name}
+              </Typography>
+            </Box>
+          ) : (
+            <>
+              <h4>Source not selected.</h4>
+            </>
+          )}
+
+          {/* Save button */}
           <Box sx={{ width: "100%", display: "flex", alignItems: "center" }}>
             <Button
               onClick={() => props.save()}

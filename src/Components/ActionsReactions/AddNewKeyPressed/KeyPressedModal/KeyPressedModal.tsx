@@ -1,3 +1,4 @@
+// Importing necessary dependencies and styles
 import './KeyPressedModal.css'
 import React, { useState } from "react";
 import Box from "@mui/material/Box";
@@ -10,7 +11,6 @@ import { AiOutlineMinus } from "react-icons/ai";
 import CSS from "csstype";
 import { SxProps } from '@mui/system';
 import { BorderColorRounded } from '@material-ui/icons';
-// import { makeStyles } from "@mui/styles";
 import { MuiThemeProvider, createTheme } from '@material-ui/core/styles';
 import Select from "@material-ui/core/Select";
 import { makeStyles } from "@material-ui/core/styles";
@@ -20,7 +20,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
-
+// Creating a custom theme
 const themeUnFocus = createTheme({
   overrides: {
     MuiSelect: {
@@ -33,6 +33,7 @@ const themeUnFocus = createTheme({
   }
 });
 
+// Styles for different components
 const style = {
   Box: {
     position: "absolute" as "absolute",
@@ -63,6 +64,7 @@ const style = {
   },
 };
 
+// Custom styles using makeStyles hook
 const useStyles = makeStyles({
   select: {
     "&:before": {
@@ -92,29 +94,44 @@ const useStyles = makeStyles({
   }
 })
 
+/**
+ * Defining the KeyPressedModal component
+ * @param props 
+ * @returns 
+ */
 export const KeyPressedModal = (props: any) => {
   const classes = useStyles()
-  const [open, setOpen] = useState(false);
-  const [key, setKey] = useState('');
+  const [open, setOpen] = useState(false); // State variable to track the open state of the dialog
+  const [key, setKey] = useState(''); // State variable to store the pressed key
 
+  /**
+   * Function to handle opening the dialog
+   */
   const handleClickOpen = () => {
     setOpen(true);
   };
 
+  /**
+   * Function to handle closing the dialog
+   */
   const handleClose = () => {
     setOpen(false);
   };
 
+  /**
+   * Function to handle key press event
+   * @param event 
+   */
   const handleKeyPress = (event: any) => {
     setKey(event.key);
-    props.handleChange(event.key);
+    props.handleChange(event.key); // Call the handleChange function from props with the pressed key
     handleClose();
   };
 
   return (
     <Modal
       open={props.open}
-      onClose={() => props.closeWithoutSave()}
+      onClose={() => props.closeWithoutSave()} // Call the closeWithoutSave function from props
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
     >
@@ -230,7 +247,7 @@ export const KeyPressedModal = (props: any) => {
           }
           <Box sx={{ width: "100%", display: "flex", alignItems: "center" }}>
             <Button
-              onClick={() => props.save()}
+              onClick={() => props.save()} // Call the save function from props
               sx={{ color: "#FD7014", flex: "1", mt: "2vh" }}>
               Save
             </Button>

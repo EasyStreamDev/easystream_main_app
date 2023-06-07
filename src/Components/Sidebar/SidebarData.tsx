@@ -25,12 +25,6 @@ export const SidebarData = [
           path: '/audio/compressor-level',
           icon: <BsIcons.BsFillVolumeUpFill />,
           cName: 'sub-nav'
-        },
-        {
-          title: 'Lorem Ipsum',
-          fullTitle: 'Audio > Lorem Ipsum',
-          path: '/audio/lorem-ipsum',
-          icon: <IoIcons.IoIosPaper />
         }
       ]
     },
@@ -55,12 +49,6 @@ export const SidebarData = [
           path: '/video/subtitles',
           icon: <AiIcons.AiFillSetting />,
           cName: 'sub-nav'
-        },
-        {
-          title: 'Lorem Ipsum',
-          fullTitle: 'Video > Lorem Ipsum',
-          path: '/video/lorem-ipsum',
-          icon: <IoIcons.IoIosPaper />
         }
       ]
     },

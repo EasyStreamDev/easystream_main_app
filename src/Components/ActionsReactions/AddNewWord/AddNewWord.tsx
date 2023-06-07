@@ -8,6 +8,9 @@ import { WordDetectionModal } from "./WordDetectionModal/WordDetectionModal";
 import { SelectChangeEvent } from "@mui/material/Select";
 import { toast } from "react-toastify";
 
+/**
+ * CSS styles for the box component
+ */
 const boxStyles: CSS.Properties = {
   border: "solid",
   borderColor: "#FD7014",
@@ -22,30 +25,57 @@ const boxStyles: CSS.Properties = {
   cursor: "pointer",
 };
 
+/**
+ * CSS styles for the icon component
+ */
 const IconStyles: CSS.Properties = {
   paddingLeft: "15px",
   fontSize: "30px",
   width: "50px",
 };
 
+/**
+ * CSS styles for the text component
+ */
 const TextStyles: CSS.Properties = {
   display: "flex",
   alignItems: "center",
   textAlign: "center",
 };
 
+/**
+ * Interface for the event object
+ */
 interface event {
   id: number;
   keyword: string[];
   source: String[];
 }
 
+/**
+ * Component that adds a new keyword event
+ * @param props 
+ * @returns 
+ */
 export const AddNewWord = (props: any) => {
   const [open, setOpen] = React.useState(false);
   const [sources, setsources] = React.useState("");
+
+  /**
+   * Function to handle opening the modal
+   * @returns 
+   */
   const handleOpen = () => setOpen(true);
+
+  /**
+   * Function to handle closing the modal
+   * @returns 
+   */
   const handleClose = () => setOpen(false);
 
+  /**
+   * Function to save the new event
+   */
   const save = () => {
     console.log(props.newEvent)
     if (props.newEvent.keywords.length !== 0 && props.newEvent.source && props.newEvent.source.name) {
@@ -58,11 +88,18 @@ export const AddNewWord = (props: any) => {
     }
   };
 
+  /**
+   * Function to close the modal without saving
+   */
   const closeWithoutSave = () => {
     props.setnewEvent({ id: props.newEvent, keywords: [], sources: [] });
     handleClose();
   };
 
+  /**
+   * Function to handle the change event of the words input
+   * @param e 
+   */
   const handleChange = (e: any) => {
     if (e.key === "Enter" && e.currentTarget.value !== "") {
       if (props.newEvent.keywords.length >= 10) {
@@ -88,6 +125,10 @@ export const AddNewWord = (props: any) => {
     }
   };
 
+  /**
+   * Function to add a source to the new event
+   * @param event 
+   */
   const addSource = (event: SelectChangeEvent) => {
     let cpy = {...props.newEvent};
   
@@ -95,6 +136,10 @@ export const AddNewWord = (props: any) => {
     props.setnewEvent(cpy);
   };
 
+  /**
+   * Function to delete a word
+   * @param event 
+   */
   const deleteKeyWord = (i: number) => {
     let cpy = {...props.newEvent};
 

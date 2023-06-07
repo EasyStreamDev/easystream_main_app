@@ -1,3 +1,4 @@
+// Importing necessary dependencies and styles
 import './WordDetectionModal.css'
 import React from "react";
 import Box from "@mui/material/Box";
@@ -15,6 +16,9 @@ import { MuiThemeProvider, createTheme } from '@material-ui/core/styles';
 import Select from "@material-ui/core/Select";
 import { makeStyles } from "@material-ui/core/styles";
 
+/**
+ * Creating a custom theme
+ */
 const themeUnFocus = createTheme({
   overrides: {
     MuiSelect: {
@@ -27,6 +31,9 @@ const themeUnFocus = createTheme({
   }
 });
 
+/**
+ * Styles for different components
+ */
 const style = {
   Box: {
     position: "absolute" as "absolute",
@@ -57,6 +64,9 @@ const style = {
   },
 };
 
+/**
+ * Custom styles using makeStyles hook
+ */
 const useStyles = makeStyles({
   select: {
     "&:before": {
@@ -86,6 +96,11 @@ const useStyles = makeStyles({
   }
 })
 
+/**
+ * Defining the WordDetectionModal component
+ * @param props 
+ * @returns 
+ */
 export const WordDetectionModal = (props: any) => {
   const classes = useStyles()
   return (

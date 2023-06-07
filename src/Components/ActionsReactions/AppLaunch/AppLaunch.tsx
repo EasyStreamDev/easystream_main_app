@@ -12,12 +12,18 @@ import { LocalStorage } from '../../../LocalStorage/LocalStorage';
 import { getActReactCouplesFormat, actionReactionFormat, removeActReactAnswer } from '../../../Socket/interfaces';
 const ipcRenderer = window.require('electron').ipcRenderer
 
+/**
+ * Define an enum for action types
+ */
 export enum ActionType {
   WORD_DETECT = "WORD_DETECT",
   APP_LAUNCH = "APP_LAUNCH",
   KEY_PRESSED = "KEY_PRESSED",
 }
 
+/**
+ * Define interfaces for identified action-reaction pairs
+ */
 export interface action_reaction_identified {
   actReactId: number,
   isActive: boolean,
@@ -33,6 +39,9 @@ export interface action_reaction_identified {
   }
 }
 
+/**
+ * Define an interface for action-reaction pairs
+ */
 export interface action_reaction {
   action: {
     type: string,
@@ -45,6 +54,9 @@ export interface action_reaction {
   }
 }
 
+/**
+ * Define an interface for events
+ */
 interface event {
   id: number;
   keywords: String[];
@@ -56,18 +68,27 @@ interface event {
   };
 }
 
+/**
+ * Define the AppLaunch component
+ * @param props 
+ * @returns 
+ */
 export const AppLaunch = (props: any) => {
-  const [ action_reactionArray, setaction_reactionArray ] = React.useState<action_reaction_identified[]>([])
+  // State variables
+  const [ action_reactionArray, setaction_reactionArray ] = React.useState<action_reaction_identified[]>([]);
   const [newEvent, setnewEvent] = React.useState<event>({
     id: action_reactionArray.length,
     keywords: [],
     source: {},
   });
-  const [sources] = React.useState(LocalStorage.getItemObject("actionsList") || [])
+  const [sources] = React.useState(LocalStorage.getItemObject("actionsList") || []);
   const [load, setload] = React.useState(true);
   const [point, setpoint] = React.useState(".");
   const axiosPrivate = useAxiosPrivate();
 
+  /**
+   * Define the style object
+   */
   const style = {
     Button: {
       borderColor: "#f56f28",
@@ -80,30 +101,46 @@ export const AppLaunch = (props: any) => {
     },
   };
 
+  /**
+   * Function to update the action-reaction array
+   */
   const updateActionReactionArray = () => {
     getActionReactionFromServer()
     .then(res => {
       if (res.statusCode === 200) {
         console.log("New Array", res);
-        setaction_reactionArray(res.data.actReacts)
+        setaction_reactionArray(res.data.actReacts);
       }
     });
-  }
+  };
 
+  /**
+   * Function to get action-reaction pairs from the server
+   * @returns 
+   */
   const getActionReactionFromServer = (): Promise<getActReactCouplesFormat> => {
     return new Promise(async (resolve, reject) => {
-			const result: getActReactCouplesFormat = await ipcRenderer.sendSync('getActReactCouples', 'ping');
-			resolve(result);
-		});
-  }
+      const result: getActReactCouplesFormat = await ipcRenderer.sendSync('getActReactCouples', 'ping');
+      resolve(result);
+    });
+  };
 
+  /**
+   * Function to send an action-reaction pair to the server
+   * @param newActionReaction 
+   * @returns 
+   */
   const sendActionReactionToServer = (newActionReaction: action_reaction): Promise<actionReactionFormat> => {
     return new Promise(async (resolve, reject) => {
-			const result: actionReactionFormat = await ipcRenderer.sendSync('setActionReaction', newActionReaction);
-			resolve(result);
-		});
-  }
+      const result: actionReactionFormat = await ipcRenderer.sendSync('setActionReaction', newActionReaction);
+      resolve(result);
+    });
+  };
 
+  /**
+   * Function to add a new event
+   * @param event 
+   */
   function addNewEvent(event: any) {
     let newActionReaction: action_reaction = {
       action: {
@@ -123,7 +160,7 @@ export const AppLaunch = (props: any) => {
     sendActionReactionToServer(newActionReaction)
     .then(res => {
       if (res.statusCode === 200) {
-        updateActionReactionArray()
+        updateActionReactionArray();
         toast("Action & Reaction submitted successfully !", {
           type: "success"
         });
@@ -135,6 +172,12 @@ export const AppLaunch = (props: any) => {
     });
   }
 
+  /**
+   * Function to find a deleted element in an array
+   * @param originalArray 
+   * @param newArray 
+   * @returns 
+   */
   function findDeletedElement(originalArray: any[], newArray: any[]): any | undefined {
     const newSet = new Set(newArray);
     for (const element of originalArray) {
@@ -145,6 +188,12 @@ export const AppLaunch = (props: any) => {
     return undefined;
   }
 
+  /**
+   * Function to remove and update an action-reaction pair
+   * @param params 
+   * @param eventArr 
+   * @returns 
+   */
   const removeAndUpdateActReaction = (params: any, eventArr: any) => {
     return new Promise(async (resolve, reject) => {
       const result: removeActReactAnswer = await ipcRenderer.sendSync('removeActReact', params)
@@ -159,9 +208,13 @@ export const AppLaunch = (props: any) => {
           type: "error"
         });
       }
-    })
+    });
   }
 
+  /**
+   * Function to update the event from BoxEvent component
+   * @param eventArr 
+   */
   function updateEventFromBoxEvent(eventArr: any) {
     console.log("Before", action_reactionArray);
     console.log("After", eventArr);
@@ -176,6 +229,9 @@ export const AppLaunch = (props: any) => {
     }
   }
 
+  /**
+   * useEffect hook to fetch action-reaction pairs from the server
+   */
   useEffect(() => {
     async function sleep(): Promise<boolean> {
       return new Promise((resolve) => {
@@ -183,7 +239,7 @@ export const AppLaunch = (props: any) => {
         .then(res => {
           if (res.statusCode === 200) {
             console.log("New Array", res);
-            setaction_reactionArray(res.data.actReacts)
+            setaction_reactionArray(res.data.actReacts);
             resolve(false);
           }
         })
@@ -193,11 +249,15 @@ export const AppLaunch = (props: any) => {
     sleep().then((res) => setload(res));
   }, []);
 
+  /**
+   * Function to add a point to the loading message
+   */
   function addpoint() {
     {setInterval(() => {
       (point.length >= 3 ? setpoint(".") : setpoint(point + "."));
     }, 1000)}
   }
+
 
   return (
     <>
