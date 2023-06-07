@@ -4,7 +4,10 @@ import {
 	Route,
 	Link
 } from "react-router-dom";
+import Button from "@mui/material/Button";
+import { BsArrowReturnLeft } from "react-icons/bs"
 import './CreateActions.css';
+
 
 export const CreateActions = () => {
     return (
@@ -22,7 +25,11 @@ export const CreateActions = () => {
         <Link className="m-6" to="/actions-reactions/app-launch">App Launch</Link>
 
         {/* Link to go back to the home page */}
-        <Link className="go-back-link" to="/actions-reactions/home">Go Back</Link>
+        <Link className="go-back-link" to="/actions-reactions/home">
+          <Button variant="outlined" startIcon={<BsArrowReturnLeft />} color="info">
+            Go Back
+          </Button>
+        </Link>
       </>
     );
 }

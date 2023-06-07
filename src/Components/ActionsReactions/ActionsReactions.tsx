@@ -7,30 +7,17 @@ import CardContent from "@mui/material/CardContent";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import {
-  AiOutlineBug,
-  AiOutlinePlayCircle,
-  AiOutlineSound,
-  AiOutlineStop,
-  AiOutlineVideoCamera,
-} from "react-icons/ai";
-import { MdPanoramaHorizontal } from "react-icons/md";
-import {
-  IconButton,
-  InputLabel,
-  MenuItem,
-  Select,
-  SelectChangeEvent,
+  IconButton
 } from "@mui/material";
-import { BsTrash } from "react-icons/bs";
+import { BsTrash, BsArrowLeft, BsArrowRight } from "react-icons/bs";
+import { BsArrowReturnLeft } from "react-icons/bs"
 import { Link } from "react-router-dom";
 import {
   getActReactCouplesFormat,
-  actionReactionFormat,
   removeActReactAnswer,
 } from "../../Socket/interfaces";
 import {
   ActionType,
-  action_reaction,
   action_reaction_identified,
 } from "./WordDetection/WordDetection";
 import { toast } from "react-toastify";
@@ -247,13 +234,17 @@ export const ActionsReactions = () => {
 
           <div className="create_actions_button_pos">
             <Link className="m-2" to="/actions-reactions/actions">
-              Create Actions
+              <Button variant="outlined" startIcon={<BsArrowLeft />} color="warning">
+                Create Actions
+              </Button>
             </Link>
           </div>
 
           <div className="create_reactions_button_pos">
             <Link className="m-2" to="/actions-reactions/reactions">
-              Create Reactions
+              <Button variant="outlined" endIcon={<BsArrowRight />} color="warning">
+                Create Reactions
+              </Button>
             </Link>
           </div>
         </>

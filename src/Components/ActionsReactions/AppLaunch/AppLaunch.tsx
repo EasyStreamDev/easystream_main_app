@@ -2,8 +2,10 @@ import React, { Component, useEffect, useState } from "react";
 import { AddAppLaunch } from "../AddAppLaunch/AddAppLaunch";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
+import Button from "@mui/material/Button";
 
-import { Button } from "@mui/material";
+import { BsArrowReturnLeft } from "react-icons/bs"
+
 
 import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
 
@@ -282,7 +284,11 @@ export const AppLaunch = (props: any) => {
         newEvent={newEvent}
         setnewEvent={setnewEvent}
       />
-        <Link style={{ "paddingTop": "20px" }} to="/actions-reactions/home">Go Back</Link>
+        <Link style={{ "paddingTop": "20px" }} to="/actions-reactions/home">
+          <Button variant="outlined" startIcon={<BsArrowReturnLeft />} color="info">
+            Go Back
+          </Button>
+        </Link>
 
       </>
       )

@@ -6,6 +6,7 @@ import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
+import { BsArrowReturnLeft } from "react-icons/bs"
 import {
   AiFillVideoCamera,
   AiOutlineBug,
@@ -281,7 +282,9 @@ export const CreateReactions = () => {
       </div>
 
       <Link className="pt-20" to="/actions-reactions/home">
-        Go Back
+        <Button variant="outlined" startIcon={<BsArrowReturnLeft />} color="info">
+          Go Back
+        </Button>
       </Link>
 
       <Dialog open={open} onClose={handleCancel}>
