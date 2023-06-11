@@ -13,28 +13,8 @@ import {
   removeActReactAnswer,
 } from "../../../Socket/interfaces";
 import { toast } from "react-toastify";
+import { ActionType, action_reaction_identified } from "../ActionsReactions";
 const ipcRenderer = window.require("electron").ipcRenderer;
-
-export enum ActionType {
-  WORD_DETECT = "WORD_DETECT", // Enum for different action types
-  APP_LAUNCH = "APP_LAUNCH",
-  KEY_PRESSED = "KEY_PRESSED",
-}
-
-export interface action_reaction_identified {
-  actReactId: number; // Unique identifier for an action-reaction pair
-  isActive: boolean; // Flag indicating whether the action-reaction pair is active or not
-  action: {
-    actionId: number; // Unique identifier for an action
-    type: string; // Type of action
-    params?: Object; // Optional parameters for the action
-  };
-  reaction: {
-    reactionId: number; // Unique identifier for a reaction
-    type: string; // Type of reaction
-    params?: Object; // Optional parameters for the reaction
-  };
-}
 
 export interface action_reaction {
   action: {
