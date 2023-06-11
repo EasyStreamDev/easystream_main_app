@@ -1,7 +1,8 @@
 import React, { Component, useEffect, useState } from "react";
 import { AddNewWord } from "../AddNewWord/AddNewWord";
 import { Link } from "react-router-dom";
-
+import Button from "@mui/material/Button";
+import { BsArrowReturnLeft } from "react-icons/bs"
 import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
 
 import BoxEvent from "../../BoxEvent/BoxEvent";
@@ -247,8 +248,10 @@ export const WordDetection = (props: any) => {
             newEvent={newEvent}
             setnewEvent={setnewEvent}
           />
-          <Link style={{ paddingTop: "20px" }} to="/actions-reactions/home">
-            Go Back
+          <Link style={{ paddingTop: "20px" }} to="/actions-reactions/actions">
+            <Button variant="outlined" startIcon={<BsArrowReturnLeft />} color="info">
+              Go Back
+            </Button>
           </Link>
         </>
       )}

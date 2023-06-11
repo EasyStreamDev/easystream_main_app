@@ -9,6 +9,8 @@ import {
 import { AddNewKeyPressed } from "../AddNewKeyPressed/AddNewKeyPressed";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
+import Button from "@mui/material/Button";
+import { BsArrowReturnLeft } from "react-icons/bs"
 const ipcRenderer = window.require("electron").ipcRenderer;
 
 export enum ActionType {
@@ -231,8 +233,10 @@ export const KeyPressed = (props: any) => {
             newEvent={newEvent}
             setnewEvent={setnewEvent}
           />
-          <Link style={{ paddingTop: "20px" }} to="/actions-reactions/home">
-            Go Back
+          <Link style={{ paddingTop: "20px" }} to="/actions-reactions/actions">
+            <Button variant="outlined" startIcon={<BsArrowReturnLeft />} color="info">
+              Go Back
+            </Button>
           </Link>
         </>
       )}
