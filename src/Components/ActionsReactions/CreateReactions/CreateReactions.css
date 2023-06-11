@@ -5,17 +5,20 @@ body {
 .events-container {
     text-align: center;
     width: 100%;
+    height: 60%;
 }
 
 .reactions-list {
-    max-height: 430px;
+    max-height: 45rem;
+    min-height: 23rem;
 }
 
 .item-container {
     overflow:scroll;
     overflow-y:scroll;
     overflow-x:hidden;
-    max-height: 430px;
+    max-height: 21rem;
+    min-height: 23rem;
 }
 
 .card-event {
