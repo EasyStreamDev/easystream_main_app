@@ -38,7 +38,7 @@ body {
 }
 
 .rightAlignItem {
-    justify-content: flex-end;
+    justify-content: space-between;
 }
 
 .MuiCardActions-root{

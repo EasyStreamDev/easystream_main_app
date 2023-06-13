@@ -106,7 +106,7 @@ ipcMain.on("getAllScenes", (event, arg) => {
           },
           {
             "name": "Scene 2",
-            "uuid": "4f712d61-094a-4b7b-9905-4fa928329fe4",
+            "uuid": "4f712d61-094a-4b7b-9905-4fa928329de4",
           }
         ],
       }

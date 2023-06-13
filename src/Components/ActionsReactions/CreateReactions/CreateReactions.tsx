@@ -1,12 +1,12 @@
 // Importing necessary dependencies and components
-import React from "react";
+import React, { useEffect } from "react";
 import "./CreateReactions.css";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import { BsArrowReturnLeft } from "react-icons/bs"
+import { BsArrowReturnLeft, BsExclamationCircle, BsFillExclamationTriangleFill } from "react-icons/bs"
 import {
   AiFillVideoCamera,
   AiOutlineBug,
@@ -22,6 +22,7 @@ import {
   MenuItem,
   Select,
   SelectChangeEvent,
+  Tooltip,
 } from "@mui/material";
 import { BsTrash } from "react-icons/bs";
 import TextField from "@mui/material/TextField";
@@ -33,6 +34,8 @@ import DialogTitle from "@mui/material/DialogTitle";
 import { LocalStorage } from "../../../LocalStorage/LocalStorage";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
+import { AllScenes, Scene } from "../../../Socket/interfaces";
+const ipcRenderer = window.require("electron").ipcRenderer;
 
 /**
  * Define an enumeration for the reaction types
@@ -56,11 +59,12 @@ export const CreateReactions = () => {
   const [open, setOpen] = React.useState(false);
   const [newActionName, setNewActionName] = React.useState("");
   const [newActionSelected, setNewActionSelected] =
-    React.useState("SCENE_SWITCH");
+    React.useState("START_STREAM");
   const [newActionParam, setNewActionParam] = React.useState("");
   const [actionsList, setActionsList] = React.useState(
     LocalStorage.getItemObject("actionsList") || []
   );
+  const [availableScenes, setAvailableScenes] = React.useState<Scene[]>([]);
 
   
   /**
@@ -88,11 +92,43 @@ export const CreateReactions = () => {
   };
 
   /**
+   * Get 
+   * @returns 
+   */
+  const getAllScenes = (): Promise<AllScenes> => {
+    return new Promise(async (resolve, reject) => {
+      const result: AllScenes = await ipcRenderer.sendSync("getAllScenes", "ping");
+      resolve(result);
+    });
+  };
+
+  /**
    * Event handler for opening the dialog
    */
   const handleClickOpen = () => {
     setOpen(true);
   };
+
+  /**
+   * Function to know if a scene not available
+   * @param item 
+   * @returns 
+   */
+  const warningMessageDisplaySceneMissing = (item: any) => {
+    // check if SWITCH_SCENE
+    if (item.action === ReactionType.SCENE_SWITCH) {
+      // check if uuid is in available scenes
+      let tmp = true
+      availableScenes.forEach((element) => {
+        if (element.uuid === item.params.uuid) {
+          tmp = false;
+        }
+      });
+      return tmp;
+    } else {
+      return false;
+    }
+  }
 
   /**
    * Event handler for saving the reaction
@@ -124,7 +160,7 @@ export const CreateReactions = () => {
             toggle: true,
           };
         if (newActionSelected === ReactionType.SCENE_SWITCH)
-          newElem.params = { scene: newActionParam };
+          newElem.params = JSON.parse(newActionParam) ? JSON.parse(newActionParam) : { scene: "" }
         if (newActionSelected === ReactionType.START_STREAM)
           newElem.params = { delay: newActionParam };
         if (newActionSelected === ReactionType.STOP_STREAM)
@@ -134,7 +170,7 @@ export const CreateReactions = () => {
         if (newActionSelected === ReactionType.STOP_REC)
           newElem.params = { delay: newActionParam };
       }
-      if (!newActionParam && newActionSelected === ReactionType.SCENE_SWITCH) {
+      if (newActionSelected === ReactionType.SCENE_SWITCH && (!newActionParam || newActionParam === "")) {
         toast("Missing scene name as parameter.", {
           type: "error",
         });
@@ -229,6 +265,30 @@ export const CreateReactions = () => {
     return <AiOutlineBug />;
   }
 
+  useEffect(() => {
+    ipcRenderer.on('scenes-updated', (evt: any, message: any) => {
+      getAllScenes().then((res) => {
+        if (res.statusCode === 200) {
+          toast("Scenes have been updated.", {
+            type: "info",
+          });
+          setAvailableScenes(res.data.scenes);
+        }
+      });
+    });
+    getAllScenes().then((res) => {
+      if (res.statusCode === 200) {
+        setAvailableScenes(res.data.scenes);
+        console.log(res)
+      } else {
+        toast("Error loading available scenes.", {
+          type: "error",
+        });
+      }
+    });
+
+  }, []);
+
   return (
     <>
       <div className="container events-container">
@@ -259,14 +319,27 @@ export const CreateReactions = () => {
                         {item.params
                           ? Object.keys(item.params)
                               .map((key) => {
-                                return `${key}: ${item.params[key]}`;
+                                return <li key={key}><b>{key}: </b>{item.params[key]}</li>;
                               })
-                              .join("\n")
                           : ""}
                       </Typography>
                     </CardContent>
                     <CardActions disableSpacing className="rightAlignItem">
+                      {
+                        warningMessageDisplaySceneMissing(item) === true ? (
+                          <Tooltip title="The scene that is registered in this reaction isn't available anymore. Please delete this reaction.">
+                            <IconButton
+                                color="error"
+                                aria-label="warning"
+                              >
+                                <BsFillExclamationTriangleFill />
+                            </IconButton>
+                          </Tooltip>
+                          
+                        ) : (<div></div>)
+                      }
                       <IconButton
+                        color="warning"
                         onClick={() => deleteAction(item.id)}
                         aria-label="delete"
                       >
@@ -315,7 +388,7 @@ export const CreateReactions = () => {
               value={newActionSelected}
               onChange={handleOnChangeSelect}
               autoWidth
-              label="Action"
+              label="Reaction"
             >
               {keysReactionType.map((k) => {
                 return (
@@ -328,13 +401,39 @@ export const CreateReactions = () => {
           </div>
 
           <div className="form-item">
-            <TextField
-              id="parameter-action"
-              label="Parameter action"
-              type="text"
-              variant="outlined"
-              onChange={(action) => setNewActionParam(action.target.value)}
-            />
+            {
+              newActionSelected === "SCENE_SWITCH" ? (
+                <>
+                  <InputLabel id="select-event-label">Parameter action</InputLabel>
+                  <Select
+                    labelId="select-event-label"
+                    id="select-event"
+                    value={newActionParam}
+                    onChange={(action) => setNewActionParam(action.target.value as string)}
+                    autoWidth
+                    label="ParameterReaction"
+                  >
+                    {availableScenes.map((k) => {
+                      return (
+                        <MenuItem key={k.uuid} value={JSON.stringify(k)}>
+                          {k.name}
+                        </MenuItem>
+                      );
+                    })}
+                  </Select>
+                </>
+              ) : (
+                <>
+                  <TextField
+                    id="parameter-action"
+                    label="Parameter action"
+                    type="text"
+                    variant="outlined"
+                    onChange={(action) => setNewActionParam(action.target.value)}
+                  />
+                </>
+              )
+            }
           </div>
         </DialogContent>
         <DialogActions>
