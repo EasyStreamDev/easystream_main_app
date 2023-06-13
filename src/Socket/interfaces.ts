@@ -1,83 +1,97 @@
 export interface resultFormat {
-	statusCode: number,
-	message: string,
-};
+  statusCode: number;
+  message: string;
+}
 
 export interface actionReactionFormat {
-	message: string,
-    statusCode: number,
-    data: {
-      actionId: number,
-      reactionId: number,
-      actReactId: number,
-    }
+  message: string;
+  statusCode: number;
+  data: {
+    actionId: number;
+    reactionId: number;
+    actReactId: number;
+  };
 }
 
 interface actionInterface {
-	actionId: number,
-	type: string,
-	params: any
+  actionId: number;
+  type: string;
+  params: any;
 }
 
 interface reactionInterface {
-	name: string,
-	reactionId: number,
-	type: string,
-	params?: any
+  name: string;
+  reactionId: number;
+  type: string;
+  params?: any;
 }
 
 export interface removeActReactAnswer {
-	statusCode: number,
-	message: string,
-	data: {
-		actReactId: number
-	}
+  statusCode: number;
+  message: string;
+  data: {
+    actReactId: number;
+  };
 }
 
 export interface actReactInterface {
-	actReactId: number,
-	isActive: boolean,
-	action: actionInterface
-	reaction: reactionInterface
+  actReactId: number;
+  isActive: boolean;
+  action: actionInterface;
+  reaction: reactionInterface;
 }
 
 export interface getActReactCouplesFormat {
-	statusCode: number,
-    message: string,
-	data: {
-		length: number,
-		actReacts: actReactInterface[]
-	}
+  statusCode: number;
+  message: string;
+  data: {
+    length: number;
+    actReacts: actReactInterface[];
+  };
 }
 
 export interface Mic {
-	micName: string,
-	level: number,
-	isActive: boolean,
-};
+  micName: string;
+  level: number;
+  isActive: boolean;
+}
 
 export interface AllMics {
-	statusCode: number,
-	message: string,
-	data: {
-		length: number,
-		mics: [Mic],
-	}
-};
+  statusCode: number;
+  message: string;
+  data: {
+    length: number;
+    mics: [Mic];
+  };
+}
+
+export interface Scene {
+  name: string;
+  uuid: string;
+}
+
+export interface AllScenes {
+  statusCode: number;
+  messages: string;
+  data: {
+    length: number;
+    scenes: [Scene];
+  };
+}
 
 export interface TimeRange {
-	timeRange: number,
-	ref: 'seconds' | 'minutes' | 'ad vitam aeternam'
-};
+  timeRange: number;
+  ref: "seconds" | "minutes" | "ad vitam aeternam";
+}
 
 export interface Event {
-	id: number,
-	sources: [String],
-	keywords: [String],
-	time: TimeRange,
-};
+  id: number;
+  sources: [String];
+  keywords: [String];
+  time: TimeRange;
+}
 
 export interface AllEvents {
-	length: number,
-	events: [Event],
-};
+  length: number;
+  events: [Event];
+}

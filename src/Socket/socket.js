@@ -143,6 +143,26 @@ class TCPConnection {
         });
     }
 
+    getAllScenes() {
+        let obj = {
+            command: 'getAllScenes',
+        };
+        console.log('getAllScenes -> ', JSON.stringify(obj));
+        return new Promise((resolve, reject) => {
+            this.sendData(obj, (data, error) => {
+                if (data) {
+                    console.log('getAllScenes resolve', data);
+                    resolve(data);
+                } else {
+                    console.log('getAllScenes error', error);
+                    this.socket.end();
+                    this.ipcMain.emit('connection-server-lost')
+                    reject(error);
+                }
+            });
+        });
+    }
+
     getActReactCouples() {
         let obj = {
             command: 'getActReactCouples',

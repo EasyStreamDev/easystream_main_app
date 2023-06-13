@@ -92,6 +92,35 @@ ipcMain.on("getAllMics", (event, arg) => {
   }
 });
 
+ipcMain.on("getAllScenes", (event, arg) => {
+  if (isDev) {
+    let res = {
+      statusCode: 200,
+      message: "OK",
+      data: {
+        length: 2,
+        scenes: [
+          {
+            "name": "Scene 1",
+            "uuid": "27705058-7a54-4057-ad17-a810c08e8db9",
+          },
+          {
+            "name": "Scene 2",
+            "uuid": "4f712d61-094a-4b7b-9905-4fa928329fe4",
+          }
+        ],
+      }
+    };
+    event.returnValue = res;
+    return res;
+  } else {
+    return tcpConn.getAllScenes().then((res) => {
+      console.log("getAllScenes : " + res);
+      event.returnValue = res;
+    });
+  }
+});
+
 ipcMain.on("getActReactCouples", (event, arg) => {
   if (isDev) {
     let res = {
@@ -134,7 +163,8 @@ ipcMain.on("getActReactCouples", (event, arg) => {
                 reactionId: 4,
                 type: "SCENE_SWITCH",
                 params: {
-                  scene: "scene_3"
+                  scene: "Scene qui n'existe pas",
+                  uuid: "2772a187-cc04-4058-9148-beaaba7a2145"
                 }
             }
           },
