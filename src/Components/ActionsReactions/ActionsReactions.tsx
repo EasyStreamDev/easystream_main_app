@@ -9,17 +9,13 @@ import Typography from "@mui/material/Typography";
 import {
   IconButton
 } from "@mui/material";
-import { BsTrash, BsArrowLeft, BsArrowRight } from "react-icons/bs";
+import { BsTrash, BsArrowLeft, BsArrowRight, BsMic, BsRocketTakeoff, BsKeyboard, BsBug } from "react-icons/bs";
 import { BsArrowReturnLeft } from "react-icons/bs"
 import { Link } from "react-router-dom";
 import {
   getActReactCouplesFormat,
   removeActReactAnswer,
 } from "../../Socket/interfaces";
-import {
-  ActionType,
-  action_reaction_identified,
-} from "./WordDetection/WordDetection";
 import { toast } from "react-toastify";
 const ipcRenderer = window.require("electron").ipcRenderer;
 
@@ -29,6 +25,27 @@ export enum ReactionType {
   START_LIVE = "START_LIVE",
   STOP_LIVE = "STOP_LIVE",
   TOGGLE_AUDIO_COMPRESSOR = "TOGGLE_AUDIO_COMPRESSOR",
+}
+
+export enum ActionType {
+  WORD_DETECT = "WORD_DETECT", // Enum for different action types
+  APP_LAUNCH = "APP_LAUNCH",
+  KEY_PRESSED = "KEY_PRESSED",
+}
+
+export interface action_reaction_identified {
+  actReactId: number; // Unique identifier for an action-reaction pair
+  isActive: boolean; // Flag indicating whether the action-reaction pair is active or not
+  action: {
+    actionId: number; // Unique identifier for an action
+    type: string; // Type of action
+    params?: Object; // Optional parameters for the action
+  };
+  reaction: {
+    reactionId: number; // Unique identifier for a reaction
+    type: string; // Type of reaction
+    params?: Object; // Optional parameters for the reaction
+  };
 }
 
 export const ActionsReactions = () => {
@@ -148,12 +165,12 @@ export const ActionsReactions = () => {
   const interpret_action = (type: ActionType, params: any) => {
     if (type === "WORD_DETECT") {
       let words = params.words.join(" or ");
-      return "If you say " + words;
+      return <>If you say <b>{words}</b></>;
     } else if (type === "APP_LAUNCH") {
-      return "If the application " + params.app_name + " launches";
+      return <>If the application <b>{params.app_name}</b> launches</>;
     } else if (type === "KEY_PRESSED") {
       let key = params.key;
-      return 'If you type the touch "' + key + '"';
+      return <>If you type the key <b>{key}</b></>;
     } else {
       return "ERROR";
     }
@@ -173,6 +190,23 @@ export const ActionsReactions = () => {
       return "Key Pressed";
     } else {
       return "ERROR";
+    }
+  };
+
+  /**
+   * Function to get the icon from type
+   * @param type
+   * @returns
+   */
+  const get_action_icon = (type: ActionType) => {
+    if (type === "WORD_DETECT") {
+      return <BsMic/>;
+    } else if (type === "APP_LAUNCH") {
+      return <BsRocketTakeoff/>;
+    } else if (type === "KEY_PRESSED") {
+      return <BsKeyboard/>;
+    } else {
+      return <BsBug/>;
     }
   };
 
@@ -198,20 +232,37 @@ export const ActionsReactions = () => {
                 <div className="item-container action-reaction-cards">
                   {actionsReactionsList.map((item: any, index: any) => {
                     return (
-                      <Card key={index} className="card-event">
+                      <Card key={index} className="card-event" sx={{
+                        backgroundColor: "#565d68",
+                        border: "3px solid orange",
+                        borderRadius: "10px",
+                        color: "white",
+                        height: "100%",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center"
+                      }}>
                         <CardContent>
-                          <Typography variant="h5" component="div">
-                            {get_action_type(item.action.type)} #
-                            {item.actReactId}
+                        <Typography sx={{ fontSize: 14 }} gutterBottom>
+                          # {index + 1}
+                        </Typography>
+                          <Typography variant="h4" component="div">
+                            <div className="top-card">
+                              <div className="icon-card">
+                                {get_action_icon(item.action.type)}
+                              </div>
+                              <div>
+                                {get_action_type(item.action.type)}
+                              </div>
+                            </div>
                           </Typography>
-                          <Typography variant="body2">
-                            Action:{" "}
+                          <Typography variant="body1">
                             {interpret_action(
                               item.action.type,
                               item.action.params
                             )}
                             <br></br>
-                            Reaction: {item.reaction.name}
+                            Then, <b>{item.reaction.name}</b>
                           </Typography>
                         </CardContent>
                         <CardActions disableSpacing className="rightAlignItem">
@@ -220,8 +271,14 @@ export const ActionsReactions = () => {
                               removeActionReaction(item.actReactId)
                             }
                             aria-label="delete"
+                            sx={{
+                              ":hover": {
+                                backgroundColor: "transparent",                                
+                                transform: "scale(1.2)",
+                              },
+                            }}
                           >
-                            <BsTrash />
+                            <BsTrash color="coral"/>
                           </IconButton>
                         </CardActions>
                       </Card>

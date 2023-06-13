@@ -13,6 +13,7 @@ body {
     align-items: center;
     justify-content: center;
     display: grid;
+    height: 60%;
 }
 
 .compressor-container {
@@ -34,22 +35,27 @@ body {
     overflow:scroll;
     overflow-y:scroll;
     overflow-x:hidden;
-    max-height: 430px;
+    max-height: 21rem;
+    min-height: 23rem;
+    width: 48vw;
+    max-width: 520px;
 }
 
 .action-reaction-cards {
-    max-width: 300px;
+    min-width: 300px;
 }
 
 .create_actions_button_pos {
     top: 20%;
     left: 10%;
+    width: 10%;
     position: absolute;
 }
 
 .create_reactions_button_pos {
     top: 20%;
-    left: calc(100% - 20%);
+    right: 10%;
+    width: 10%;
     position: absolute;
 }
 
@@ -67,4 +73,13 @@ body {
 
 .form-item {
     padding: 10px;
+}
+
+.icon-card {
+    padding-right: 5px;
+}
+
+.top-card {
+    display: flex;
+    justify-content: center;
 }
