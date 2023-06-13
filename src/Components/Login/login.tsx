@@ -7,6 +7,7 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 import React from "react";
 import axios from "../../api/axios";
 import useAuth from "../../hooks/useAuth";
+import { toast } from "react-toastify";
 
 const LOGIN_URL = "/auth/login";
 
@@ -100,13 +101,25 @@ export const Login = () => {
       console.log(response?.data)
     } catch (err: any) {
       if (!err?.response) {
-        setErrMsg("No Server Response");
+        toast("No Server Response.", {
+          type: "error",
+        });
+        setErrMsg("No Server Response.");
       } else if (err.response?.status === 400) {
-        setErrMsg("Missing email or Password");
+        setErrMsg("Missing email or Password.");
+        toast("Missing email or Password.", {
+          type: "error",
+        });
       } else if (err.response?.status === 401) {
         setErrMsg("Unauthorized");
+        toast("Unauthorized.", {
+          type: "error",
+        });
       } else {
         setErrMsg("Login Failed");
+        toast("Login Failed.", {
+          type: "error",
+        });
       }
       errRef.current.focus();
     }
