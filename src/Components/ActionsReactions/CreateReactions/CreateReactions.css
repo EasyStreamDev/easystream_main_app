@@ -13,7 +13,7 @@ body {
     min-height: 23rem;
 }
 
-.item-container {
+.item-container-reaction {
     overflow:scroll;
     overflow-y:scroll;
     overflow-x:hidden;

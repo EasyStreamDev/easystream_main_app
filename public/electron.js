@@ -144,11 +144,12 @@ ipcMain.on("getActReactCouples", (event, arg) => {
                 reactionId: 1,
                 type: "SCENE_SWITCH",
                 params: {
-                  scene: "scene_2"
+                  scene: "Scene 2",
+                  uuid: "4f712d61-094a-4b7b-9905-4fa928329de4"
                 }
             }
           },
-          {
+          { 
             actReactId: 2,
             isActive: true,
             action: {
