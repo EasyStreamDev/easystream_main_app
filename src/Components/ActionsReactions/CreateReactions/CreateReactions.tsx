@@ -92,7 +92,7 @@ export const CreateReactions = () => {
   };
 
   /**
-   * Get 
+   * Get All Scenes
    * @returns 
    */
   const getAllScenes = (): Promise<AllScenes> => {
@@ -115,7 +115,7 @@ export const CreateReactions = () => {
    * @returns 
    */
   const warningMessageDisplaySceneMissing = (item: any) => {
-    // check if SWITCH_SCENE
+    // check if SCENE_SWITCH
     if (item.action === ReactionType.SCENE_SWITCH) {
       // check if uuid is in available scenes
       let tmp = true
@@ -300,7 +300,7 @@ export const CreateReactions = () => {
           </>
         ) : (
           <div className="reactions-list">
-            <div className="item-container">
+            <div className="item-container-reaction">
               {actionsList.map((item: any, index: any) => {
                 return (
                   <Card
