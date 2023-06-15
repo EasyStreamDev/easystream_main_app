@@ -135,7 +135,7 @@ export const ActionsReactions = () => {
   useEffect(() => {
     ipcRenderer.on('scenes-updated', (evt: any, message: any) => {
       getAllScenes().then((res) => {
-        if (res.statusCode === 200) {
+        if (res.statusCode === 201) {
           toast("Scenes have been updated.", {
             type: "info",
           });
