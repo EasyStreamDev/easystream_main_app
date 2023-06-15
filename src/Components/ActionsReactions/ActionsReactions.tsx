@@ -133,9 +133,20 @@ export const ActionsReactions = () => {
 
   // Hook to load actions and reactions on component mount
   useEffect(() => {
+    ipcRenderer.on('actions-reactions-updated', (evt: any, message: any) => {
+      getActionReactionFromServer().then((res) => {
+        if (res.statusCode === 200) {
+          toast("Actions/Reactions have been updated !", {
+            type: "info",
+          });
+          console.log("New Array", res);
+          setActionsReactionsList(res.data.actReacts);
+        }
+      });
+    });
     ipcRenderer.on('scenes-updated', (evt: any, message: any) => {
       getAllScenes().then((res) => {
-        if (res.statusCode === 201) {
+        if (res.statusCode === 200) {
           toast("Scenes have been updated.", {
             type: "info",
           });

@@ -263,6 +263,14 @@ ipcMain.on("scenes-updated", (evt, arg) => { // Get from socket broadcast
   mainWindow.webContents.send('scenes-updated'); // To renderer
 });
 
+ipcMain.on("actions-reactions-updated", (evt, arg) => { // Get from socket broadcast
+  mainWindow.webContents.send('actions-reactions-updated'); // To renderer
+});
+
+ipcMain.on("subtitles-updated", (evt, arg) => { // Get from socket broadcast
+  mainWindow.webContents.send('subtitles-updated'); // To renderer
+});
+
 ipcMain.on("connection-server-lost", (evt, arg) => {
   // Quit main app
   if (mainWindow)
