@@ -68,10 +68,14 @@ class TCPConnection {
                             if (payload.message === 'BROADCAST') {
                                 let type = payload.data.type
         
-                                if (type === 'audioSourceCreated' || type === 'audioSourceRemoved' || type === 'audioSourceNameChanged' || type === 'micLevelChanged') {
+                                if (type === 'audioSourceCreated' || type === 'audioSourceRemoved' || type === 'audioSourceNameChanged' || type === 'compressorSettingsChanged') {
                                     this.ipcMain.emit('compressor-level-updated')
                                 } else if (type === 'sceneCreated' || type === 'sceneRemoved' || type === 'sceneNameChanged') {
                                     this.ipcMain.emit('scenes-updated')
+                                } else if (type === 'areasChanged') {
+                                    this.ipcMain.emit('actions-reactions-updated')
+                                } else if (type === 'subtitlesSettingsChanged') {
+                                    this.ipcMain.emit('subtitles-updated')
                                 }
                             }
                         }
