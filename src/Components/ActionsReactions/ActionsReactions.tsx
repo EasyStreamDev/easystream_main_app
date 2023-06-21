@@ -51,6 +51,8 @@ export interface action_reaction_identified {
 }
 
 export const ActionsReactions = () => {
+  const [firstSocket, setFirstSocket] = React.useState(true);
+
   const [actionsReactionsList, setActionsReactionsList] = React.useState<
     action_reaction_identified[]
   >([]);
@@ -133,27 +135,30 @@ export const ActionsReactions = () => {
 
   // Hook to load actions and reactions on component mount
   useEffect(() => {
-    ipcRenderer.on('actions-reactions-updated', (evt: any, message: any) => {
-      getActionReactionFromServer().then((res) => {
-        if (res.statusCode === 200) {
-          toast("Actions/Reactions have been updated !", {
-            type: "info",
-          });
-          console.log("New Array", res);
-          setActionsReactionsList(res.data.actReacts);
-        }
+    if (firstSocket === true) {
+      setFirstSocket(false)
+      ipcRenderer.on('actions-reactions-updated', (evt: any, message: any) => {
+        getActionReactionFromServer().then((res) => {
+          if (res.statusCode === 200) {
+            toast("Actions/Reactions have been updated !", {
+              type: "info",
+            });
+            console.log("New Array", res);
+            setActionsReactionsList(res.data.actReacts);
+          }
+        });
       });
-    });
-    ipcRenderer.on('scenes-updated', (evt: any, message: any) => {
-      getAllScenes().then((res) => {
-        if (res.statusCode === 200) {
-          toast("Scenes have been updated.", {
-            type: "info",
-          });
-          setAvailableScenes(res.data.scenes);
-        }
+      ipcRenderer.on('scenes-updated', (evt: any, message: any) => {
+        getAllScenes().then((res) => {
+          if (res.statusCode === 200) {
+            toast("Scenes have been updated.", {
+              type: "info",
+            });
+            setAvailableScenes(res.data.scenes);
+          }
+        });
       });
-    });
+    }
     async function sleep(): Promise<boolean> {
       return new Promise((resolve) => {
         getActionReactionFromServer().then((res) => {

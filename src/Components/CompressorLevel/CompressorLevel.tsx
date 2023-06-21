@@ -17,6 +17,9 @@ export const CompressorLevel = () => {
   >([]);
   const [load, setload] = React.useState(true);
   const [point, setpoint] = React.useState(".");
+
+  const [firstSocket, setFirstSocket] = React.useState(true);
+
   const axiosPrivate = useAxiosPrivate();
 
   const style = {
@@ -69,13 +72,16 @@ export const CompressorLevel = () => {
   };
 
   useEffect(() => {
-    ipcRenderer.on('compressor-level-updated', (evt: any, message: any) => {
-      getAllCompressors().then((res) => {
-        if (res.statusCode === 200) {
-          setExampleCompressorArray(res.data.mics);
-        }
-      });
-    })
+    if (firstSocket === true) {
+      setFirstSocket(false)
+      ipcRenderer.on('compressor-level-updated', (evt: any, message: any) => {
+        getAllCompressors().then((res) => {
+          if (res.statusCode === 200) {
+            setExampleCompressorArray(res.data.mics);
+          }
+        });
+      })
+    }
     async function sleep(): Promise<boolean> {
       return new Promise((resolve) => {
         getAllCompressors().then((res) => {
