@@ -10,7 +10,7 @@ import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { languages } from "../Language/LanguageData";
 import Grid from '@mui/material/Grid';
 import { LocalStorage } from "../../LocalStorage/LocalStorage";
-import { resultFormat } from "../../Socket/interfaces";
+import { AllSubtitlesSettings, TextField, resultFormat } from "../../Socket/interfaces";
 import { toast } from "react-toastify";
 const ipcRenderer = window.require('electron').ipcRenderer
 
@@ -51,22 +51,16 @@ export const Subtitles = () => {
   const [subtitlesActivated, setSubtitlesActivated] = React.useState(LocalStorage.getItemObject("subtitlesActivated") || false);
   const [languageSelected, setLanguageSelected] = React.useState(LocalStorage.getItemObject("languageSelected") || "en");
   
-  // TODO use it and change the format
-  const [subtitlesSettings, setSubtitlesSettings] = React.useState([]);
+  // TODO use subtitlesSettings to display
+  const [subtitlesSettings, setSubtitlesSettings] = React.useState<TextField[]>([]);
 
-  const getSubtitlesSettings = (): Promise<any> => {
+  const getSubtitlesSettings = (): Promise<AllSubtitlesSettings> => {
     return new Promise(async (resolve, reject) => {
-      // TODO change any format
-      // const result: any = await ipcRenderer.sendSync(
-      //   "getSubtitlesSettings", // TODO change command maybe ? AND add to electron.js & socket.js
-      //   "ping"
-      // );
-      // resolve(result);
-
-      // TODO remove
-      setTimeout(() => {
-        resolve(false)
-      }, 2000)
+      const result: any = await ipcRenderer.sendSync(
+        "getSubtitlesSettings",
+        "ping"
+      );
+      resolve(result);
     });
   }
 
@@ -97,26 +91,26 @@ export const Subtitles = () => {
   };
 
   useEffect(() => {
-    ipcRenderer.on('subtitles-updated', (evt: any, message: any) => {
+    const handleSubtitlesUpdated = (evt: any, message: any) => {
       getSubtitlesSettings().then((res) => {
         if (res.statusCode === 200) {
           toast("Subtitles settings have been updated !", {
             type: "info",
           });
           console.log("New Array", res);
-          // TODO change res.data.subtitlesSettings
-          setSubtitlesSettings(res.data.subtitlesSettings);
+          setSubtitlesSettings(res.data.text_fields);
         }
       });
-    });
+    };
+  
+    ipcRenderer.on('subtitles-updated', handleSubtitlesUpdated);
 
     async function sleep(): Promise<boolean> {
       return new Promise((resolve) => {
         getSubtitlesSettings().then((res) => {
           if (res.statusCode === 200) {
             console.log("New Array", res);
-            // TODO change res.data.subtitlesSettings
-            setSubtitlesSettings(res.data.subtitlesSettings);
+            setSubtitlesSettings(res.data.text_fields);
             resolve(true)
           } else {
             toast("Error listing all subtitles settings. Verify the internet connection", {
@@ -129,7 +123,11 @@ export const Subtitles = () => {
     }
 
     sleep().then((res) => setload(!res));
-  })
+
+    return () => {
+      ipcRenderer.removeListener('subtitles-updated', handleSubtitlesUpdated);
+    };
+  }, [])
 
   /**
    * Function to add points to the loading text

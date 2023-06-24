@@ -79,6 +79,20 @@ export interface AllScenes {
   };
 }
 
+export interface TextField {
+  name: string;
+  uuid: string;
+}
+
+export interface AllSubtitlesSettings {
+  statusCode: number;
+  messages: string;
+  data: {
+    length: number;
+    text_fields: [TextField];
+  };
+}
+
 export interface TimeRange {
   timeRange: number;
   ref: "seconds" | "minutes" | "ad vitam aeternam";

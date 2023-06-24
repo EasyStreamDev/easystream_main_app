@@ -1,4 +1,4 @@
-import React, { Component, useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import "./ActionsReactions.css";
 
 import Card from "@mui/material/Card";
@@ -51,8 +51,6 @@ export interface action_reaction_identified {
 }
 
 export const ActionsReactions = () => {
-  const [firstSocket, setFirstSocket] = React.useState(true);
-
   const [actionsReactionsList, setActionsReactionsList] = React.useState<
     action_reaction_identified[]
   >([]);
@@ -135,30 +133,31 @@ export const ActionsReactions = () => {
 
   // Hook to load actions and reactions on component mount
   useEffect(() => {
-    if (firstSocket === true) {
-      setFirstSocket(false)
-      ipcRenderer.on('actions-reactions-updated', (evt: any, message: any) => {
-        getActionReactionFromServer().then((res) => {
-          if (res.statusCode === 200) {
-            toast("Actions/Reactions have been updated !", {
-              type: "info",
-            });
-            console.log("New Array", res);
-            setActionsReactionsList(res.data.actReacts);
-          }
-        });
+    const handleActionReactionUpdated = (evt: any, message: any) => {
+      getActionReactionFromServer().then((res) => {
+        if (res.statusCode === 200) {
+          toast("Actions/Reactions have been updated !", {
+            type: "info",
+          });
+          console.log("New Array", res);
+          setActionsReactionsList(res.data.actReacts);
+        }
       });
-      ipcRenderer.on('scenes-updated', (evt: any, message: any) => {
-        getAllScenes().then((res) => {
-          if (res.statusCode === 200) {
-            toast("Scenes have been updated.", {
-              type: "info",
-            });
-            setAvailableScenes(res.data.scenes);
-          }
-        });
+    };
+    const handleScenesUpdated = (evt: any, message: any) => {
+      getAllScenes().then((res) => {
+        if (res.statusCode === 200) {
+          toast("Scenes have been updated.", {
+            type: "info",
+          });
+          setAvailableScenes(res.data.scenes);
+        }
       });
-    }
+    };
+    
+    ipcRenderer.on('actions-reactions-updated', handleActionReactionUpdated);
+    ipcRenderer.on('scenes-updated', handleScenesUpdated);
+
     async function sleep(): Promise<boolean> {
       return new Promise((resolve) => {
         getActionReactionFromServer().then((res) => {
@@ -190,6 +189,11 @@ export const ActionsReactions = () => {
     }
 
     sleep().then((res) => setload(!res));
+
+    return () => {
+      ipcRenderer.removeListener('actions-reactions-updated', handleActionReactionUpdated);
+      ipcRenderer.removeListener('scenes-updated', handleScenesUpdated);
+    };
   }, []);
 
   /**

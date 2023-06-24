@@ -67,8 +67,6 @@ export const CreateReactions = () => {
   const [availableScenes, setAvailableScenes] = React.useState<Scene[]>([]);
 
 
-  const [firstSocket, setFirstSocket] = React.useState(true);
-  
   /**
    * Define styles for the component
    */
@@ -268,19 +266,19 @@ export const CreateReactions = () => {
   }
 
   useEffect(() => {
-    if (firstSocket === true) {
-      setFirstSocket(false)
-      ipcRenderer.on('scenes-updated', (evt: any, message: any) => {
-        getAllScenes().then((res) => {
-          if (res.statusCode === 200) {
-            toast("Scenes have been updated.", {
-              type: "info",
-            });
-            setAvailableScenes(res.data.scenes);
-          }
-        });
+    const handleScenesUpdated = (evt: any, message: any) => {
+      getAllScenes().then((res) => {
+        if (res.statusCode === 200) {
+          toast("Scenes have been updated.", {
+            type: "info",
+          });
+          setAvailableScenes(res.data.scenes);
+        }
       });
-    }
+    };
+  
+    ipcRenderer.on('scenes-updated', handleScenesUpdated);
+
     getAllScenes().then((res) => {
       if (res.statusCode === 200) {
         setAvailableScenes(res.data.scenes);
@@ -292,6 +290,9 @@ export const CreateReactions = () => {
       }
     });
 
+    return () => {
+      ipcRenderer.removeListener('scenes-updated', handleScenesUpdated);
+    };
   }, []);
 
   return (
