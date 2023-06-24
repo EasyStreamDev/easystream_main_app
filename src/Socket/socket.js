@@ -187,6 +187,46 @@ class TCPConnection {
         });
     }
 
+    getSubtitlesSettings() {
+        let obj = {
+            command: 'getSubtitlesSettings',
+        };
+        console.log('getSubtitlesSettings -> ', JSON.stringify(obj));
+        return new Promise((resolve, reject) => {
+            this.sendData(obj, (data, error) => {
+                if (data) {
+                    console.log('getSubtitlesSettings resolve', data);
+                    resolve(data);
+                } else {
+                    console.log('getSubtitlesSettings error', error);
+                    this.socket.end();
+                    this.ipcMain.emit('connection-server-lost')
+                    reject(error);
+                }
+            });
+        });
+    }
+
+    getAllTextFields() {
+        let obj = {
+            command: 'getAllTextFields',
+        };
+        console.log('getAllTextFields -> ', JSON.stringify(obj));
+        return new Promise((resolve, reject) => {
+            this.sendData(obj, (data, error) => {
+                if (data) {
+                    console.log('getAllTextFields resolve', data);
+                    resolve(data);
+                } else {
+                    console.log('getAllTextFields error', error);
+                    this.socket.end();
+                    this.ipcMain.emit('connection-server-lost')
+                    reject(error);
+                }
+            });
+        });
+    }
+
     setVolumeToMic(args) {
         let obj = {
             command: 'setCompressorLevel',
