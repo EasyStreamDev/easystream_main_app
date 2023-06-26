@@ -1,0 +1,11 @@
+.item-container-compressor {
+    overflow:scroll;
+    overflow-y:scroll;
+    overflow-x:hidden;
+    max-height: 65vh;
+    min-height: 65vh;
+}
+
+.margin-title {
+    margin-top: 20px !important;
+}

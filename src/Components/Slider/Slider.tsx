@@ -104,13 +104,12 @@ const CustomizedSlider = (props: any) => {
       <Box
         sx={{
           display: "flex",
-          flexDirection: "column",
           alignItems: "center",
           p: 1,
           m: 1,
         }}
       >
-        <Box sx={{ width: "100%", maxWidth: 720 }}>
+        <Box sx={{ width: "65vw" }}>
           <MicroSlider
             key={`slider-compressor}`}
             onChangeCommitted={handleSliderChange}
@@ -121,7 +120,7 @@ const CustomizedSlider = (props: any) => {
           />
         </Box>
         <Box
-          sx={{ mt: 2 }}
+          sx={{ marginTop: "-22px", paddingLeft: "5vw" }}
           onClick={handleMicToggle}
           style={{ color: props.isActive ? "green" : "red" }}
         >
