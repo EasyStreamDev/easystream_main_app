@@ -109,7 +109,7 @@ export const CompressorLevel = () => {
       ) : (
         <>
           <div className="container compressor-container">
-            <h2>List of mics:
+            <h2 className="margin-title">List of mics:
             <Tooltip title="Here, you can adjust the level of compressor applied on your mics. Example: higher is the compressor level, more your voice will be eased.">
               <IconButton>
                 <MdHelpOutline style={ { color: "white" } } />
@@ -122,7 +122,7 @@ export const CompressorLevel = () => {
               </>
             ) : (
               <div className="actions-reactions-list">
-                <div className="item-container">
+                <div className="item-container-compressor">
                   {exampleCompressorArray &&
                   exampleCompressorArray.length > 0 ? (
                     exampleCompressorArray.map((item, index) => {
