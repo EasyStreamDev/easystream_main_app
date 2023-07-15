@@ -1,6 +1,6 @@
-import { Switch } from "@mui/material";
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton, List, ListItem, ListItemText } from "@mui/material";
 import { Box } from "@mui/system";
-import React from "react";
+import React, { useEffect } from "react";
 import CSS from 'csstype';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
@@ -10,108 +10,365 @@ import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { languages } from "../Language/LanguageData";
 import Grid from '@mui/material/Grid';
 import { LocalStorage } from "../../LocalStorage/LocalStorage";
-import { resultFormat } from "../../Socket/interfaces";
+import { AllSubtitlesSettings, AllTextFields, TextFieldSimple, TextFieldDetailed, resultFormat } from "../../Socket/interfaces";
+import { toast } from "react-toastify";
+import { BsTrash } from "react-icons/bs";
+import "./Subtitles.css";
 const ipcRenderer = window.require('electron').ipcRenderer
 
 export const Subtitles = () => {
 
-  const boxStyles: CSS.Properties = {
-    border: "solid",
-    borderColor: "#FD7014",
-    borderWidth: "4",
-    paddingLeft: "3vw",
-    paddingRight: "3vw",
-    paddingTop: "2vh",
-    paddingBottom: "2vh",
-    backgroundColor: "#222831",
-    borderRadius: "15px",
-    alignItems: "center",
-    cursor: "pointer",
-    borderCollapse: "separate",
-    borderSpacing: "0 0vh",
-    marginBottom: "1vh",
-    position: "relative",
-    minWidth: "calc(40vw + 231px)",
-    maxWidth: "calc(40vw + 231px)",
-    lineHeight: 1.6,
-    justifyContent: "center",
+  // Dialog
+  const [open, setOpen] = React.useState(false);
+  const [newSubtitleParam, setNewSubtitleParam] = React.useState("");
+
+  // Loading
+  const [load, setload] = React.useState(true);
+  const [point, setpoint] = React.useState(".");
+
+
+
+  // TODO use subtitlesSettings to display
+  const [subtitlesSettings, setSubtitlesSettings] = React.useState<TextFieldSimple[]>([]);
+
+  // TODO use availableTextFields to display
+  const [availableTextFields, setAvailableTextFields] = React.useState<TextFieldDetailed[]>([]);
+
+  /**
+   * Event handler for opening the dialog
+   */
+  const handleClickOpen = () => {
+    setOpen(true);
   };
 
-  const itemStyles: CSS.Properties = {
-    padding: "25px !important",
-    justifyContent: "center",
-    alignItems: "center"
+  /**
+   * Event handler for canceling the dialog
+   */
+  const handleCancel = () => {
+    setOpen(false);
   };
 
-  const [subtitlesActivated, setSubtitlesActivated] = React.useState(LocalStorage.getItemObject("subtitlesActivated") || false);
-  const [languageSelected, setLanguageSelected] = React.useState(LocalStorage.getItemObject("languageSelected") || "en");
-
-  const updateChangesToServer = (): Promise<resultFormat> => {
+  
+  const addSubtitleTextField = (uuid: string): Promise<resultFormat> => {
     return new Promise(async (resolve, reject) => {
-      let params = {
-        enable: subtitlesActivated,
-        language: languageSelected
+      const param = {
+        enable: true,
+        uuid: uuid,
       }
-			const result: resultFormat = await ipcRenderer.sendSync('setSubtitles', params);
-			console.log('updateChangesToServer invoke', result);
-			resolve(result)
-		});
+      const result: resultFormat = ipcRenderer.sendSync('setSubtitles', param);
+      resolve(result);
+    });
   }
 
-  const handleToggleChange = (event: SelectChangeEvent) => {
-    LocalStorage.setItemObject("subtitlesActivated", !subtitlesActivated)
-    setSubtitlesActivated(!subtitlesActivated);
+  const removeSubtitleTextField = (uuid: string): Promise<resultFormat> => {
+    return new Promise(async (resolve, reject) => {
+      const param = {
+        enable: false,
+        uuid: uuid,
+      }
+      const result: resultFormat = ipcRenderer.sendSync('setSubtitles', param);
+      resolve(result);
+    });
+  }
+  
+  const getSubtitlesSettings = (): Promise<AllSubtitlesSettings> => {
+    return new Promise(async (resolve, reject) => {
+      const result: any = await ipcRenderer.sendSync(
+        "getSubtitlesSettings",
+        "ping"
+      );
+      resolve(result);
+    });
+  }
+  
+  const getAllTextFields = (): Promise<AllTextFields> => {
+    return new Promise(async (resolve, reject) => {
+      const result: any = await ipcRenderer.sendSync(
+        "getAllTextFields",
+        "ping"
+        );
+      resolve(result);
+    });
+  }
+  
+  const handleSave = () => {
+    if (newSubtitleParam === "") {
+      toast("You must select a text field to add", {
+        type: "error",
+      });
+      return;
+    }
 
-    updateChangesToServer();
-  };
+    const textField: TextFieldDetailed = JSON.parse(newSubtitleParam);
+    addSubtitleTextField(textField.uuid).then((res: resultFormat) => {
+      if (res.statusCode === 200) {
+        
+        // Reset
+        setNewSubtitleParam("");
 
-  const handleSelectChange = (event: any) => {
-    LocalStorage.setItemObject("languageSelected", event.target.value)
-    setLanguageSelected(event.target.value);
+        // Refresh
+        getSubtitlesSettings().then((res) => {
+          if (res.statusCode === 200) {
+            console.log("getSubtitlesSettings", res);
+            setSubtitlesSettings(res.data.text_fields);
+            
+            // Remove the text field from availableTextFields
+            const availableTextFieldsCopy: TextFieldDetailed[] = availableTextFields.slice();
+            const index = availableTextFieldsCopy.findIndex((tf: TextFieldDetailed) => {
+              return tf.uuid === textField.uuid;
+            });
 
-    updateChangesToServer();
-  };
+            if (index !== -1) {
+              availableTextFieldsCopy.splice(index, 1);
+              setAvailableTextFields(availableTextFieldsCopy);
+            }
+
+            toast("Subtitle text field added !", {
+              type: "success",
+            });
+
+            // Close the dialog
+            setOpen(false);
+
+            return;
+
+          } else {
+            toast("Error listing all subtitles settings. Verify the internet connection", {
+              type: "error",
+            });
+            return;
+          }
+        });
+      } else {
+        toast("Error adding subtitle text field", {
+          type: "error",
+        });
+        return;
+      }
+    });
+  }
+
+  const deleteSubtitleTextField = (uuid: string) => {
+    return () => {
+      removeSubtitleTextField(uuid).then((res: resultFormat) => {
+        if (res.statusCode === 200) {
+
+          // remove locally
+          const subtitlesSettingsCopy: TextFieldSimple[] = subtitlesSettings.slice();
+          const index = subtitlesSettingsCopy.findIndex((tf: TextFieldSimple) => {
+            return tf.uuid === uuid;
+          });
+          
+          if (index !== -1) {
+            subtitlesSettingsCopy.splice(index, 1);
+            setSubtitlesSettings(subtitlesSettingsCopy);
+          }
+
+          toast("Subtitle text field deleted !", {
+            type: "success",
+          });
+
+          // Refresh
+          getSubtitlesSettings().then((res) => {
+            if (res.statusCode === 200) {
+              console.log("getSubtitlesSettings", res);
+              setSubtitlesSettings(res.data.text_fields);
+
+              getAllTextFields().then((res) => {
+                if (res.statusCode === 200) {
+                  console.log("getAllTextFields", res);
+                  setAvailableTextFields(res.data.text_fields);
+                  return;
+                }
+              });
+
+
+            } else {
+              toast("Error listing all subtitles settings. Verify the internet connection", {
+                type: "error",
+              });
+              return;
+            }
+          });
+        } else {
+          toast("Error deleting subtitle text field", {
+            type: "error",
+          });
+          return;
+        }
+      });
+    }
+  }
+
+  useEffect(() => {
+    const handleSubtitlesUpdated = (evt: any, message: any) => {
+      getSubtitlesSettings().then((res) => {
+        if (res.statusCode === 200) {
+          console.log("getSubtitlesSettings", res);
+          setSubtitlesSettings(res.data.text_fields);
+          
+          getAllTextFields().then((res) => {
+            if (res.statusCode === 200) {
+              toast("Subtitles settings have been updated !", {
+                type: "info",
+              });
+              console.log("New Array", res);
+              
+              // Filter res.data.text_fields to only keep the ones that are not in subtitlesSettings
+              const availableTextFields: TextFieldDetailed[] = res.data.text_fields.filter((textField: TextFieldDetailed) => {
+                return !subtitlesSettings.some((subtitlesSetting: TextFieldSimple) => {
+                  return subtitlesSetting.uuid === textField.uuid;
+                });
+              });
+              setAvailableTextFields(availableTextFields);
+            }
+          });
+        }
+      });
+    };
+  
+    ipcRenderer.on('subtitles-updated', handleSubtitlesUpdated);
+
+    async function sleep(): Promise<boolean> {
+      return new Promise((resolve) => {
+        getSubtitlesSettings().then((res) => {
+          if (res.statusCode === 200) {
+            console.log("getSubtitlesSettings", res);
+            setSubtitlesSettings(res.data.text_fields);
+
+            getAllTextFields().then((res) => {
+              if (res.statusCode === 200) {
+                console.log("getAllTextFields", res);
+                setAvailableTextFields(res.data.text_fields);
+
+                resolve(true)
+
+              } else {
+                toast("Error listing all text fields. Verify the internet connection", {
+                  type: "error",
+                });
+                resolve(false);
+              }
+            });
+          } else {
+            toast("Error listing all subtitles settings. Verify the internet connection", {
+              type: "error",
+            });
+            resolve(false);
+          }
+        });
+      });
+    }
+
+    sleep().then((res) => setload(!res));
+
+    return () => {
+      ipcRenderer.removeListener('subtitles-updated', handleSubtitlesUpdated);
+    };
+  }, [])
+
+  /**
+   * Function to add points to the loading text
+   */
+  function addpoint() {
+    {
+      setInterval(() => {
+        point.length >= 3 ? setpoint(".") : setpoint(point + ".");
+      }, 2000);
+    }
+  }
 
   return (
     <>
-      <Box style={boxStyles}>
-        <Grid container spacing={1}>
-          <Grid container item style={itemStyles}>
-            <h1>Enable subtitles during the stream:</h1>
-            <Switch
-              checked={subtitlesActivated}
-              color="warning"
-              onChange={handleToggleChange}
-            />
-          </Grid>
-
+      {load ? (
+        <>
+          <h1>Easystream is loading</h1>
+          <h1>{point}</h1>
+          {addpoint()}
+        </>
+      ) : (
+        <>
           {
-            subtitlesActivated === true ? (
-              <Grid container item style={itemStyles}>
-
-                <FormControl sx={{ m: 1, minWidth: 120 }}>
-                  <InputLabel style={{ color: 'white' }} id="demo-simple-select-helper-label">Language</InputLabel>
-                  <Select
-                    style={{ color: 'white' }}
-                    labelId="demo-simple-select-helper-label"
-                    id="demo-simple-select-helper"
-                    value={languageSelected}
-                    label="Language"
-                    onChange={handleSelectChange}
-                  >
+            subtitlesSettings.length === 0 ? (
+              <h1>No subtitles settings found</h1>
+            ) : (
+              <>
+                <h1>Subtitles text fields activated:</h1>
+                <div className="subtitlesSettingsBox">
+                  <List>
                     {
-                      languages.map((l) => {
-                        return (<MenuItem key={l.key} value={l.key}>{l.language}- {l.key}</MenuItem>)
+                      subtitlesSettings.map((l) => {
+                        return (
+                          <ListItem
+                          className="subtitlesSettingsItem"
+                          key={l.uuid}
+                          secondaryAction={
+                            <IconButton onClick={deleteSubtitleTextField(l.uuid)} edge="end" color="warning" aria-label="delete">
+                              <BsTrash />
+                            </IconButton>
+                          }
+                        >
+                          <ListItemText
+                            primary={l.name}
+                            secondary={"uuid: " + l.uuid}
+                          />
+                        </ListItem>
+                        )
                       })
                     }
-                  </Select>
-                  <FormHelperText style={{ color: 'white' }}>Select language</FormHelperText>
-                </FormControl>
-              </Grid>
-            ) : (<></>)
+                  </List>
+                </div>
+              </>
+            )
           }
-        </Grid>
-      </Box>
+
+      <Dialog open={open} onClose={handleCancel}>
+        <DialogTitle>Add Subtitle Text Field</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Text fields are used to display subtitles on the stream. You can
+            add as many text fields as you want.
+          </DialogContentText>
+
+          <InputLabel id="select-event-label">All text fields available</InputLabel>
+          <Select
+            labelId="select-event-label"
+            id="select-event"
+            value={newSubtitleParam}
+            onChange={(action) => setNewSubtitleParam(action.target.value as string)}
+            autoWidth
+            label="ParameterReaction"
+          >
+            {availableTextFields.map((k) => {
+              return (
+                <MenuItem key={k.uuid} value={JSON.stringify(k)}>
+                  {k.name}
+                </MenuItem>
+              );
+            })}
+          </Select>
+
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCancel}>Cancel</Button>
+          <Button onClick={handleSave}>Save</Button>
+        </DialogActions>
+      </Dialog>
+
+
+
+
+        <div className="add_button_pos">
+          <Button
+            variant="contained"
+            className="add_button"
+            onClick={handleClickOpen}
+          >
+            Add subtitle text field
+          </Button>
+        </div>
+      </>
+      )}
     </>
   );
 }
