@@ -119,9 +119,9 @@ export const Subtitles = () => {
               }
             }
 
-            toast("Subtitle text field added !", {
-              type: "success",
-            });
+            // toast("Subtitle text field added !", {
+            //   type: "success",
+            // });
 
             // Close the dialog
             setOpen(false);
@@ -160,9 +160,9 @@ export const Subtitles = () => {
             setSubtitlesSettings(subtitlesSettingsCopy);
           }
 
-          toast("Subtitle text field deleted !", {
-            type: "success",
-          });
+          // toast("Subtitle text field deleted !", {
+          //   type: "success",
+          // });
 
           // Refresh
           getSubtitlesSettings().then((subtitles_res) => {
@@ -181,8 +181,6 @@ export const Subtitles = () => {
                     });
                   });
 
-                  console.log("debug 3", availableTextFields)
-                  
                   setAvailableTextFields(availableTextFields);
 
                   if (availableTextFields.length > 0) {
@@ -232,8 +230,6 @@ export const Subtitles = () => {
                 });
               });
               
-              console.log("debug 2", availableTextFields)
-
               setAvailableTextFields(availableTextFields);
 
               if (availableTextFields.length > 0) {
