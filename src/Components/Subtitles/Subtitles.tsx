@@ -1,15 +1,8 @@
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton, List, ListItem, ListItemText, Switch, TextField } from "@mui/material";
-import { Box } from "@mui/system";
 import React, { useEffect } from "react";
-import CSS from 'csstype';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
-import FormHelperText from '@mui/material/FormHelperText';
-import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
-import { languages } from "../Language/LanguageData";
-import Grid from '@mui/material/Grid';
-import { LocalStorage } from "../../LocalStorage/LocalStorage";
 import { AllSubtitlesSettings, AllTextFields, TextFieldSimple, TextFieldDetailed, resultFormat } from "../../Socket/interfaces";
 import { toast } from "react-toastify";
 import { BsTrash } from "react-icons/bs";
@@ -28,10 +21,8 @@ export const Subtitles = () => {
 
 
 
-  // TODO use subtitlesSettings to display
   const [subtitlesSettings, setSubtitlesSettings] = React.useState<TextFieldSimple[]>([]);
 
-  // TODO use availableTextFields to display
   const [availableTextFields, setAvailableTextFields] = React.useState<TextFieldDetailed[]>([]);
 
   /**
@@ -107,10 +98,10 @@ export const Subtitles = () => {
         setNewSubtitleParam("");
 
         // Refresh
-        getSubtitlesSettings().then((res) => {
-          if (res.statusCode === 200) {
-            console.log("getSubtitlesSettings", res);
-            setSubtitlesSettings(res.data.text_fields);
+        getSubtitlesSettings().then((subtitles_res) => {
+          if (subtitles_res.statusCode === 200) {
+            console.log("getSubtitlesSettings", subtitles_res);
+            setSubtitlesSettings(subtitles_res.data.text_fields);
             
             // Remove the text field from availableTextFields
             const availableTextFieldsCopy: TextFieldDetailed[] = availableTextFields.slice();
@@ -120,7 +111,12 @@ export const Subtitles = () => {
 
             if (index !== -1) {
               availableTextFieldsCopy.splice(index, 1);
+
               setAvailableTextFields(availableTextFieldsCopy);
+
+              if (availableTextFields.length > 0) {
+                setNewSubtitleParam( JSON.stringify(availableTextFields[0]) )
+              }
             }
 
             toast("Subtitle text field added !", {
@@ -169,15 +165,30 @@ export const Subtitles = () => {
           });
 
           // Refresh
-          getSubtitlesSettings().then((res) => {
-            if (res.statusCode === 200) {
-              console.log("getSubtitlesSettings", res);
-              setSubtitlesSettings(res.data.text_fields);
+          getSubtitlesSettings().then((subtitles_res) => {
+            if (subtitles_res.statusCode === 200) {
+              console.log("getSubtitlesSettings", subtitles_res);
+              setSubtitlesSettings(subtitles_res.data.text_fields);
 
-              getAllTextFields().then((res) => {
-                if (res.statusCode === 200) {
-                  console.log("getAllTextFields", res);
-                  setAvailableTextFields(res.data.text_fields);
+              getAllTextFields().then((txt_field_res) => {
+                if (txt_field_res.statusCode === 200) {
+                  console.log("getAllTextFields", txt_field_res);
+
+                  // Filter txt_field_res.data.text_fields to only keep the ones that are not in subtitlesSettings
+                  const availableTextFields: TextFieldDetailed[] = txt_field_res.data.text_fields.filter((textField: TextFieldDetailed) => {
+                    return !subtitles_res.data.text_fields.some((subtitlesSetting: TextFieldSimple) => {
+                      return subtitlesSetting.uuid === textField.uuid;
+                    });
+                  });
+
+                  console.log("debug 3", availableTextFields)
+                  
+                  setAvailableTextFields(availableTextFields);
+
+                  if (availableTextFields.length > 0) {
+                    setNewSubtitleParam( JSON.stringify(availableTextFields[0]) )
+                  }
+
                   return;
                 }
               });
@@ -202,25 +213,32 @@ export const Subtitles = () => {
 
   useEffect(() => {
     const handleSubtitlesUpdated = (evt: any, message: any) => {
-      getSubtitlesSettings().then((res) => {
-        if (res.statusCode === 200) {
-          console.log("getSubtitlesSettings", res);
-          setSubtitlesSettings(res.data.text_fields);
+      getSubtitlesSettings().then((subtitles_res) => {
+        if (subtitles_res.statusCode === 200) {
+          console.log("getSubtitlesSettings", subtitles_res);
+          setSubtitlesSettings(subtitles_res.data.text_fields);
           
-          getAllTextFields().then((res) => {
-            if (res.statusCode === 200) {
+          getAllTextFields().then((txt_field_res) => {
+            if (txt_field_res.statusCode === 200) {
               toast("Subtitles settings have been updated !", {
                 type: "info",
               });
-              console.log("New Array", res);
+              console.log("New Array", txt_field_res);
               
-              // Filter res.data.text_fields to only keep the ones that are not in subtitlesSettings
-              const availableTextFields: TextFieldDetailed[] = res.data.text_fields.filter((textField: TextFieldDetailed) => {
-                return !subtitlesSettings.some((subtitlesSetting: TextFieldSimple) => {
+              // Filter txt_field_res.data.text_fields to only keep the ones that are not in subtitlesSettings
+              const availableTextFields: TextFieldDetailed[] = txt_field_res.data.text_fields.filter((textField: TextFieldDetailed) => {
+                return !subtitles_res.data.text_fields.some((subtitlesSetting: TextFieldSimple) => {
                   return subtitlesSetting.uuid === textField.uuid;
                 });
               });
+              
+              console.log("debug 2", availableTextFields)
+
               setAvailableTextFields(availableTextFields);
+
+              if (availableTextFields.length > 0) {
+                setNewSubtitleParam( JSON.stringify(availableTextFields[0]) )
+              }
             }
           });
         }
@@ -231,15 +249,27 @@ export const Subtitles = () => {
 
     async function sleep(): Promise<boolean> {
       return new Promise((resolve) => {
-        getSubtitlesSettings().then((res) => {
-          if (res.statusCode === 200) {
-            console.log("getSubtitlesSettings", res);
-            setSubtitlesSettings(res.data.text_fields);
+        getSubtitlesSettings().then((subtitles_res) => {
+          if (subtitles_res.statusCode === 200) {
+            console.log("getSubtitlesSettings", subtitles_res);
+            setSubtitlesSettings(subtitles_res.data.text_fields);
 
-            getAllTextFields().then((res) => {
-              if (res.statusCode === 200) {
-                console.log("getAllTextFields", res);
-                setAvailableTextFields(res.data.text_fields);
+            getAllTextFields().then((txt_field_res) => {
+              if (txt_field_res.statusCode === 200) {
+                console.log("getAllTextFields", txt_field_res);
+
+                // Filter txt_field_res.data.text_fields to only keep the ones that are not in subtitlesSettings
+                const availableTextFields: TextFieldDetailed[] = txt_field_res.data.text_fields.filter((textField: TextFieldDetailed) => {
+                  return !subtitles_res.data.text_fields.some((subtitlesSetting: TextFieldSimple) => {
+                    return subtitlesSetting.uuid === textField.uuid;
+                  });
+                });
+
+                setAvailableTextFields(availableTextFields);
+
+                if (availableTextFields.length > 0) {
+                  setNewSubtitleParam( JSON.stringify(availableTextFields[0]) )
+                }
 
                 resolve(true)
 
@@ -277,45 +307,6 @@ export const Subtitles = () => {
       }, 2000);
     }
   }
-
-  useEffect(() => {
-    const handleSubtitlesUpdated = (evt: any, message: any) => {
-      getSubtitlesSettings().then((res) => {
-        if (res.statusCode === 200) {
-          toast("Subtitles settings have been updated !", {
-            type: "info",
-          });
-          console.log("New Array", res);
-          setSubtitlesSettings(res.data.text_fields);
-        }
-      });
-    };
-  
-    ipcRenderer.on('subtitles-updated', handleSubtitlesUpdated);
-
-    async function sleep(): Promise<boolean> {
-      return new Promise((resolve) => {
-        getSubtitlesSettings().then((res) => {
-          if (res.statusCode === 200) {
-            console.log("New Array", res);
-            setSubtitlesSettings(res.data.text_fields);
-            resolve(true)
-          } else {
-            toast("Error listing all subtitles settings. Verify the internet connection", {
-              type: "error",
-            });
-            resolve(false);
-          }
-        });
-      });
-    }
-
-    sleep().then((res) => setload(!res));
-
-    return () => {
-      ipcRenderer.removeListener('subtitles-updated', handleSubtitlesUpdated);
-    };
-  }, [])
 
   return (
     <>
@@ -362,11 +353,11 @@ export const Subtitles = () => {
           }
 
       <Dialog open={open} onClose={handleCancel}>
-        <DialogTitle>Add Subtitle Text Field</DialogTitle>
+        <DialogTitle>Link Subtitle Text Field</DialogTitle>
         <DialogContent>
           <DialogContentText>
             Text fields are used to display subtitles on the stream. You can
-            add as many text fields as you want.
+            link as many text fields as you want.
           </DialogContentText>
 
           <InputLabel id="select-event-label">All text fields available</InputLabel>
@@ -380,7 +371,7 @@ export const Subtitles = () => {
           >
             {availableTextFields.map((k) => {
               return (
-                <MenuItem key={k.uuid} value={JSON.stringify(k)}>
+                <MenuItem key={k.uuid + k.name} value={JSON.stringify(k)}>
                   {k.name}
                 </MenuItem>
               );
@@ -394,16 +385,13 @@ export const Subtitles = () => {
         </DialogActions>
       </Dialog>
 
-
-
-
         <div className="add_button_pos">
           <Button
             variant="contained"
             className="add_button"
             onClick={handleClickOpen}
           >
-            Add subtitle text field
+            Link subtitle text field
           </Button>
         </div>
       </>

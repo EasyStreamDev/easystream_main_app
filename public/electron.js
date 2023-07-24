@@ -217,7 +217,7 @@ ipcMain.on("getAllTextFields", (event, arg) => {
       statusCode: 200,
       message: "OK",
       data: {
-        length: 2,
+        length: 3,
         text_fields: [
           {
             "name": "Text lambda 1",
@@ -232,7 +232,7 @@ ipcMain.on("getAllTextFields", (event, arg) => {
           {
             "name": "Blop 3",
             "parent_scene": "Scene 2",
-            "uuid": "4f712d61-094a-4b7b-9905-4fa928329de4",
+            "uuid": "4fa92094a-832-94fde4-712d61-4b7b-9905",
           }
         ],
       }
