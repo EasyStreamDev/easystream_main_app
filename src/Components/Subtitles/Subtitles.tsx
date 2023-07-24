@@ -176,7 +176,7 @@ export const Subtitles = () => {
 
                   // Filter txt_field_res.data.text_fields to only keep the ones that are not in subtitlesSettings
                   const availableTextFields: TextFieldDetailed[] = txt_field_res.data.text_fields.filter((textField: TextFieldDetailed) => {
-                    return !subtitles_res.data.text_fields.some((subtitlesSetting: TextFieldSimple) => {
+                    return !subtitles_res.data.text_fields?.some((subtitlesSetting: TextFieldSimple) => {
                       return subtitlesSetting.uuid === textField.uuid;
                     });
                   });
@@ -227,7 +227,7 @@ export const Subtitles = () => {
               
               // Filter txt_field_res.data.text_fields to only keep the ones that are not in subtitlesSettings
               const availableTextFields: TextFieldDetailed[] = txt_field_res.data.text_fields.filter((textField: TextFieldDetailed) => {
-                return !subtitles_res.data.text_fields.some((subtitlesSetting: TextFieldSimple) => {
+                return !subtitles_res.data.text_fields?.some((subtitlesSetting: TextFieldSimple) => {
                   return subtitlesSetting.uuid === textField.uuid;
                 });
               });
@@ -260,7 +260,7 @@ export const Subtitles = () => {
 
                 // Filter txt_field_res.data.text_fields to only keep the ones that are not in subtitlesSettings
                 const availableTextFields: TextFieldDetailed[] = txt_field_res.data.text_fields.filter((textField: TextFieldDetailed) => {
-                  return !subtitles_res.data.text_fields.some((subtitlesSetting: TextFieldSimple) => {
+                  return !subtitles_res.data.text_fields?.some((subtitlesSetting: TextFieldSimple) => {
                     return subtitlesSetting.uuid === textField.uuid;
                   });
                 });
