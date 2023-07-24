@@ -1,4 +1,4 @@
-import React, { Component, useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import "./ActionsReactions.css";
 
 import Card from "@mui/material/Card";
@@ -133,7 +133,18 @@ export const ActionsReactions = () => {
 
   // Hook to load actions and reactions on component mount
   useEffect(() => {
-    ipcRenderer.on('scenes-updated', (evt: any, message: any) => {
+    const handleActionReactionUpdated = (evt: any, message: any) => {
+      getActionReactionFromServer().then((res) => {
+        if (res.statusCode === 200) {
+          toast("Actions/Reactions have been updated !", {
+            type: "info",
+          });
+          console.log("New Array", res);
+          setActionsReactionsList(res.data.actReacts);
+        }
+      });
+    };
+    const handleScenesUpdated = (evt: any, message: any) => {
       getAllScenes().then((res) => {
         if (res.statusCode === 200) {
           toast("Scenes have been updated.", {
@@ -142,7 +153,11 @@ export const ActionsReactions = () => {
           setAvailableScenes(res.data.scenes);
         }
       });
-    });
+    };
+    
+    ipcRenderer.on('actions-reactions-updated', handleActionReactionUpdated);
+    ipcRenderer.on('scenes-updated', handleScenesUpdated);
+
     async function sleep(): Promise<boolean> {
       return new Promise((resolve) => {
         getActionReactionFromServer().then((res) => {
@@ -174,6 +189,11 @@ export const ActionsReactions = () => {
     }
 
     sleep().then((res) => setload(!res));
+
+    return () => {
+      ipcRenderer.removeListener('actions-reactions-updated', handleActionReactionUpdated);
+      ipcRenderer.removeListener('scenes-updated', handleScenesUpdated);
+    };
   }, []);
 
   /**

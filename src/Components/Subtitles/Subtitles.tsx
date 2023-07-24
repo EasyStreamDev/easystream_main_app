@@ -278,6 +278,45 @@ export const Subtitles = () => {
     }
   }
 
+  useEffect(() => {
+    const handleSubtitlesUpdated = (evt: any, message: any) => {
+      getSubtitlesSettings().then((res) => {
+        if (res.statusCode === 200) {
+          toast("Subtitles settings have been updated !", {
+            type: "info",
+          });
+          console.log("New Array", res);
+          setSubtitlesSettings(res.data.text_fields);
+        }
+      });
+    };
+  
+    ipcRenderer.on('subtitles-updated', handleSubtitlesUpdated);
+
+    async function sleep(): Promise<boolean> {
+      return new Promise((resolve) => {
+        getSubtitlesSettings().then((res) => {
+          if (res.statusCode === 200) {
+            console.log("New Array", res);
+            setSubtitlesSettings(res.data.text_fields);
+            resolve(true)
+          } else {
+            toast("Error listing all subtitles settings. Verify the internet connection", {
+              type: "error",
+            });
+            resolve(false);
+          }
+        });
+      });
+    }
+
+    sleep().then((res) => setload(!res));
+
+    return () => {
+      ipcRenderer.removeListener('subtitles-updated', handleSubtitlesUpdated);
+    };
+  }, [])
+
   return (
     <>
       {load ? (
