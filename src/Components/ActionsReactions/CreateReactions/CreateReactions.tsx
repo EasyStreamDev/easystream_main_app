@@ -378,7 +378,7 @@ export const CreateReactions = () => {
             <TextField
               autoFocus
               id="name"
-              label="Name of the action"
+              label="Name of the reaction"
               type="text"
               value={newActionName}
               variant="standard"
@@ -410,7 +410,7 @@ export const CreateReactions = () => {
             {
               newActionSelected === "SCENE_SWITCH" ? (
                 <>
-                  <InputLabel id="select-event-label">Parameter action</InputLabel>
+                  <InputLabel id="select-event-label">Parameter reaction</InputLabel>
                   <Select
                     labelId="select-event-label"
                     id="select-event"
