@@ -105,6 +105,7 @@ const CustomizedSlider = (props: any) => {
         sx={{
           display: "flex",
           alignItems: "center",
+          justifyContent: "space-evenly",
           p: 1,
           m: 1,
         }}
@@ -120,7 +121,7 @@ const CustomizedSlider = (props: any) => {
           />
         </Box>
         <Box
-          sx={{ marginTop: "-22px", paddingLeft: "5vw" }}
+          sx={{ marginTop: "-20px"}}
           onClick={handleMicToggle}
           style={{ color: props.isActive ? "green" : "red" }}
         >

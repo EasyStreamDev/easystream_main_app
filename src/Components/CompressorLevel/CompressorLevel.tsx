@@ -1,4 +1,4 @@
-import React, { Component, useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import CustomizedSlider from "../Slider/Slider";
 import { AllMics, Mic } from "../../Socket/interfaces";
 import { resultFormat } from "../../Socket/interfaces";
@@ -17,6 +17,7 @@ export const CompressorLevel = () => {
   >([]);
   const [load, setload] = React.useState(true);
   const [point, setpoint] = React.useState(".");
+
   const axiosPrivate = useAxiosPrivate();
 
   const style = {
@@ -30,8 +31,6 @@ export const CompressorLevel = () => {
       },
     },
   };
-
-  let timeoutCommit: NodeJS.Timeout | undefined = undefined;
 
   const getAllCompressors = (): Promise<AllMics> => {
     return new Promise(async (resolve, reject) => {
@@ -69,13 +68,16 @@ export const CompressorLevel = () => {
   };
 
   useEffect(() => {
-    ipcRenderer.on('compressor-level-updated', (evt: any, message: any) => {
+    const handleCompressorLevelUpdated = (evt: any, message: any) => {
       getAllCompressors().then((res) => {
         if (res.statusCode === 200) {
           setExampleCompressorArray(res.data.mics);
         }
       });
-    })
+    };
+
+    ipcRenderer.on('compressor-level-updated', handleCompressorLevelUpdated);
+
     async function sleep(): Promise<boolean> {
       return new Promise((resolve) => {
         getAllCompressors().then((res) => {
@@ -88,6 +90,10 @@ export const CompressorLevel = () => {
     }
 
     sleep().then((res) => setload(res));
+
+    return () => {
+      ipcRenderer.removeListener('compressor-level-updated', handleCompressorLevelUpdated);
+    };
   }, []);
 
   function addpoint() {

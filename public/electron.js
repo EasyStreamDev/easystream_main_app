@@ -182,6 +182,71 @@ ipcMain.on("getActReactCouples", (event, arg) => {
   }
 });
 
+ipcMain.on("getSubtitlesSettings", (event, arg) => {
+  if (isDev) {
+    let res = {
+      statusCode: 200,
+      message: "OK",
+      data: {
+        length: 2,
+        text_fields: [
+          {
+            "uuid": "27705058-7a54-4057-ad17-a810c08e8db9",
+            "name": "Text lambda 1",
+          },
+          {
+            "uuid": "4f712d61-094a-4b7b-9905-4fa928329de4",
+            "name": "Text EN",
+          }
+        ],
+      }
+    };
+    event.returnValue = res;
+    return res;
+  } else {
+    return tcpConn.getSubtitlesSettings().then((res) => {
+      console.log("getSubtitlesSettings : " + res);
+      event.returnValue = res;
+    });
+  }
+});
+
+ipcMain.on("getAllTextFields", (event, arg) => {
+  if (isDev) {
+    let res = {
+      statusCode: 200,
+      message: "OK",
+      data: {
+        length: 3,
+        text_fields: [
+          {
+            "name": "Text lambda 1",
+            "parent_scene": "Scene 1",
+            "uuid": "27705058-7a54-4057-ad17-a810c08e8db9",
+          },
+          {
+            "name": "Text EN",
+            "parent_scene": "Scene 1",
+            "uuid": "4f712d61-094a-4b7b-9905-4fa928329de4",
+          },
+          {
+            "name": "Blop 3",
+            "parent_scene": "Scene 2",
+            "uuid": "4fa92094a-832-94fde4-712d61-4b7b-9905",
+          }
+        ],
+      }
+    };
+    event.returnValue = res;
+    return res;
+  } else {
+    return tcpConn.getAllTextFields().then((res) => {
+      console.log("getAllTextFields : " + res);
+      event.returnValue = res;
+    });
+  }
+});
+
 ipcMain.on("setCompressorLevel", (event, arg) => {
   if (isDev) {
     let res = {
@@ -261,6 +326,14 @@ ipcMain.on("compressor-level-updated", (evt, arg) => { // Get from socket broadc
 
 ipcMain.on("scenes-updated", (evt, arg) => { // Get from socket broadcast
   mainWindow.webContents.send('scenes-updated'); // To renderer
+});
+
+ipcMain.on("actions-reactions-updated", (evt, arg) => { // Get from socket broadcast
+  mainWindow.webContents.send('actions-reactions-updated'); // To renderer
+});
+
+ipcMain.on("subtitles-updated", (evt, arg) => { // Get from socket broadcast
+  mainWindow.webContents.send('subtitles-updated'); // To renderer
 });
 
 ipcMain.on("connection-server-lost", (evt, arg) => {

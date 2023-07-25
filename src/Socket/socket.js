@@ -68,10 +68,14 @@ class TCPConnection {
                             if (payload.message === 'BROADCAST') {
                                 let type = payload.data.type
         
-                                if (type === 'audioSourceCreated' || type === 'audioSourceRemoved' || type === 'audioSourceNameChanged' || type === 'micLevelChanged') {
+                                if (type === 'audioSourceCreated' || type === 'audioSourceRemoved' || type === 'audioSourceNameChanged' || type === 'compressorSettingsChanged') {
                                     this.ipcMain.emit('compressor-level-updated')
                                 } else if (type === 'sceneCreated' || type === 'sceneRemoved' || type === 'sceneNameChanged') {
                                     this.ipcMain.emit('scenes-updated')
+                                } else if (type === 'areasChanged') {
+                                    this.ipcMain.emit('actions-reactions-updated')
+                                } else if (type === 'subtitlesSettingsChanged') {
+                                    this.ipcMain.emit('subtitles-updated')
                                 }
                             }
                         }
@@ -175,6 +179,46 @@ class TCPConnection {
                     resolve(data);
                 } else {
                     console.log('getActReactCouples error', error);
+                    this.socket.end();
+                    this.ipcMain.emit('connection-server-lost')
+                    reject(error);
+                }
+            });
+        });
+    }
+
+    getSubtitlesSettings() {
+        let obj = {
+            command: 'getSubtitlesSettings',
+        };
+        console.log('getSubtitlesSettings -> ', JSON.stringify(obj));
+        return new Promise((resolve, reject) => {
+            this.sendData(obj, (data, error) => {
+                if (data) {
+                    console.log('getSubtitlesSettings resolve', data);
+                    resolve(data);
+                } else {
+                    console.log('getSubtitlesSettings error', error);
+                    this.socket.end();
+                    this.ipcMain.emit('connection-server-lost')
+                    reject(error);
+                }
+            });
+        });
+    }
+
+    getAllTextFields() {
+        let obj = {
+            command: 'getAllTextFields',
+        };
+        console.log('getAllTextFields -> ', JSON.stringify(obj));
+        return new Promise((resolve, reject) => {
+            this.sendData(obj, (data, error) => {
+                if (data) {
+                    console.log('getAllTextFields resolve', data);
+                    resolve(data);
+                } else {
+                    console.log('getAllTextFields error', error);
                     this.socket.end();
                     this.ipcMain.emit('connection-server-lost')
                     reject(error);

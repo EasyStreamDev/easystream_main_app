@@ -66,7 +66,7 @@ export const CreateReactions = () => {
   );
   const [availableScenes, setAvailableScenes] = React.useState<Scene[]>([]);
 
-  
+
   /**
    * Define styles for the component
    */
@@ -266,7 +266,7 @@ export const CreateReactions = () => {
   }
 
   useEffect(() => {
-    ipcRenderer.on('scenes-updated', (evt: any, message: any) => {
+    const handleScenesUpdated = (evt: any, message: any) => {
       getAllScenes().then((res) => {
         if (res.statusCode === 200) {
           toast("Scenes have been updated.", {
@@ -275,7 +275,10 @@ export const CreateReactions = () => {
           setAvailableScenes(res.data.scenes);
         }
       });
-    });
+    };
+  
+    ipcRenderer.on('scenes-updated', handleScenesUpdated);
+
     getAllScenes().then((res) => {
       if (res.statusCode === 200) {
         setAvailableScenes(res.data.scenes);
@@ -287,6 +290,9 @@ export const CreateReactions = () => {
       }
     });
 
+    return () => {
+      ipcRenderer.removeListener('scenes-updated', handleScenesUpdated);
+    };
   }, []);
 
   return (
@@ -372,7 +378,7 @@ export const CreateReactions = () => {
             <TextField
               autoFocus
               id="name"
-              label="Name of the action"
+              label="Name of the reaction"
               type="text"
               value={newActionName}
               variant="standard"
@@ -404,7 +410,7 @@ export const CreateReactions = () => {
             {
               newActionSelected === "SCENE_SWITCH" ? (
                 <>
-                  <InputLabel id="select-event-label">Parameter action</InputLabel>
+                  <InputLabel id="select-event-label">Parameter reaction</InputLabel>
                   <Select
                     labelId="select-event-label"
                     id="select-event"

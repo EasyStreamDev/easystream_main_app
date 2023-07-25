@@ -187,7 +187,7 @@ export const KeyPressedModal = (props: any) => {
                 <InputLabel
                   id="demo-simple-select-label"
                   className={classes.selectLabel}>
-                  sources
+                  reactions
                 </InputLabel>
                 <Select
                   labelId="demo-simple-select-label"
