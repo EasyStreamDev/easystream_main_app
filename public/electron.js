@@ -79,6 +79,11 @@ ipcMain.on("getAllMics", (event, arg) => {
             level: 30,
             isActive: true,
           },
+          {
+            micName: "Mic Test Dev 2",
+            level: 50,
+            isActive: true,
+          },
         ],
       }
     };
@@ -193,10 +198,12 @@ ipcMain.on("getSubtitlesSettings", (event, arg) => {
           {
             "uuid": "27705058-7a54-4057-ad17-a810c08e8db9",
             "name": "Text lambda 1",
+            "linked_mics": ["Mic Test Dev 2", "Mic Test Dev"]
           },
           {
-            "uuid": "4f712d61-094a-4b7b-9905-4fa928329de4",
-            "name": "Text EN",
+            "uuid": "4fa92094a-832-94fde4-712d61-4b7b-9905",
+            "name": "Blop 3",
+            "linked_mics": ["Mic Test Dev"]
           }
         ],
       }
