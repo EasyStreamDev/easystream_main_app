@@ -104,6 +104,7 @@ export const Subtitles = () => {
   const handleMicDelete = (uuid_text_field: string, micToDelete: string) => () => {
     let good_subtitle_setting = subtitlesSettings.filter((subtitle_setting) => subtitle_setting.uuid === uuid_text_field)[0];
     let new_mics = good_subtitle_setting.linked_mics.filter((mic) => mic !== micToDelete);
+    console.log("new_mics", new_mics);
     addSubtitleTextField(uuid_text_field, new_mics).then((res: resultFormat) => {
       if (res.statusCode === 200) {
         // Refresh
@@ -414,7 +415,7 @@ export const Subtitles = () => {
                     {
                       subtitlesSettings.map((l) => {
                         return (
-                          <Box className="subtitlesSettingsItem">
+                          <Box className="subtitlesSettingsItem" key={l.uuid}>
                             <ListItem
                               key={l.uuid}
                               secondaryAction={
