@@ -82,6 +82,7 @@ export interface AllScenes {
 export interface TextFieldSimple {
   name: string;
   uuid: string;
+  linked_mics: string[];
 }
 
 export interface TextFieldDetailed {

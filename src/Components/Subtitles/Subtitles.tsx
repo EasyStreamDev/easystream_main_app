@@ -1,19 +1,35 @@
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton, List, ListItem, ListItemText, Switch, TextField } from "@mui/material";
-import React, { useEffect } from "react";
+import { Box, Button, Chip, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton, List, ListItem, ListItemText, OutlinedInput, Switch, TextField } from "@mui/material";
+import Divider from '@mui/material/Divider';
+import React, { Fragment, useEffect } from "react";
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
-import { AllSubtitlesSettings, AllTextFields, TextFieldSimple, TextFieldDetailed, resultFormat } from "../../Socket/interfaces";
+import { AllSubtitlesSettings, AllTextFields, TextFieldSimple, TextFieldDetailed, resultFormat, AllMics } from "../../Socket/interfaces";
 import { toast } from "react-toastify";
 import { BsTrash } from "react-icons/bs";
 import "./Subtitles.css";
+import { Theme, useTheme } from '@mui/material/styles';
+import MicNoneIcon from '@material-ui/icons/MicNone';
 const ipcRenderer = window.require('electron').ipcRenderer
 
+const ITEM_HEIGHT = 48;
+const ITEM_PADDING_TOP = 8;
+const MenuProps = {
+  PaperProps: {
+    style: {
+      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+      width: 250,
+    },
+  },
+};
+
 export const Subtitles = () => {
+  const theme = useTheme();
 
   // Dialog
   const [open, setOpen] = React.useState(false);
   const [newSubtitleParam, setNewSubtitleParam] = React.useState("");
+  const [newMicsListParam, setNewMicsListParam] = React.useState<string[]>([]);
 
   // Loading
   const [load, setload] = React.useState(true);
@@ -22,8 +38,44 @@ export const Subtitles = () => {
 
 
   const [subtitlesSettings, setSubtitlesSettings] = React.useState<TextFieldSimple[]>([]);
-
   const [availableTextFields, setAvailableTextFields] = React.useState<TextFieldDetailed[]>([]);
+  const [micList, setMicList] = React.useState<string[]>([]);
+
+  function getStyles(name: string, personName: readonly string[], theme: Theme) {
+    return {
+      fontWeight:
+        personName.indexOf(name) === -1
+          ? theme.typography.fontWeightRegular
+          : theme.typography.fontWeightMedium,
+    };
+  }
+
+  const getAllCompressors = (): Promise<AllMics> => {
+    return new Promise(async (resolve, reject) => {
+      const result: AllMics = await ipcRenderer.sendSync("getAllMics", "ping");
+      resolve(result);
+    });
+  };
+
+  const updateMicList = (notify=false) => {
+    getAllCompressors().then((result) => {
+      if (result.statusCode === 200) {
+        // Only get the mics names
+        const mics = result.data.mics.map((mic) => mic.micName);
+        setMicList(mics);
+        if (notify) {
+          toast("Mics list updated", {
+            type: "info",
+          });
+        }
+      } else {
+        toast("Error while getting the mics list", {
+          type: "error",
+        });
+      }
+    });
+  }
+
 
   /**
    * Event handler for opening the dialog
@@ -39,11 +91,43 @@ export const Subtitles = () => {
     setOpen(false);
   };
 
+  const handleChangeChipSelect = (event: SelectChangeEvent<typeof newMicsListParam>) => {
+    const {
+      target: { value },
+    } = event;
+    setNewMicsListParam(
+      // On autofill we get a stringified value.
+      typeof value === 'string' ? value.split(',') : value,
+    );
+  };
+
+  const handleMicDelete = (uuid_text_field: string, micToDelete: string) => () => {
+    let good_subtitle_setting = subtitlesSettings.filter((subtitle_setting) => subtitle_setting.uuid === uuid_text_field)[0];
+    let new_mics = good_subtitle_setting.linked_mics.filter((mic) => mic !== micToDelete);
+    console.log("new_mics", new_mics);
+    addSubtitleTextField(uuid_text_field, new_mics).then((res: resultFormat) => {
+      if (res.statusCode === 200) {
+        // Refresh
+        getSubtitlesSettings().then((subtitles_res) => {
+          setSubtitlesSettings(subtitles_res.data.text_fields);
+        });
+
+        toast("Mic deleted from the text field", {
+          type: "success",
+        });
+      } else {
+        toast("Error while deleting the mic from the text field", {
+          type: "error",
+        });
+      }
+    });
+  };
+
   
-  const addSubtitleTextField = (uuid: string): Promise<resultFormat> => {
+  const addSubtitleTextField = (uuid: string, linkedMics: string[]): Promise<resultFormat> => {
     return new Promise(async (resolve, reject) => {
       const param = {
-        enable: true,
+        linked_mics: linkedMics,
         uuid: uuid,
       }
       const result: resultFormat = ipcRenderer.sendSync('setSubtitles', param);
@@ -54,7 +138,7 @@ export const Subtitles = () => {
   const removeSubtitleTextField = (uuid: string): Promise<resultFormat> => {
     return new Promise(async (resolve, reject) => {
       const param = {
-        enable: false,
+        linked_mics: [], // Empty linked_mics means that the text field will be deleted
         uuid: uuid,
       }
       const result: resultFormat = ipcRenderer.sendSync('setSubtitles', param);
@@ -64,7 +148,7 @@ export const Subtitles = () => {
   
   const getSubtitlesSettings = (): Promise<AllSubtitlesSettings> => {
     return new Promise(async (resolve, reject) => {
-      const result: any = await ipcRenderer.sendSync(
+      const result: AllSubtitlesSettings = await ipcRenderer.sendSync(
         "getSubtitlesSettings",
         "ping"
       );
@@ -91,11 +175,12 @@ export const Subtitles = () => {
     }
 
     const textField: TextFieldDetailed = JSON.parse(newSubtitleParam);
-    addSubtitleTextField(textField.uuid).then((res: resultFormat) => {
+    addSubtitleTextField(textField.uuid, newMicsListParam).then((res: resultFormat) => {
       if (res.statusCode === 200) {
         
         // Reset
         setNewSubtitleParam("");
+        setNewMicsListParam([]);
 
         // Refresh
         getSubtitlesSettings().then((subtitles_res) => {
@@ -160,9 +245,9 @@ export const Subtitles = () => {
             setSubtitlesSettings(subtitlesSettingsCopy);
           }
 
-          // toast("Subtitle text field deleted !", {
-          //   type: "success",
-          // });
+          toast("Subtitle text field deleted !", {
+            type: "success",
+          });
 
           // Refresh
           getSubtitlesSettings().then((subtitles_res) => {
@@ -240,11 +325,16 @@ export const Subtitles = () => {
         }
       });
     };
-  
+    const handleMicUpdated = (evt: any, message: any) => {
+      updateMicList(true);
+    };
+
+    ipcRenderer.on('compressor-level-updated', handleMicUpdated);
     ipcRenderer.on('subtitles-updated', handleSubtitlesUpdated);
 
     async function sleep(): Promise<boolean> {
       return new Promise((resolve) => {
+        updateMicList(); // Get the mic list
         getSubtitlesSettings().then((subtitles_res) => {
           if (subtitles_res.statusCode === 200) {
             console.log("getSubtitlesSettings", subtitles_res);
@@ -325,20 +415,30 @@ export const Subtitles = () => {
                     {
                       subtitlesSettings.map((l) => {
                         return (
-                          <ListItem
-                          className="subtitlesSettingsItem"
-                          key={l.uuid}
-                          secondaryAction={
-                            <IconButton onClick={deleteSubtitleTextField(l.uuid)} edge="end" color="warning" aria-label="delete">
-                              <BsTrash />
-                            </IconButton>
-                          }
-                        >
-                          <ListItemText
-                            primary={l.name}
-                            secondary={"uuid: " + l.uuid}
-                          />
-                        </ListItem>
+                          <Box className="subtitlesSettingsItem" key={l.uuid}>
+                            <ListItem
+                              key={l.uuid}
+                              secondaryAction={
+                                <IconButton onClick={deleteSubtitleTextField(l.uuid)} edge="end" color="warning" aria-label="delete">
+                                  <BsTrash />
+                                </IconButton>
+                              }
+                            >
+                            <ListItemText
+                                primary={"Text Field: " + l.name}
+                              />
+                            </ListItem>
+                            <Box display="flex" justifyContent="center" m={1} p={1}>
+                              {
+                                l.linked_mics.map((value) => (
+                                  <Chip key={value} label={value} sx={{ m: 0.5, backgroundColor: "#FFA500" }}
+                                  icon={<MicNoneIcon />} onDelete={handleMicDelete(l.uuid, value)}
+                                  />
+                                ))
+                              }
+                            </Box>
+                            <Divider style={{ border: "1.5px solid orange" }} variant="middle" />
+                          </Box>
                         )
                       })
                     }
@@ -363,7 +463,7 @@ export const Subtitles = () => {
             value={newSubtitleParam}
             onChange={(action) => setNewSubtitleParam(action.target.value as string)}
             autoWidth
-            label="ParameterReaction"
+            label="TextField"
           >
             {availableTextFields.map((k) => {
               return (
@@ -372,6 +472,37 @@ export const Subtitles = () => {
                 </MenuItem>
               );
             })}
+          </Select>
+
+          <InputLabel id="select-event-label">All mics available</InputLabel>
+          <Select
+            labelId="select-mics-label"
+            id="select-mics"
+            multiple
+            value={newMicsListParam}
+            onChange={handleChangeChipSelect}
+            autoWidth
+            input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
+            renderValue={(selected) => (
+              <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                {selected.map((value) => (
+                  <Chip key={value} label={value} />
+                ))}
+              </Box>
+            )}
+            MenuProps={MenuProps}
+          >
+            {
+              micList.map((mic) => (
+                <MenuItem
+                  key={mic}
+                  value={mic}
+                  style={getStyles(mic, newMicsListParam, theme)}
+                >
+                  {mic}
+                </MenuItem>
+              ))
+            }
           </Select>
 
         </DialogContent>
