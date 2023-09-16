@@ -1,3 +1,6 @@
+@import "../../../../index.css";
+
+
 styleModal {
   position: "absolute" as "absolute";
   top: "50%";

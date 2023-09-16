@@ -32,6 +32,13 @@ const createWindow = () => {
     title: "EasyStream",
     minWidth: 900,
     minHeight: 700,
+    width: 1200,
+    height: 800,
+    titleBarStyle: 'hidden',
+    titleBarOverlay: {
+      color: '#3b3b3b',
+      symbolColor: '#FFA500',
+    },
     icon: __dirname + '/icon.png',
     /// show to false mean than the window will proceed with its lifecycle, but will not render until we will show it up
     show: false,
@@ -56,7 +63,6 @@ const createWindow = () => {
     if (loadingScreen) {
       loadingScreen.close();
     }
-    mainWindow.maximize();
     mainWindow.show();
   });
 };

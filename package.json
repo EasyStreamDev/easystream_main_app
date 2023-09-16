@@ -61,14 +61,15 @@
     "pack": "electron-builder --dir",
     "dist": "electron-builder build -wl",
     "dist-linux": "electron-builder build -l",
+    "build-win": "yarn build && electron-builder --windows",
     "build-dist": "yarn build && electron-builder --windows --linux --publish=always",
     "start": "electron-forge start",
     "package": "electron-forge package",
     "make": "electron-forge make",
     "publish": "electron-forge publish",
-    "build": "yarn react-build && npm run electron-build",
+    "build": "yarn react-build",
     "test": "react-scripts test --transformIgnorePatterns 'node_modules/(?!(<your-package-goes-here>)/)'",
-    "test-coverage": "react-scripts test --coverage",
+    "test-coverage": "react-scripts test --coverage --watchAll=false",
     "compile": "electron-webpack",
     "dist:dir": "yarn dist --dir -c.compression=store -c.mac.identity=null",
     "eject": "react-scripts eject",
@@ -98,7 +99,7 @@
   "devDependencies": {
     "babel-jest": "^29.5.0",
     "cross-env": "^7.0.3",
-    "electron": "^19.0.7",
+    "electron": "^19.1.9",
     "electron-builder": "^22.10.5",
     "react-error-overlay": "6.0.9"
   },
@@ -121,18 +122,18 @@
         }
       ]
     },
-    "productName": "EasyStream.Client",
+    "productName": "EasyStream",
     "copyright": "Copyright @2021-2024 Easystream",
     "win": {
       "target": [
         "nsis"
       ],
-      "icon": "build/logo.png"
+      "icon": "build/icon.png"
     },
     "linux": {
       "target": "AppImage",
       "category": "Utility",
-      "icon": "build/logo.png"
+      "icon": "build/icon.png"
     },
     "extends": null,
     "publish": [

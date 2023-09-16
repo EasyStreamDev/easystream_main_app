@@ -2,6 +2,7 @@ import React from 'react';
 import { useState } from "react";
 import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
 import { toast } from "react-toastify";
+import "./Feedback.css";
 
 export const Feedback = () => {
   const [message, setMessage] = useState("");
@@ -57,7 +58,7 @@ export const Feedback = () => {
             width: "100%",
             padding: "0.5rem",
             borderRadius: "1rem",
-            fontSize: "1rem", 
+            fontSize: "1rem",
           }}
           required
         />

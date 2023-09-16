@@ -38,7 +38,9 @@ const Sidebar = () => {
           <Link to='#' className='menu-bars'>
             <FaIcons.FaBars onClick={toggleSidebar} />
           </Link>
-          <Link className='easystream-title' to="/">EASYSTREAM</Link>
+          <Link className='easystream-title' to="/">
+            <img src="static/transparent_logo.png" alt="EasyStream Logo" height={40} />
+          </Link>
           <PathView />
         </div>
         <nav className={sidebar ? 'nav-menu active' : 'nav-menu hidden'}>

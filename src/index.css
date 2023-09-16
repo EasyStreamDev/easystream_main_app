@@ -41,4 +41,14 @@ h4, h5, h6 {
   width: 100%;
   font-weight: 400;
   margin-left: 25px !important;
-} 
+}
+
+/* Protect input from being dragged */
+input {
+  -webkit-app-region: no-drag !important;
+  -webkit-user-drag: none !important;
+  -webkit-user-select: none !important;
+  -moz-user-select: none !important;
+  -ms-user-select: none !important;
+  user-select: none !important;
+}
