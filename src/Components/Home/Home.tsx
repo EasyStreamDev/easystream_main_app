@@ -8,12 +8,23 @@ import "./Home.css";
 import { Button, IconButton } from "@mui/material";
 import { Visibility, VisibilityOff } from "@material-ui/icons";
 import OutlinedCard from "./CardsHome";
+import QRCode from "./QRcode";
+import { BsQrCodeScan } from "react-icons/bs";
 const ipcRenderer = window.require("electron").ipcRenderer;
 
 
 export const Home = () => {
 	const [ip, setip] = React.useState("");
 	const [visibility, setvisibility] = React.useState(false);
+	const [isHovering, setIsHovering] = React.useState(false);
+
+	const handleMouseOver = () => {
+		setIsHovering(true);
+	};
+
+	const handleMouseOut = () => {
+		setIsHovering(false);
+	};
 	
 	const getLocalIp = (): Promise<string> => {
 		return new Promise(async (resolve, reject) => {
@@ -66,10 +77,24 @@ export const Home = () => {
     return (
       <>
 	  	<h1 className="ip icon-visibility">
-			your ip: { visibility ? ip : "*********" }
-			<IconButton className="icon-visibility" onClick={ () => setvisibility(!visibility) } aria-label="visibility">
-				{ visibility ? <Visibility/> : <VisibilityOff/> }
-			</IconButton>
+			{
+				visibility ?
+					<Button style={{ color: 'white' }} onClick={() => setvisibility(!visibility)} endIcon={<BsQrCodeScan />}>
+						Login on EasyStream app
+					</Button>
+				:
+					<div onClick={() => setvisibility(!visibility)}
+					onMouseEnter={handleMouseOver}
+					onMouseLeave={handleMouseOut}
+					className="qr-code"
+					>
+						<QRCode className="qr-code-content" value={ip}>
+						</QRCode>
+						{isHovering && (
+							<VisibilityOff className="visibility-icon-off"></VisibilityOff>
+						)}
+					</div>
+			}
 		</h1>
 
 		<div className="container-home">
