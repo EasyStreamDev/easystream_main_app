@@ -1,6 +1,7 @@
 @import "../../index.css";
 
 .App {
+  -webkit-app-region: drag;
   display: flex;
   flex-direction: row;
   position: absolute;

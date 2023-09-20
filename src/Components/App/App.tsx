@@ -46,6 +46,7 @@ export default function App() {
 						  <Route path='/actions-reactions/key-pressed' element={<KeyPressed/>} /> 
 						  <Route path='/actions-reactions/app-launch' element={<AppLaunch/>} /> 
 						  <Route path='/actions-reactions/reactions' element={<CreateReactions/>} />
+              <Route path='/other/feedback' element={<Feedback/>} />
 
               <Route
                 element={
@@ -60,7 +61,6 @@ export default function App() {
                 }
               >
                 <Route path="/audio/compressor-level" element={<CompressorLevel />} />
-                <Route path='/other/feedback' element={<Feedback/>} />
               </Route>
 
               <Route
