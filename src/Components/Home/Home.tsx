@@ -79,10 +79,6 @@ export const Home = () => {
 	  	<h1 className="ip icon-visibility">
 			{
 				visibility ?
-					<Button style={{ color: 'white' }} onClick={() => setvisibility(!visibility)} endIcon={<BsQrCodeScan />}>
-						Login on EasyStream app
-					</Button>
-				:
 					<div onClick={() => setvisibility(!visibility)}
 					onMouseEnter={handleMouseOver}
 					onMouseLeave={handleMouseOut}
@@ -94,6 +90,10 @@ export const Home = () => {
 							<VisibilityOff className="visibility-icon-off"></VisibilityOff>
 						)}
 					</div>
+				:
+					<Button style={{ color: 'white' }} onClick={() => setvisibility(!visibility)} endIcon={<BsQrCodeScan />}>
+						Login on EasyStream app
+					</Button>
 			}
 		</h1>
 
