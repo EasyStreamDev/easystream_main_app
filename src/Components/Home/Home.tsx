@@ -8,7 +8,7 @@ import "./Home.css";
 import { Button, IconButton } from "@mui/material";
 import { Visibility, VisibilityOff } from "@material-ui/icons";
 import OutlinedCard from "./CardsHome";
-import QRCode from "./QRcode";
+import { QRCode, encrypt} from "./QRcode";
 import { BsQrCodeScan } from "react-icons/bs";
 const ipcRenderer = window.require("electron").ipcRenderer;
 
@@ -36,7 +36,7 @@ export const Home = () => {
 	useEffect(() => {
 		getLocalIp().then(res => {
 			if (res.length > 0)
-				setip(res)
+				setip(encrypt(res))
 		});
 	
 	  }, []);
