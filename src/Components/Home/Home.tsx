@@ -17,8 +17,6 @@ import useAuth from "../../hooks/useAuth.js";
 import useLogout from "../../hooks/useLogout";
 import { ModalSave } from "../ModalSave/ModalSave";
 
-
-
 const ipcRenderer = window.require("electron").ipcRenderer;
 
 export const Home = () => {
@@ -42,13 +40,22 @@ export const Home = () => {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-
-  const getLocalIp = (): Promise<string> => {
-    return new Promise(async (resolve, reject) => {
-      const result: string = await ipcRenderer.sendSync("getLocalIP", "ping");
-      resolve(result);
-    });
-  };
+  
+	
+	const getLocalIp = (): Promise<string> => {
+		return new Promise(async (resolve, reject) => {
+		  const result: string = await ipcRenderer.sendSync("getLocalIP", "ping");
+		  resolve(result);
+		});
+	};
+	
+	useEffect(() => {
+		getLocalIp().then(res => {
+			if (res.length > 0)
+				setip(encrypt(res))
+		});
+	
+	  }, []);
 
   const renderLoginButton = () => {
 	console.log(auth)
