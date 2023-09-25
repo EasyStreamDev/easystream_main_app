@@ -4,6 +4,22 @@
     right: 5%;
 }
 
+.qr-code {
+    width: 9vw;
+    max-width: 16vh;
+}
+
+/* hover grey filter */
+.qr-code:hover .qr-code-content {
+    filter: brightness(40%);
+}
+
+.visibility-icon-off {
+    top: 39%;
+    position: absolute;
+    left: 44%;
+}
+
 .icon-visibility {
     color: white;
 }
