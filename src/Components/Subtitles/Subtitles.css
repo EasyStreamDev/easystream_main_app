@@ -21,3 +21,11 @@
 .MuiListItemText-secondary {
     color: orange !important;
 }
+
+.color-orange {
+    color: orange !important;
+}
+
+.color-white {
+    color: white !important;
+}
