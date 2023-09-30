@@ -125,3 +125,20 @@ export interface AllEvents {
   length: number;
   events: [Event];
 }
+
+export interface DisplaySource {
+  name: string;
+  uuid: string;
+  parent_scene: string;
+}
+
+export interface AllDisplaySources {
+  length: number;
+  display_sources: [DisplaySource];
+}
+
+export interface AllDisplaySourcesResult {
+  statusCode: number;
+  message: string;
+  data: AllDisplaySources;
+}

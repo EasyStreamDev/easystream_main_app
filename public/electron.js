@@ -260,6 +260,42 @@ ipcMain.on("getAllTextFields", (event, arg) => {
   }
 });
 
+ipcMain.on("getAllDisplaySources", (event, arg) => {
+  if (isDev) {
+    let res = {
+      statusCode: 200,
+      message: "OK",
+      data: {
+        length: 3,
+        display_sources: [
+          {
+            "name": "Video Game Capture",
+            "parent_scene": "Game Scene",
+            "uuid": "277ab5058-7a54-4057-ad17-a810c08ea8db9",
+          },
+          {
+            "name": "Webcame Capture",
+            "parent_scene": "Facecam Scene",
+            "uuid": "4f7398d61-094a-4b7b-9905-4fa928329de4",
+          },
+          {
+            "name": "Cat Camera Capture",
+            "parent_scene": "Facecam Scene",
+            "uuid": "4fa92094a-832-94dbe4-712d61-4b7b-9905",
+          }
+        ],
+      }
+    };
+    event.returnValue = res;
+    return res;
+  } else {
+    return tcpConn.getAllDisplaySources().then((res) => {
+      console.log("getAllDisplaySources : " + res);
+      event.returnValue = res;
+    });
+  }
+});
+
 ipcMain.on("setCompressorLevel", (event, arg) => {
   if (isDev) {
     let res = {

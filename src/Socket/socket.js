@@ -72,6 +72,8 @@ class TCPConnection {
                                     this.ipcMain.emit('compressor-level-updated')
                                 } else if (type === 'sceneCreated' || type === 'sceneRemoved' || type === 'sceneNameChanged') {
                                     this.ipcMain.emit('scenes-updated')
+                                } else if (type === "displaySourceCreated" || type === "displaySourceRemoved" || type === "displaySourceNameChanged") {
+                                    this.ipcMain.emit('display-sources-updated')
                                 } else if (type === 'areasChanged') {
                                     this.ipcMain.emit('actions-reactions-updated')
                                 } else if (type === 'subtitlesSettingsChanged') {
@@ -239,6 +241,26 @@ class TCPConnection {
                     resolve(data);
                 } else {
                     console.log('getCurrentMicsTranscriptor error', error);
+                    this.socket.end();
+                    this.ipcMain.emit('connection-server-lost')
+                    reject(error);
+                }
+            });
+        });
+    }
+
+    getAllDisplaySources() {
+        let obj = {
+            command: 'getAllDisplaySources',
+        };
+        console.log('getAllDisplaySources -> ', JSON.stringify(obj));
+        return new Promise((resolve, reject) => {
+            this.sendData(obj, (data, error) => {
+                if (data) {
+                    console.log('getAllDisplaySources resolve', data);
+                    resolve(data);
+                } else {
+                    console.log('getAllDisplaySources error', error);
                     this.socket.end();
                     this.ipcMain.emit('connection-server-lost')
                     reject(error);
