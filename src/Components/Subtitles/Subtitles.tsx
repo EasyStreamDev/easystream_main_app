@@ -10,7 +10,6 @@ import { BsTrash } from "react-icons/bs";
 import "./Subtitles.css";
 import { Theme, useTheme } from '@mui/material/styles';
 import MicNoneIcon from '@material-ui/icons/MicNone';
-import AddIcon from '@material-ui/icons/Add';
 const ipcRenderer = window.require('electron').ipcRenderer
 
 const ITEM_HEIGHT = 48;
@@ -418,6 +417,7 @@ export const Subtitles = () => {
     sleep().then((res) => setload(!res));
 
     return () => {
+      ipcRenderer.removeListener('compressor-level-updated', handleMicUpdated);
       ipcRenderer.removeListener('subtitles-updated', handleSubtitlesUpdated);
     };
   }, [])
