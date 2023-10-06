@@ -58,7 +58,7 @@ export const Home = () => {
 		},
 		{
 			"url": "/video/scenes",
-			"title": "Scenes",
+			"title": "IN DEVELOPMENT - Scenes",
 			"description": "Let Easystream change scene automatically.",
 		},
 		{
