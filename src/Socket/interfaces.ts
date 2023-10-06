@@ -53,6 +53,7 @@ export interface getActReactCouplesFormat {
 export interface Mic {
   micName: string;
   level: number;
+  uuid: string;
   isActive: boolean;
 }
 
@@ -141,4 +142,22 @@ export interface AllDisplaySourcesResult {
   statusCode: number;
   message: string;
   data: AllDisplaySources;
+}
+
+
+// getAllLinksMicsToVideoSource
+export interface linkMicsToVideoSource {
+  display_source_id: string;
+  mic_ids: [string];
+}
+
+export interface AllLinksMicsToVideoSource {
+  length: number;
+  display_sources: [linkMicsToVideoSource];
+}
+
+export interface AllLinksMicsToVideoSourceResult {
+  statusCode: number;
+  message: string;
+  data: AllLinksMicsToVideoSource;
 }
