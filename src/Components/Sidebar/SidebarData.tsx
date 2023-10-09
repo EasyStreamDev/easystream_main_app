@@ -37,17 +37,17 @@ export const SidebarData = [
   
       subNav: [
         {
-          title: 'Scenes',
-          fullTitle: 'Video > Scenes',
-          path: '/video/scenes',
-          icon: <AiIcons.AiFillSetting />,
+          title: 'Link Mic to Video Source',
+          fullTitle: 'Video > Link Mic to Video Source',
+          path: '/video/link-mic-to-video-source',
+          icon: <MdIcons.MdAddLink />,
           cName: 'sub-nav'
         },
         {
           title: 'Subtitles',
           fullTitle: 'Video > Subtitles',
           path: '/video/subtitles',
-          icon: <AiIcons.AiFillSetting />,
+          icon: <MdIcons.MdTextFields />,
           cName: 'sub-nav'
         }
       ]
@@ -64,7 +64,7 @@ export const SidebarData = [
           title: 'All Actions & Reactions',
           fullTitle: 'Actions & Reactions > Home',
           path: '/actions-reactions/home',
-          icon: <IoIcons.IoIosPaper />
+          icon: <MdIcons.MdCallMerge />
         },
         {
           title: 'Create Actions',
@@ -83,14 +83,21 @@ export const SidebarData = [
           title: 'Word Detection',
           fullTitle: 'Actions & Reactions > Word Detection',
           path: '/actions-reactions/word-detection',
-          icon: <AiIcons.AiFillSetting />,
+          icon: <BsIcons.BsFonts />,
           cName: 'sub-nav'
         },
         {
           title: 'Key Pressed',
           fullTitle: 'Actions & Reactions > Key Pressed',
           path: '/actions-reactions/key-pressed',
-          icon: <AiIcons.AiFillSetting />,
+          icon: <BsIcons.BsKeyboard />,
+          cName: 'sub-nav'
+        },
+        {
+          title: 'App Launch',
+          fullTitle: 'Actions & Reactions > App Launch',
+          path: '/actions-reactions/app-launch',
+          icon: <BsIcons.BsRocketTakeoff />,
           cName: 'sub-nav'
         }
       ]
