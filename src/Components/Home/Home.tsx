@@ -54,7 +54,7 @@ export const Home = () => {
 		},
 		{
 			"url": "/video/link-mic-to-video-source",
-			"title": "Link Mic to Video Source",
+			"title": "IN DEVELOPMENT",
 			"description": "Automatic change of video source when mic is used.",
 		},
 		{
