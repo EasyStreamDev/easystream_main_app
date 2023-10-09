@@ -72,6 +72,8 @@ class TCPConnection {
                                     this.ipcMain.emit('compressor-level-updated')
                                 } else if (type === 'sceneCreated' || type === 'sceneRemoved' || type === 'sceneNameChanged') {
                                     this.ipcMain.emit('scenes-updated')
+                                } else if (type === "displaySourceCreated" || type === "displaySourceRemoved" || type === "displaySourceNameChanged") {
+                                    this.ipcMain.emit('display-sources-updated')
                                 } else if (type === 'areasChanged') {
                                     this.ipcMain.emit('actions-reactions-updated')
                                 } else if (type === 'subtitlesSettingsChanged') {
@@ -247,6 +249,46 @@ class TCPConnection {
         });
     }
 
+    getAllDisplaySources() {
+        let obj = {
+            command: 'getAllDisplaySources',
+        };
+        console.log('getAllDisplaySources -> ', JSON.stringify(obj));
+        return new Promise((resolve, reject) => {
+            this.sendData(obj, (data, error) => {
+                if (data) {
+                    console.log('getAllDisplaySources resolve', data);
+                    resolve(data);
+                } else {
+                    console.log('getAllDisplaySources error', error);
+                    this.socket.end();
+                    this.ipcMain.emit('connection-server-lost')
+                    reject(error);
+                }
+            });
+        });
+    }
+
+    getAllLinksMicsToVideoSource() {
+        let obj = {
+            command: 'getAllLinksMicsToVideoSource',
+        };
+        console.log('getAllLinksMicsToVideoSource -> ', JSON.stringify(obj));
+        return new Promise((resolve, reject) => {
+            this.sendData(obj, (data, error) => {
+                if (data) {
+                    console.log('getAllLinksMicsToVideoSource resolve', data);
+                    resolve(data);
+                } else {
+                    console.log('getAllLinksMicsToVideoSource error', error);
+                    this.socket.end();
+                    this.ipcMain.emit('connection-server-lost')
+                    reject(error);
+                }
+            });
+        });
+    }
+
     setVolumeToMic(args) {
         let obj = {
             command: 'setCompressorLevel',
@@ -302,6 +344,27 @@ class TCPConnection {
                     resolve(data);
                 } else {
                     console.log('setActionReaction error', error);
+                    this.socket.end();
+                    this.ipcMain.emit('connection-server-lost')
+                    reject(error);
+                }
+            });
+        });
+    }
+
+    linkMicToVideoSource(args) {
+        let obj = {
+            command: 'linkMicToVideoSource',
+            params: args
+        };
+        console.log('linkMicToVideoSource -> ', JSON.stringify(obj));
+        return new Promise((resolve, reject) => {
+            this.sendData(obj, (data, error) => {
+                if (data) {
+                    console.log('linkMicToVideoSource resolve', data);
+                    resolve(data);
+                } else {
+                    console.log('linkMicToVideoSource error', error);
                     this.socket.end();
                     this.ipcMain.emit('connection-server-lost')
                     reject(error);

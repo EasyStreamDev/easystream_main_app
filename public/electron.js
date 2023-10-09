@@ -82,12 +82,14 @@ ipcMain.on("getAllMics", (event, arg) => {
         mics: [
           {
             micName: "Mic Test Dev",
+            uuid: "21825058-7a54-4057-bb17-a810c08f8db9",
             level: 30,
             isActive: true,
           },
           {
             micName: "Mic Test Dev 2",
             level: 50,
+            uuid: "94809237-7a54-4057-bb17-844924840",
             isActive: true,
           },
         ],
@@ -260,6 +262,71 @@ ipcMain.on("getAllTextFields", (event, arg) => {
   }
 });
 
+ipcMain.on("getAllDisplaySources", (event, arg) => {
+  if (isDev) {
+    let res = {
+      statusCode: 200,
+      message: "OK",
+      data: {
+        length: 3,
+        display_sources: [
+          {
+            "name": "Video Game Capture",
+            "parent_scene": "Game Scene",
+            "uuid": "277ab5058-7a54-4057-ad17-a810c08ea8db9",
+          },
+          {
+            "name": "Webcame Capture",
+            "parent_scene": "Facecam Scene",
+            "uuid": "4f7398d61-094a-4b7b-9905-4fa928329de4",
+          },
+          {
+            "name": "Cat Camera Capture",
+            "parent_scene": "Facecam Scene",
+            "uuid": "4fa92094a-832-94dbe4-712d61-4b7b-9905",
+          }
+        ],
+      }
+    };
+    event.returnValue = res;
+    return res;
+  } else {
+    return tcpConn.getAllDisplaySources().then((res) => {
+      console.log("getAllDisplaySources : " + res);
+      event.returnValue = res;
+    });
+  }
+});
+
+ipcMain.on("getAllLinksMicsToVideoSource", (event, arg) => {
+  if (isDev) {
+    let res = {
+      statusCode: 200,
+      message: "OK",
+      data: {
+        length: 2,
+        display_sources: [
+          {
+            "mic_ids": ["21825058-7a54-4057-bb17-a810c08f8db9"],
+            "display_source_id": "277ab5058-7a54-4057-ad17-a810c08ea8db9",
+          },
+          {
+            "mic_ids": ["21825058-7a54-4057-bb17-a810c08f8db9", "94809237-7a54-4057-bb17-844924840"],
+            "display_source_id": "4f7398d61-094a-4b7b-9905-4fa928329de4",
+          },
+        ],
+      }
+    };
+    event.returnValue = res;
+    return res;
+  } else {
+    return tcpConn.getAllLinksMicsToVideoSource().then((res) => {
+      console.log("getAllLinksMicsToVideoSource : " + res);
+      event.returnValue = res;
+    });
+  }
+});
+
 ipcMain.on("setCompressorLevel", (event, arg) => {
   if (isDev) {
     let res = {
@@ -308,6 +375,22 @@ ipcMain.on("setActionReaction", (event, arg) => {
   } else {
     return tcpConn.setActionReaction(arg).then((res) => {
       console.log("setActionReaction : " + res);
+      event.returnValue = res;
+    });
+  }
+});
+
+ipcMain.on("linkMicToVideoSource", (event, arg) => {
+  if (isDev) {
+    let res = {
+      message: "OK",
+      statusCode: 200,
+    };
+    event.returnValue = res;
+    return res;
+  } else {
+    return tcpConn.linkMicToVideoSource(arg).then((res) => {
+      console.log("linkMicToVideoSource : " + res);
       event.returnValue = res;
     });
   }

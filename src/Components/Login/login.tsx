@@ -170,6 +170,7 @@ export const Login = () => {
           id="outlined-basic"
           label="Password"
           variant="outlined"
+          type="password"
           onChange={(e) => {
             setPwd(e.target.value);
           }}

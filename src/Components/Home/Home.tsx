@@ -57,9 +57,9 @@ export const Home = () => {
 			"description": "Use the Easystream useful compressor to help you configuring the audio.",
 		},
 		{
-			"url": "/video/scenes",
-			"title": "IN DEVELOPMENT - Scenes",
-			"description": "Let Easystream change scene automatically.",
+			"url": "/video/link-mic-to-video-source",
+			"title": "IN DEVELOPMENT",
+			"description": "Automatic change of video source when mic is used.",
 		},
 		{
 			"url": "/video/subtitles",

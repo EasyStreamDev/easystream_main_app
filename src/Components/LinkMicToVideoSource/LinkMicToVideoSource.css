@@ -1,0 +1,31 @@
+@import "../../index.css";
+
+.allLinksMicsToVideoSourceBox {
+    border: 3px solid orange;
+    background-color: #565d68;
+    /* rounded */
+    border-radius: 10px;
+
+    overflow:scroll;
+    overflow-y:scroll;
+    overflow-x:hidden;
+
+    max-height: 65vh;
+}
+
+.allLinksMicsToVideoSourceItem:hover {
+    box-shadow: 20px;
+    transform: scale(1.02);
+}
+
+.MuiListItemText-secondary {
+    color: orange !important;
+}
+
+.color-orange {
+    color: orange !important;
+}
+
+.color-white {
+    color: white !important;
+}

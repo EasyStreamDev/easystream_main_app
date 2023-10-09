@@ -11,7 +11,6 @@ import { Home } from "../Home/Home";
 import { Subtitles } from "../Subtitles/Subtitles";
 import { CompressorLevel } from "../CompressorLevel/CompressorLevel";
 import { WordDetection } from "../ActionsReactions/WordDetection/WordDetection";
-import { Scenes } from "../Scenes/Scenes";
 import { Login } from "../Login/login";
 import Layout from "../Layout/Layout";
 import RequireAuth from "../Auth/RequireAuth";
@@ -25,6 +24,7 @@ import { Feedback } from '../Other/Feedback/Feedback';
 import { AppLaunch } from '../ActionsReactions/AppLaunch/AppLaunch';
 import { ToastContainer } from "react-toastify";
 import "react-toastify/ReactToastify.min.css";
+import { LinkMicToVideoSource } from '../LinkMicToVideoSource/LinkMicToVideoSource';
 
 export default function App() {
   return (
@@ -74,7 +74,7 @@ export default function App() {
                   />
                 }
               >
-                <Route path="/video/scenes" element={<Scenes />} />
+                <Route path="/video/link-mic-to-video-source" element={<LinkMicToVideoSource />} />
               </Route>
               <Route
                 element={
