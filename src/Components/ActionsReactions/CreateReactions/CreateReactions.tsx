@@ -306,7 +306,7 @@ export const CreateReactions = () => {
           </>
         ) : (
           <div className="reactions-list">
-            <div className="item-container-reaction">
+            <div className="item-container-reaction non-dragable">
               {actionsList.map((item: any, index: any) => {
                 return (
                   <Card
@@ -366,7 +366,7 @@ export const CreateReactions = () => {
         </Button>
       </Link>
 
-      <Dialog open={open} onClose={handleCancel}>
+      <Dialog className="non-dragable" open={open} onClose={handleCancel}>
         <DialogTitle>Add Reaction</DialogTitle>
         <DialogContent>
           <DialogContentText>

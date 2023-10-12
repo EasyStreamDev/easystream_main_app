@@ -1,3 +1,5 @@
+@import "../../index.css";
+
 .navbar {
   position: absolute;
   flex-direction: row;

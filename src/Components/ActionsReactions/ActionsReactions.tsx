@@ -314,11 +314,11 @@ export const ActionsReactions = () => {
                 <h4>No Action & Reaction found.</h4>
               </>
             ) : (
-              <div className="actions-reactions-list">
-                <div className="item-container action-reaction-cards">
+              <div className="actions-reactions-list non-dragable">
+                <div className="item-container action-reaction-cards non-dragable">
                   {actionsReactionsList.map((item: any, index: any) => {
                     return (
-                      <Card key={index} className="card-event" sx={{
+                      <Card key={index} className="card-event non-dragable" sx={{
                         backgroundColor: "#565d68",
                         border: "3px solid orange",
                         borderRadius: "10px",

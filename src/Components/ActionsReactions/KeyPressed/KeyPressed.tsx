@@ -1,5 +1,6 @@
 import React, { Component, useEffect, useState } from "react";
 import BoxEvent from "../../BoxEvent/BoxEvent";
+import './KeyPressed.css'
 import { LocalStorage } from "../../../LocalStorage/LocalStorage";
 import {
   getActReactCouplesFormat,
@@ -218,6 +219,7 @@ export const KeyPressed = (props: any) => {
             if (item.action.type === "KEY_PRESSED") {
               return (
                 <BoxEvent
+                  className="non-dragable"
                   keyObj={item}
                   key={index}
                   i={index}

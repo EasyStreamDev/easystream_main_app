@@ -3,6 +3,7 @@ import { AddAppLaunch } from "../AddAppLaunch/AddAppLaunch";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import Button from "@mui/material/Button";
+import './AppLaunch.css'
 
 import { BsArrowReturnLeft } from "react-icons/bs"
 
@@ -274,7 +275,7 @@ export const AppLaunch = (props: any) => {
       {
         action_reactionArray.map((item: any, index: number) => {
           if (item.action.type === "APP_LAUNCH") {
-            return <BoxEvent key={index} keyObj={item} i={index} eventArray={action_reactionArray} seteventArray={updateEventFromBoxEvent}/>;
+            return <BoxEvent className="non-dragable" key={index} keyObj={item} i={index} eventArray={action_reactionArray} seteventArray={updateEventFromBoxEvent}/>;
           }
         })
       }

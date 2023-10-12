@@ -328,7 +328,7 @@ export const LinkMicToVideoSource = (props: any) => {
             ) : (
               <>
                 <h1>Links Mics / Display source:</h1>
-                <div className="allLinksMicsToVideoSourceBox">
+                <div className="allLinksMicsToVideoSourceBox non-dragable">
                   <List>
                     {
                       allLinksMicsToVideoSource.map((l) => {
@@ -412,7 +412,7 @@ export const LinkMicToVideoSource = (props: any) => {
               </>
             )
           }
-          <Dialog open={open} onClose={handleCancel}>
+          <Dialog className="non-dragable" open={open} onClose={handleCancel}>
             <DialogTitle>Link Mic to Display Source</DialogTitle>
             <DialogContent>
               <DialogContentText>

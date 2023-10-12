@@ -76,7 +76,7 @@ export const Home = () => {
 	
     return (
       <>
-	  	<h1 className="ip icon-visibility">
+	  	<h1 className="ip icon-visibility non-dragable">
 			{
 				visibility ?
 					<div onClick={() => setvisibility(!visibility)}

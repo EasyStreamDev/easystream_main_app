@@ -7,6 +7,7 @@ import CSS from "csstype";
 import { WordDetectionModal } from "./WordDetectionModal/WordDetectionModal";
 import { SelectChangeEvent } from "@mui/material/Select";
 import { toast } from "react-toastify";
+import './AddNewWord.css'
 
 /**
  * CSS styles for the box component
@@ -151,7 +152,7 @@ export const AddNewWord = (props: any) => {
 
   return (
     <>
-      <Box style={boxStyles} onClick={handleOpen}>
+      <Box className="non-dragable" style={boxStyles} onClick={handleOpen}>
         <h3 style={TextStyles}>
           Click to add new Word Detection Event
           <i style={IconStyles}>

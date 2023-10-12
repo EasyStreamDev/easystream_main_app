@@ -1,4 +1,5 @@
 // Importing necessary modules and components
+import './AddAppLaunch.css'
 import { Box } from "@mui/system";
 import React from "react";
 import { IoIosAddCircleOutline } from "react-icons/io";
@@ -114,7 +115,7 @@ export const AddAppLaunch = (props: any) => {
   return (
     <>
       {/* Box component for adding new event */}
-      <Box style={boxStyles} onClick={handleOpen}>
+      <Box className="non-dragable" style={boxStyles} onClick={handleOpen}>
         <h3 style={TextStyles}>
           Click to add new App Launch Event
           <i style={IconStyles}>
