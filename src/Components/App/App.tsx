@@ -48,7 +48,7 @@ export default function App() {
 						  <Route path='/actions-reactions/reactions' element={<CreateReactions/>} />
               <Route path='/other/feedback' element={<Feedback/>} />
 
-              {/* <Route
+              <Route
                 element={
                   <RequireAuth
                     allowedSubscriptions={[
@@ -59,11 +59,11 @@ export default function App() {
                     ]}
                   />
                 }
-              > */}
+              >
                 <Route path="/audio/compressor-level" element={<CompressorLevel />} />
-              {/* </Route> */}
+              </Route>
 
-              {/* <Route
+              <Route
                 element={
                   <RequireAuth
                     allowedSubscriptions={[
@@ -73,10 +73,10 @@ export default function App() {
                     ]}
                   />
                 }
-              > */}
+              >
                 <Route path="/video/link-mic-to-video-source" element={<LinkMicToVideoSource />} />
-              {/* </Route> */}
-              {/* <Route
+              </Route>
+              <Route
                 element={
                   <RequireAuth
                     allowedSubscriptions={[
@@ -85,10 +85,10 @@ export default function App() {
                     ]}
                   />
                 }
-              > */}
+              >
                 <Route path="/video/subtitles" element={<Subtitles />} />
-              {/* </Route> */}
-              {/* <Route
+              </Route>
+              <Route
                 element={
                   <RequireAuth
                     allowedSubscriptions={[
@@ -96,12 +96,12 @@ export default function App() {
                     ]}
                   />
                 }
-              > */}
+              >
                 <Route
                   path='/actions-reactions/word-detection'
                   element={<WordDetection />}
                 />
-              {/* </Route> */}
+              </Route>
             </Route>
           </Routes>
 		      <ToastContainer position="bottom-right" newestOnTop />
