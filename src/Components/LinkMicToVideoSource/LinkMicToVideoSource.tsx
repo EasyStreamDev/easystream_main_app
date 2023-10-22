@@ -143,6 +143,7 @@ export const LinkMicToVideoSource = (props: any) => {
   const getAllLinksMicsToVideoSource = (): Promise<linkMicsToVideoSource[]> => {
     return new Promise(async (resolve, reject) => {
       const result: AllLinksMicsToVideoSourceResult = await ipcRenderer.sendSync("getAllLinksMicsToVideoSource", "ping");
+      console.log("DEBUG", result);
       if (result.statusCode === 200) {
         resolve(result.data.display_sources);
       } else {
@@ -159,6 +160,7 @@ export const LinkMicToVideoSource = (props: any) => {
     const micId = allMics.filter((mic) => mic.micName === micName)[0].uuid;
 
     linkMicToVideoSource(micId, linkMicsToVideoSource.display_source_id, true).then((res) => {
+      console.log("DEBUG", res)
       toast("Mic linked to display source.", {
         type: "success",
       });
@@ -328,7 +330,7 @@ export const LinkMicToVideoSource = (props: any) => {
             ) : (
               <>
                 <h1>Links Mics / Display source:</h1>
-                <div className="allLinksMicsToVideoSourceBox">
+                <div className="allLinksMicsToVideoSourceBox non-dragable">
                   <List>
                     {
                       allLinksMicsToVideoSource.map((l) => {
@@ -412,7 +414,7 @@ export const LinkMicToVideoSource = (props: any) => {
               </>
             )
           }
-          <Dialog open={open} onClose={handleCancel}>
+          <Dialog className="non-dragable" open={open} onClose={handleCancel}>
             <DialogTitle>Link Mic to Display Source</DialogTitle>
             <DialogContent>
               <DialogContentText>

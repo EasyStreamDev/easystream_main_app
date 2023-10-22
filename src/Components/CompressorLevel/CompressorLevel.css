@@ -1,3 +1,5 @@
+@import "../../index.css";
+
 .item-container-compressor {
     overflow:scroll;
     overflow-y:scroll;
