@@ -7,6 +7,7 @@ import CSS from "csstype";
 import { KeyPressedModal } from "./KeyPressedModal/KeyPressedModal"
 import { SelectChangeEvent } from "@mui/material/Select";
 import { toast } from "react-toastify";
+import './AddNewKeyPressed.css'
 
 // CSS styles for the box component
 const boxStyles: CSS.Properties = {
@@ -108,7 +109,7 @@ export const AddNewKeyPressed = (props: any) => {
 
   return (
     <>
-      <Box style={boxStyles} onClick={handleOpen}>
+      <Box className="non-dragable" style={boxStyles} onClick={handleOpen}>
         <h3 style={TextStyles}>
           Click to add new Key Pressed Event
           <i style={IconStyles}>

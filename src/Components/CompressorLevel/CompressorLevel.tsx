@@ -127,8 +127,8 @@ export const CompressorLevel = () => {
                 <h4>No mic found.</h4>
               </>
             ) : (
-              <div className="actions-reactions-list">
-                <div className="item-container-compressor">
+              <div className="actions-reactions-list non-dragable">
+                <div className="item-container-compressor non-dragable">
                   {exampleCompressorArray &&
                   exampleCompressorArray.length > 0 ? (
                     exampleCompressorArray.map((item, index) => {

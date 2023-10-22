@@ -4,6 +4,7 @@ import { Grid, Item } from "semantic-ui-react";
 import CSS from 'csstype';
 import { IoIosAddCircleOutline } from "react-icons/io";
 import { BsTrash } from "react-icons/bs";
+import './BoxEvent.css'
 
 export default function BoxEvent(props: any) {
 
@@ -64,7 +65,7 @@ export default function BoxEvent(props: any) {
      {
         props.keyObj.action.type === "WORD_DETECT" ?
 
-          <Box style={boxStyles}>
+          <Box className="non-dragable" style={boxStyles}>
             <span key="if-you-say" style={TextStylesTitle}>If you say : </span>
             {
                 props.keyObj.action.params.words.map((item: any, index: number) => {
@@ -84,7 +85,7 @@ export default function BoxEvent(props: any) {
         : (
           props.keyObj.action.type === "KEY_PRESSED" ? 
             
-            <Box style={boxStyles}>
+            <Box className="non-dragable" style={boxStyles}>
               <span key="if-you-type" style={TextStylesTitle}>If you type the letter : </span>
               {
                   props.keyObj.action.params.key
@@ -100,7 +101,22 @@ export default function BoxEvent(props: any) {
             </Box>
 
           :
-            <></>
+            <>
+              <Box className="non-dragable" style={boxStyles}>
+                <span key="if-you-type" style={TextStylesTitle}>If you launch : </span>
+                {
+                    props.keyObj.action.params.app_name
+                }
+                <BsTrash
+                  style={IconStyles}
+                  onClick={() => { deleteEvent(props.i) }}
+                />
+                <br></br>
+                <span key="the-actions" style={TextStylesTitle}>The reaction : </span>
+                  <span key={props.keyObj.reactionId } style={TextStyles}>[{props.keyObj.reaction?.name ? props.keyObj.reaction?.name : "NAME ERROR" }]</span>
+                <span style={TextStylesTitle}> will be done.</span>
+              </Box>
+            </>
 
         )
       }

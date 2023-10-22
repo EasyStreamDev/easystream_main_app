@@ -58,7 +58,7 @@ export const Home = () => {
 		},
 		{
 			"url": "/video/link-mic-to-video-source",
-			"title": "IN DEVELOPMENT",
+			"title": "Link mic to Video Source",
 			"description": "Automatic change of video source when mic is used.",
 		},
 		{
@@ -80,7 +80,7 @@ export const Home = () => {
 	
     return (
       <>
-	  	<h1 className="ip icon-visibility">
+	  	<h1 className="ip icon-visibility non-dragable">
 			{
 				visibility ?
 					<div onClick={() => setvisibility(!visibility)}

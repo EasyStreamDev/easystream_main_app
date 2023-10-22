@@ -182,6 +182,26 @@ ipcMain.on("getActReactCouples", (event, arg) => {
                 }
             }
           },
+          { 
+            actReactId: 3,
+            isActive: true,
+            action: {
+                actionId: 3,
+                type: "APP_LAUNCH",
+                params: {
+                  app_name: "discord"
+                }
+            },
+            reaction: {
+                name: "Changement de scene sur la scene 3",
+                reactionId: 4,
+                type: "SCENE_SWITCH",
+                params: {
+                  scene: "Scene qui n'existe pas",
+                  uuid: "2772a187-cc04-4058-9148-beaaba7a2145"
+                }
+            }
+          },
         ],
       }
     };
