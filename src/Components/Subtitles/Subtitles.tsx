@@ -449,7 +449,7 @@ export const Subtitles = () => {
             ) : (
               <>
                 <h1>Subtitles text fields activated:</h1>
-                <div className="subtitlesSettingsBox">
+                <div className="subtitlesSettingsBox non-dragable">
                   <List>
                     {
                       subtitlesSettings.map((l) => {
@@ -475,7 +475,7 @@ export const Subtitles = () => {
                                   />
                                 ))
                               }
-                              <Chip key="+" label="+" className="color-orange" sx={{ m: 0.5, fontSize: "20px", borderColor: "#FFA500" }}
+                              <Chip key="+" label="+" className="color-orange non-dragable" sx={{ m: 0.5, fontSize: "20px", borderColor: "#FFA500" }}
                                 onClick={event => handleClickPopover(event, l)}
                                 />
                                 {
@@ -533,7 +533,7 @@ export const Subtitles = () => {
             )
           }
 
-      <Dialog open={open} onClose={handleCancel}>
+      <Dialog className="non-dragable" open={open} onClose={handleCancel}>
         <DialogTitle>Link Subtitle Text Field</DialogTitle>
         <DialogContent>
           <DialogContentText>

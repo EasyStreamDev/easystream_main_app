@@ -141,6 +141,7 @@ export const KeyPressedModal = (props: any) => {
           Click to select key
           </Button>
           <Dialog
+            className="non-dragable"
             open={open}
             onClose={handleClose}
             onKeyPress={handleKeyPress}

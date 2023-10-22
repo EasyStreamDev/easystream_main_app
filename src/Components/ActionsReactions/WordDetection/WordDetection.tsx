@@ -3,6 +3,7 @@ import { AddNewWord } from "../AddNewWord/AddNewWord";
 import { Link } from "react-router-dom";
 import Button from "@mui/material/Button";
 import { BsArrowReturnLeft } from "react-icons/bs"
+import './WordDetection.css'
 import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
 
 import BoxEvent from "../../BoxEvent/BoxEvent";
@@ -213,6 +214,7 @@ export const WordDetection = (props: any) => {
             if (item.action.type === "WORD_DETECT") {
               return (
                 <BoxEvent
+                  className="non-dragable"
                   key={index}
                   keyObj={item}
                   i={index}
