@@ -1,14 +1,23 @@
 import React, { useEffect } from "react";
 import { Routes, Route, Link } from "react-router-dom";
 import "./Home.css";
-import { Button, IconButton } from "@mui/material";
+import { Box, Button, CardContent, IconButton, Typography } from "@mui/material";
+import Modal from "@mui/material/Modal";
 import { Visibility, VisibilityOff } from "@material-ui/icons";
 import OutlinedCard from "./CardsHome";
+import { ModalSave } from "../ModalSave/ModalSave";
+
+
+
 const ipcRenderer = window.require("electron").ipcRenderer;
 
 export const Home = () => {
   const [ip, setip] = React.useState("");
   const [visibility, setvisibility] = React.useState(false);
+
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
 
   const getLocalIp = (): Promise<string> => {
     return new Promise(async (resolve, reject) => {
@@ -88,6 +97,10 @@ export const Home = () => {
           );
         })}
       </div>
+      <Button onClick={handleOpen}> Load Last save</Button>
+      <Modal open={open} onClose={handleClose}>
+        <ModalSave handleClose={handleClose}/>
+      </Modal>
     </>
   );
 };
