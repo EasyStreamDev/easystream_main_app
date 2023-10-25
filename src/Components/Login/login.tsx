@@ -65,8 +65,8 @@ export const Login = () => {
   const emailRef = useRef<any>(null);
   const errRef = useRef<any>(null);
 
-  const [email, setEmail] = useState("");
-  const [pwd, setPwd] = useState("");
+  const [email, setEmail] = useState("test1");
+  const [pwd, setPwd] = useState("test1");
   const [errMsg, setErrMsg] = useState("");
 
   useEffect(() => {
