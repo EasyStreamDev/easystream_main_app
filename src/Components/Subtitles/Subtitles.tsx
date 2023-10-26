@@ -1,16 +1,41 @@
-import { Box, Button, Chip, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton, List, ListItem, ListItemText, OutlinedInput, Popover, Switch, TextField, Typography } from "@mui/material";
-import Divider from '@mui/material/Divider';
+import {
+  Box,
+  Button,
+  Chip,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  IconButton,
+  List,
+  ListItem,
+  ListItemText,
+  OutlinedInput,
+  Popover,
+  Switch,
+  TextField,
+  Typography,
+} from "@mui/material";
+import Divider from "@mui/material/Divider";
 import React, { Fragment, useEffect } from "react";
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
-import { AllSubtitlesSettings, AllTextFields, TextFieldSimple, TextFieldDetailed, resultFormat, AllMics } from "../../Socket/interfaces";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import Select, { SelectChangeEvent } from "@mui/material/Select";
+import {
+  AllSubtitlesSettings,
+  AllTextFields,
+  TextFieldSimple,
+  TextFieldDetailed,
+  resultFormat,
+  AllMics,
+} from "../../Socket/interfaces";
 import { toast } from "react-toastify";
 import { BsTrash } from "react-icons/bs";
 import "./Subtitles.css";
-import { Theme, useTheme } from '@mui/material/styles';
-import MicNoneIcon from '@material-ui/icons/MicNone';
-const ipcRenderer = window.require('electron').ipcRenderer
+import { Theme, useTheme } from "@mui/material/styles";
+import MicNoneIcon from "@material-ui/icons/MicNone";
+const ipcRenderer = window.require("electron").ipcRenderer;
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -41,7 +66,7 @@ export const Subtitles = () => {
 
   const handleClickPopover = (event: any, l: TextFieldSimple) => {
     setAnchorEl(event.currentTarget);
-    setListMicsAvailable(micList.filter((mic) => !l.linked_mics.includes(mic)))
+    setListMicsAvailable(micList.filter((mic) => !l.linked_mics.includes(mic)));
   };
 
   const handleClosePopover = () => {
@@ -55,9 +80,7 @@ export const Subtitles = () => {
   function getStyles(name: string, personName: readonly string[], theme: Theme) {
     return {
       fontWeight:
-        personName.indexOf(name) === -1
-          ? theme.typography.fontWeightRegular
-          : theme.typography.fontWeightMedium,
+        personName.indexOf(name) === -1 ? theme.typography.fontWeightRegular : theme.typography.fontWeightMedium,
     };
   }
 
@@ -68,7 +91,7 @@ export const Subtitles = () => {
     });
   };
 
-  const updateMicList = (notify=false) => {
+  const updateMicList = (notify = false) => {
     getAllCompressors().then((result) => {
       if (result.statusCode === 200) {
         // Only get the mics names
@@ -85,8 +108,7 @@ export const Subtitles = () => {
         });
       }
     });
-  }
-
+  };
 
   /**
    * Event handler for opening the dialog
@@ -108,12 +130,14 @@ export const Subtitles = () => {
     } = event;
     setNewMicsListParam(
       // On autofill we get a stringified value.
-      typeof value === 'string' ? value.split(',') : value,
+      typeof value === "string" ? value.split(",") : value
     );
   };
 
   const handleMicDelete = (uuid_text_field: string, micToDelete: string) => () => {
-    let good_subtitle_setting = subtitlesSettings.filter((subtitle_setting) => subtitle_setting.uuid === uuid_text_field)[0];
+    let good_subtitle_setting = subtitlesSettings.filter(
+      (subtitle_setting) => subtitle_setting.uuid === uuid_text_field
+    )[0];
     let new_mics = good_subtitle_setting.linked_mics.filter((mic) => mic !== micToDelete);
     console.log("new_mics", new_mics);
     addSubtitleTextField(uuid_text_field, new_mics).then((res: resultFormat) => {
@@ -134,55 +158,48 @@ export const Subtitles = () => {
     });
   };
 
-  
   const addSubtitleTextField = (uuid: string, linkedMics: string[]): Promise<resultFormat> => {
     return new Promise(async (resolve, reject) => {
       const param = {
         linked_mics: linkedMics,
         uuid: uuid,
-      }
-      const result: resultFormat = ipcRenderer.sendSync('setSubtitles', param);
+      };
+      const result: resultFormat = ipcRenderer.sendSync("setSubtitles", param);
       resolve(result);
     });
-  }
+  };
 
   const removeSubtitleTextField = (uuid: string): Promise<resultFormat> => {
     return new Promise(async (resolve, reject) => {
       const param = {
         linked_mics: [], // Empty linked_mics means that the text field will be deleted
         uuid: uuid,
-      }
-      const result: resultFormat = ipcRenderer.sendSync('setSubtitles', param);
+      };
+      const result: resultFormat = ipcRenderer.sendSync("setSubtitles", param);
       resolve(result);
     });
-  }
-  
+  };
+
   const getSubtitlesSettings = (): Promise<AllSubtitlesSettings> => {
     return new Promise(async (resolve, reject) => {
-      const result: AllSubtitlesSettings = await ipcRenderer.sendSync(
-        "getSubtitlesSettings",
-        "ping"
-      );
+      const result: AllSubtitlesSettings = await ipcRenderer.sendSync("getSubtitlesSettings", "ping");
       resolve(result);
     });
-  }
-  
+  };
+
   const getAllTextFields = (): Promise<AllTextFields> => {
     return new Promise(async (resolve, reject) => {
-      const result: any = await ipcRenderer.sendSync(
-        "getAllTextFields",
-        "ping"
-        );
+      const result: any = await ipcRenderer.sendSync("getAllTextFields", "ping");
       resolve(result);
     });
-  }
-  
+  };
+
   const refresh = (textField?: TextFieldDetailed) => {
     getSubtitlesSettings().then((subtitles_res) => {
       if (subtitles_res.statusCode === 200) {
         console.log("getSubtitlesSettings", subtitles_res);
         setSubtitlesSettings(subtitles_res.data.text_fields);
-        
+
         if (textField !== undefined) {
           // Remove the text field from availableTextFields
           const availableTextFieldsCopy: TextFieldDetailed[] = availableTextFields.slice();
@@ -196,7 +213,7 @@ export const Subtitles = () => {
             setAvailableTextFields(availableTextFieldsCopy);
 
             if (availableTextFields.length > 0) {
-              setNewSubtitleParam( JSON.stringify(availableTextFields[0]) )
+              setNewSubtitleParam(JSON.stringify(availableTextFields[0]));
             }
           }
         }
@@ -209,7 +226,6 @@ export const Subtitles = () => {
         setOpen(false);
 
         return;
-
       } else {
         toast("Error listing all subtitles settings. Verify the internet connection", {
           type: "error",
@@ -217,7 +233,7 @@ export const Subtitles = () => {
         return;
       }
     });
-  }
+  };
 
   const handleSave = () => {
     if (newSubtitleParam === "") {
@@ -230,7 +246,6 @@ export const Subtitles = () => {
     const textField: TextFieldDetailed = JSON.parse(newSubtitleParam);
     addSubtitleTextField(textField.uuid, newMicsListParam).then((res: resultFormat) => {
       if (res.statusCode === 200) {
-        
         // Reset
         setNewSubtitleParam("");
         setNewMicsListParam([]);
@@ -244,7 +259,7 @@ export const Subtitles = () => {
         return;
       }
     });
-  }
+  };
 
   const addMicToSubtitle = (text_field: TextFieldSimple, mic_to_add: any) => {
     let new_mics = text_field.linked_mics.slice();
@@ -265,19 +280,18 @@ export const Subtitles = () => {
     });
     refresh();
     handleClosePopover();
-  }
+  };
 
   const deleteSubtitleTextField = (uuid: string) => {
     return () => {
       removeSubtitleTextField(uuid).then((res: resultFormat) => {
         if (res.statusCode === 200) {
-
           // remove locally
           const subtitlesSettingsCopy: TextFieldSimple[] = subtitlesSettings.slice();
           const index = subtitlesSettingsCopy.findIndex((tf: TextFieldSimple) => {
             return tf.uuid === uuid;
           });
-          
+
           if (index !== -1) {
             subtitlesSettingsCopy.splice(index, 1);
             setSubtitlesSettings(subtitlesSettingsCopy);
@@ -298,23 +312,23 @@ export const Subtitles = () => {
                   console.log("getAllTextFields", txt_field_res);
 
                   // Filter txt_field_res.data.text_fields to only keep the ones that are not in subtitlesSettings
-                  const availableTextFields: TextFieldDetailed[] = txt_field_res.data.text_fields.filter((textField: TextFieldDetailed) => {
-                    return !subtitles_res.data.text_fields?.some((subtitlesSetting: TextFieldSimple) => {
-                      return subtitlesSetting.uuid === textField.uuid;
-                    });
-                  });
+                  const availableTextFields: TextFieldDetailed[] = txt_field_res.data.text_fields.filter(
+                    (textField: TextFieldDetailed) => {
+                      return !subtitles_res.data.text_fields?.some((subtitlesSetting: TextFieldSimple) => {
+                        return subtitlesSetting.uuid === textField.uuid;
+                      });
+                    }
+                  );
 
                   setAvailableTextFields(availableTextFields);
 
                   if (availableTextFields.length > 0) {
-                    setNewSubtitleParam( JSON.stringify(availableTextFields[0]) )
+                    setNewSubtitleParam(JSON.stringify(availableTextFields[0]));
                   }
 
                   return;
                 }
               });
-
-
             } else {
               toast("Error listing all subtitles settings. Verify the internet connection", {
                 type: "error",
@@ -329,8 +343,8 @@ export const Subtitles = () => {
           return;
         }
       });
-    }
-  }
+    };
+  };
 
   useEffect(() => {
     const handleSubtitlesUpdated = (evt: any, message: any) => {
@@ -338,25 +352,27 @@ export const Subtitles = () => {
         if (subtitles_res.statusCode === 200) {
           console.log("getSubtitlesSettings", subtitles_res);
           setSubtitlesSettings(subtitles_res.data.text_fields);
-          
+
           getAllTextFields().then((txt_field_res) => {
             if (txt_field_res.statusCode === 200) {
               toast("Subtitles settings have been updated !", {
                 type: "info",
               });
               console.log("New Array", txt_field_res);
-              
+
               // Filter txt_field_res.data.text_fields to only keep the ones that are not in subtitlesSettings
-              const availableTextFields: TextFieldDetailed[] = txt_field_res.data.text_fields.filter((textField: TextFieldDetailed) => {
-                return !subtitles_res.data.text_fields?.some((subtitlesSetting: TextFieldSimple) => {
-                  return subtitlesSetting.uuid === textField.uuid;
-                });
-              });
-              
+              const availableTextFields: TextFieldDetailed[] = txt_field_res.data.text_fields.filter(
+                (textField: TextFieldDetailed) => {
+                  return !subtitles_res.data.text_fields?.some((subtitlesSetting: TextFieldSimple) => {
+                    return subtitlesSetting.uuid === textField.uuid;
+                  });
+                }
+              );
+
               setAvailableTextFields(availableTextFields);
 
               if (availableTextFields.length > 0) {
-                setNewSubtitleParam( JSON.stringify(availableTextFields[0]) )
+                setNewSubtitleParam(JSON.stringify(availableTextFields[0]));
               }
             }
           });
@@ -367,8 +383,8 @@ export const Subtitles = () => {
       updateMicList(true);
     };
 
-    ipcRenderer.on('compressor-level-updated', handleMicUpdated);
-    ipcRenderer.on('subtitles-updated', handleSubtitlesUpdated);
+    ipcRenderer.on("compressor-level-updated", handleMicUpdated);
+    ipcRenderer.on("subtitles-updated", handleSubtitlesUpdated);
 
     async function sleep(): Promise<boolean> {
       return new Promise((resolve) => {
@@ -383,20 +399,21 @@ export const Subtitles = () => {
                 console.log("getAllTextFields", txt_field_res);
 
                 // Filter txt_field_res.data.text_fields to only keep the ones that are not in subtitlesSettings
-                const availableTextFields: TextFieldDetailed[] = txt_field_res.data.text_fields.filter((textField: TextFieldDetailed) => {
-                  return !subtitles_res.data.text_fields?.some((subtitlesSetting: TextFieldSimple) => {
-                    return subtitlesSetting.uuid === textField.uuid;
-                  });
-                });
+                const availableTextFields: TextFieldDetailed[] = txt_field_res.data.text_fields.filter(
+                  (textField: TextFieldDetailed) => {
+                    return !subtitles_res.data.text_fields?.some((subtitlesSetting: TextFieldSimple) => {
+                      return subtitlesSetting.uuid === textField.uuid;
+                    });
+                  }
+                );
 
                 setAvailableTextFields(availableTextFields);
 
                 if (availableTextFields.length > 0) {
-                  setNewSubtitleParam( JSON.stringify(availableTextFields[0]) )
+                  setNewSubtitleParam(JSON.stringify(availableTextFields[0]));
                 }
 
-                resolve(true)
-
+                resolve(true);
               } else {
                 toast("Error listing all text fields. Verify the internet connection", {
                   type: "error",
@@ -417,10 +434,10 @@ export const Subtitles = () => {
     sleep().then((res) => setload(!res));
 
     return () => {
-      ipcRenderer.removeListener('compressor-level-updated', handleMicUpdated);
-      ipcRenderer.removeListener('subtitles-updated', handleSubtitlesUpdated);
+      ipcRenderer.removeListener("compressor-level-updated", handleMicUpdated);
+      ipcRenderer.removeListener("subtitles-updated", handleSubtitlesUpdated);
     };
-  }, [])
+  }, []);
 
   /**
    * Function to add points to the loading text
@@ -443,173 +460,159 @@ export const Subtitles = () => {
         </>
       ) : (
         <>
-          {
-            subtitlesSettings.length === 0 ? (
-              <h1>No subtitles settings found</h1>
-            ) : (
-              <>
-                <h1>Subtitles text fields activated:</h1>
-                <div className="subtitlesSettingsBox non-dragable">
-                  <List>
-                    {
-                      subtitlesSettings.map((l) => {
-                        return (
-                          <Box className="subtitlesSettingsItem" key={l.uuid}>
-                            <ListItem
-                              key={l.uuid}
-                              secondaryAction={
-                                <IconButton onClick={deleteSubtitleTextField(l.uuid)} edge="end" color="error" aria-label="delete">
-                                  <BsTrash />
-                                </IconButton>
-                              }
+          {subtitlesSettings.length === 0 ? (
+            <h1>No subtitles settings found</h1>
+          ) : (
+            <>
+              <h1>Subtitles text fields activated:</h1>
+              <div className="subtitlesSettingsBox non-dragable">
+                <List>
+                  {subtitlesSettings.map((l) => {
+                    return (
+                      <Box className="subtitlesSettingsItem" key={l.uuid}>
+                        <ListItem
+                          key={l.uuid}
+                          secondaryAction={
+                            <IconButton
+                              onClick={deleteSubtitleTextField(l.uuid)}
+                              edge="end"
+                              color="error"
+                              aria-label="delete"
                             >
-                            <ListItemText
-                                primary={"Text Field: " + l.name}
-                              />
-                            </ListItem>
-                            <Box display="flex" justifyContent="center" m={1} p={1}>
-                              {
-                                l.linked_mics.map((value) => (
-                                  <Chip className="color-white" key={value} label={value} variant="outlined" sx={{ m: 0.5, borderColor: "#FFA500" }}
-                                  icon={<MicNoneIcon className="color-orange" />} onDelete={handleMicDelete(l.uuid, value)}
-                                  />
-                                ))
-                              }
-                              <Chip key="+" label="+" className="color-orange non-dragable" sx={{ m: 0.5, fontSize: "20px", borderColor: "#FFA500" }}
-                                onClick={event => handleClickPopover(event, l)}
-                                />
-                                {
-                                  Boolean(anchorEl) &&
-                                  <Popover
-                                    id={l.uuid}
-                                    open={Boolean(anchorEl)}
-                                    anchorEl={anchorEl}
-                                    onClose={handleClosePopover}
-                                    anchorOrigin={{
-                                      vertical: 'center',
-                                      horizontal: 'right',
-                                    }}
-                                    transformOrigin={{
-                                      vertical: 'center',
-                                      horizontal: 'left',
-                                    }}
-                                  >
-                                    {
-                                      listMicsAvailable.length === 0 ? (
-                                        <Typography sx={{ p: 2 }}>No mic available</Typography>
-                                      ) :
-                                        (
-                                          <div>
-                                            <Typography sx={{ p: 2 }}>Select a mic:</Typography>
-                                            <List>
-                                              { listMicsAvailable.map((choice) => (
-                                                <ListItem
-                                                  key={choice}
-                                                  onClick={() => addMicToSubtitle(l, choice)}
-                                                >
-                                                  <ListItemText primary={choice} />
-                                                </ListItem>
-                                              ))}
-                                            </List>
-                                          </div>
-                                        )
-                                    }
-                                  </Popover>
-                                }
-                            </Box>
-                            {/* Show only if it's not the last element */}
-                            {
-                              subtitlesSettings[subtitlesSettings.length - 1] !== l && (
-                                <Divider style={{ border: "1.5px solid orange", backgroundColor: "orange" }} />
-                              )
-                            }
-                          </Box>
-                        )
-                      })
-                    }
-                  </List>
-                </div>
-              </>
-            )
-          }
+                              <BsTrash color="white" />
+                            </IconButton>
+                          }
+                        >
+                          <ListItemText primary={"Text Field: " + l.name} />
+                        </ListItem>
+                        <Box display="flex" justifyContent="center" m={1} p={1}>
+                          {l.linked_mics.map((value) => (
+                            <Chip
+                              className="color-white"
+                              key={value}
+                              label={value}
+                              variant="outlined"
+                              sx={{ m: 0.5, borderColor: "#FFA500" }}
+                              icon={<MicNoneIcon className="color-orange" />}
+                              onDelete={handleMicDelete(l.uuid, value)}
+                            />
+                          ))}
+                          <Chip
+                            key="+"
+                            label="+"
+                            className="color-orange non-dragable"
+                            sx={{ m: 0.5, fontSize: "20px", borderColor: "#FFA500" }}
+                            onClick={(event) => handleClickPopover(event, l)}
+                          />
+                          {Boolean(anchorEl) && (
+                            <Popover
+                              id={l.uuid}
+                              open={Boolean(anchorEl)}
+                              anchorEl={anchorEl}
+                              onClose={handleClosePopover}
+                              anchorOrigin={{
+                                vertical: "center",
+                                horizontal: "right",
+                              }}
+                              transformOrigin={{
+                                vertical: "center",
+                                horizontal: "left",
+                              }}
+                            >
+                              {listMicsAvailable.length === 0 ? (
+                                <Typography sx={{ p: 2 }}>No mic available</Typography>
+                              ) : (
+                                <div>
+                                  <Typography sx={{ p: 2 }}>Select a mic:</Typography>
+                                  <List>
+                                    {listMicsAvailable.map((choice) => (
+                                      <ListItem key={choice} onClick={() => addMicToSubtitle(l, choice)}>
+                                        <ListItemText primary={choice} />
+                                      </ListItem>
+                                    ))}
+                                  </List>
+                                </div>
+                              )}
+                            </Popover>
+                          )}
+                        </Box>
+                        {/* Show only if it's not the last element */}
+                        {subtitlesSettings[subtitlesSettings.length - 1] !== l && (
+                          <Divider style={{ border: "1.5px solid orange", backgroundColor: "orange" }} />
+                        )}
+                      </Box>
+                    );
+                  })}
+                </List>
+              </div>
+            </>
+          )}
 
-      <Dialog className="non-dragable" open={open} onClose={handleCancel}>
-        <DialogTitle>Link Subtitle Text Field</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            Text fields are used to display subtitles on the stream. You can
-            link as many text fields as you want.
-          </DialogContentText>
+          <Dialog className="non-dragable" open={open} onClose={handleCancel}>
+            <DialogTitle>Link Subtitle Text Field</DialogTitle>
+            <DialogContent>
+              <DialogContentText>
+                Text fields are used to display subtitles on the stream. You can link as many text fields as you want.
+              </DialogContentText>
 
-          <InputLabel id="select-event-label">All text fields available</InputLabel>
-          <Select
-            labelId="select-event-label"
-            id="select-event"
-            value={newSubtitleParam}
-            onChange={(action) => setNewSubtitleParam(action.target.value as string)}
-            autoWidth
-            label="TextField"
-          >
-            {availableTextFields.map((k) => {
-              return (
-                <MenuItem key={k.uuid + k.name} value={JSON.stringify(k)}>
-                  {k.name}
-                </MenuItem>
-              );
-            })}
-          </Select>
+              <InputLabel id="select-event-label">All text fields available</InputLabel>
+              <Select
+                labelId="select-event-label"
+                id="select-event"
+                value={newSubtitleParam}
+                onChange={(action) => setNewSubtitleParam(action.target.value as string)}
+                autoWidth
+                label="TextField"
+              >
+                {availableTextFields.map((k) => {
+                  return (
+                    <MenuItem key={k.uuid + k.name} value={JSON.stringify(k)}>
+                      {k.name}
+                    </MenuItem>
+                  );
+                })}
+              </Select>
 
-          <InputLabel id="select-event-label">All mics available</InputLabel>
-          <Select
-            labelId="select-mics-label"
-            id="select-mics"
-            multiple
-            value={newMicsListParam}
-            onChange={handleChangeChipSelect}
-            autoWidth
-            input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
-            renderValue={(selected) => (
-              <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                {selected.map((value) => (
-                  <Chip key={value} label={value} />
+              <InputLabel id="select-event-label">All mics available</InputLabel>
+              <Select
+                labelId="select-mics-label"
+                id="select-mics"
+                multiple
+                value={newMicsListParam}
+                onChange={handleChangeChipSelect}
+                autoWidth
+                input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
+                renderValue={(selected) => (
+                  <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
+                    {selected.map((value) => (
+                      <Chip key={value} label={value} />
+                    ))}
+                  </Box>
+                )}
+                MenuProps={MenuProps}
+              >
+                {micList.map((mic) => (
+                  <MenuItem key={mic} value={mic} style={getStyles(mic, newMicsListParam, theme)}>
+                    {mic}
+                  </MenuItem>
                 ))}
-              </Box>
-            )}
-            MenuProps={MenuProps}
-          >
-            {
-              micList.map((mic) => (
-                <MenuItem
-                  key={mic}
-                  value={mic}
-                  style={getStyles(mic, newMicsListParam, theme)}
-                >
-                  {mic}
-                </MenuItem>
-              ))
-            }
-          </Select>
+              </Select>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleCancel}>Cancel</Button>
+              <Button onClick={handleSave}>Save</Button>
+            </DialogActions>
+          </Dialog>
 
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleCancel}>Cancel</Button>
-          <Button onClick={handleSave}>Save</Button>
-        </DialogActions>
-      </Dialog>
-
-        <div className="add_button_pos">
-          <Button
-            variant="contained"
-            className="add_button"
-            onClick={handleClickOpen}
-          >
-            Link subtitle text field
-          </Button>
-        </div>
-      </>
+          <div className="add_button_pos">
+            <Button variant="contained" className="add_button" onClick={handleClickOpen}>
+              Link subtitle text field
+            </Button>
+          </div>
+        </>
       )}
     </>
   );
-}
+};
 
 export default Subtitles;

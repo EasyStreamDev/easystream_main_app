@@ -1,5 +1,5 @@
 // Importing necessary modules and components
-import './AddAppLaunch.css'
+import "./AddAppLaunch.css";
 import { Box } from "@mui/system";
 import React from "react";
 import { IoIosAddCircleOutline } from "react-icons/io";
@@ -11,14 +11,14 @@ import { toast } from "react-toastify";
 // CSS styles for the Box component
 const boxStyles: CSS.Properties = {
   border: "solid",
-  borderColor: "#FD7014",
+  borderColor: "orange",
   borderWidth: "50",
   paddingLeft: "20vw",
   paddingRight: "20vw",
   paddingTop: "2vh",
   paddingBottom: "2vh",
   backgroundColor: "#222831",
-  borderRadius: "15px",
+  borderRadius: "10px",
   alignItems: "center",
   cursor: "pointer",
 };
@@ -46,8 +46,8 @@ interface event {
 
 /**
  * Component for adding a new App Launch event
- * @param props 
- * @returns 
+ * @param props
+ * @returns
  */
 export const AddAppLaunch = (props: any) => {
   const [open, setOpen] = React.useState(false); // State for managing modal open/close
@@ -55,13 +55,13 @@ export const AddAppLaunch = (props: any) => {
 
   /**
    * Function to handle opening the modal
-   * @returns 
+   * @returns
    */
   const handleOpen = () => setOpen(true);
 
   /**
    * Function to handle closing the modal
-   * @returns 
+   * @returns
    */
   const handleClose = () => setOpen(false);
 
@@ -74,7 +74,7 @@ export const AddAppLaunch = (props: any) => {
       handleClose();
     } else {
       toast("Please insert at least one source.", {
-        type: "error"
+        type: "error",
       });
     }
   };
@@ -89,26 +89,26 @@ export const AddAppLaunch = (props: any) => {
 
   /**
    * Function to handle input change
-   * @param e 
-   * @returns 
+   * @param e
+   * @returns
    */
   const handleChange = (e: any) => {
     if (e.key === "Enter" && e.currentTarget.value !== "") {
-      let cpy = {...props.newEvent};
-      cpy.keywords[0] = (e.currentTarget.value);
+      let cpy = { ...props.newEvent };
+      cpy.keywords[0] = e.currentTarget.value;
       e.currentTarget.value = "";
       props.setnewEvent(cpy);
-      return
+      return;
     }
   };
 
   /**
    * Function to add a source
-   * @param event 
+   * @param event
    */
   const addSource = (event: SelectChangeEvent) => {
-    let cpy = {...props.newEvent};
-    cpy.source = props.sources.find((elem: any) => elem.name === event.target.value)
+    let cpy = { ...props.newEvent };
+    cpy.source = props.sources.find((elem: any) => elem.name === event.target.value);
     props.setnewEvent(cpy);
   };
 

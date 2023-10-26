@@ -5,8 +5,7 @@ import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import { BsMic, BsMicMute } from "react-icons/bs";
 
-const MicroBoxShadow =
-  "0 5px 1px rgba(0,0,0,0.1),0 4px 8px rgba(0,0,0,0.13),0 0 0 1px rgba(0,0,0,0.02)";
+const MicroBoxShadow = "0 5px 1px rgba(0,0,0,0.1),0 4px 8px rgba(0,0,0,0.13),0 0 0 1px rgba(0,0,0,0.02)";
 
 const marks = [
   {
@@ -36,7 +35,7 @@ const marks = [
 ];
 
 const MicroSlider = styled(Slider)(({ theme }) => ({
-  color: theme.palette.mode === "dark" ? "#FD7014" : "#FD7014",
+  color: theme.palette.mode === "dark" ? "orange" : "orange",
   height: 2,
   padding: "15px 0",
   "& .MuiSlider-thumb": {
@@ -45,8 +44,7 @@ const MicroSlider = styled(Slider)(({ theme }) => ({
     backgroundColor: "#eeeeee",
     boxShadow: MicroBoxShadow,
     "&:focus, &:hover, &.Mui-active": {
-      boxShadow:
-        "0 3px 1px rgba(0,0,0,0.1),0 4px 8px rgba(0,0,0,0.3),0 0 0 1px rgba(0,0,0,0.02)",
+      boxShadow: "0 3px 1px rgba(0,0,0,0.1),0 4px 8px rgba(0,0,0,0.3),0 0 0 1px rgba(0,0,0,0.02)",
       "@media (hover: none)": {
         boxShadow: MicroBoxShadow,
       },
@@ -120,11 +118,7 @@ const CustomizedSlider = (props: any) => {
             valueLabelDisplay="on"
           />
         </Box>
-        <Box
-          sx={{ marginTop: "-20px"}}
-          onClick={handleMicToggle}
-          style={{ color: props.isActive ? "green" : "red" }}
-        >
+        <Box sx={{ marginTop: "-20px" }} onClick={handleMicToggle} style={{ color: props.isActive ? "green" : "red" }}>
           {props.isActive ? <BsMic /> : <BsMicMute />}
         </Box>
       </Box>

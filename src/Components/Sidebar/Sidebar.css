@@ -12,16 +12,16 @@
 .easystream-title {
   margin-top: 3.35rem;
   margin-left: 2rem;
-  color: #EEEEEE;
+  color: #eeeeee;
   font-size: 1.9rem;
 }
 
 .path {
   margin-top: 3.35rem;
   margin-left: 6rem;
-  color: #EEEEEE;
+  color: #eeeeee;
   font-size: 1.9rem;
-  border-bottom: 2px solid #FFF;
+  border-bottom: 2px solid #fff;
   padding-bottom: 6px;
   font-size: 2.9vh;
 }
@@ -33,7 +33,7 @@
   background: none;
 }
 .nav-menu {
-  background-color: #18191F;
+  background-color: #18191f;
   width: 25vw;
   max-width: 300px;
   height: 100vh;
@@ -53,10 +53,10 @@
 
 @media (max-width: 10px) {
   .nav-menu.hidden {
-      margin-left: -200px;
-  } 
+    margin-left: -200px;
+  }
   .nav-menu.active {
-      left: 0;
+    left: 0;
   }
 }
 
@@ -80,7 +80,7 @@
   border-radius: 4px;
 }
 .nav-text a:hover {
-  background-color: #fd7014;
+  background-color: orange;
   color: #eee;
 }
 .nav-menu-items {
@@ -89,7 +89,7 @@
   width: 100%;
 }
 .navbar-toggle {
-  background-color: #18191F;
+  background-color: #18191f;
   width: 20%;
   height: 80px;
   display: flex;

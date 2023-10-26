@@ -36,6 +36,7 @@ export default function OutlinedCard(props: any) {
         sx={{
           backgroundColor: "#565d68",
           border: "3px solid orange",
+          borderRadius: "10px",
           height: "100%",
           display: "flex",
           alignItems: "center",

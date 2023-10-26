@@ -6,18 +6,20 @@ import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
+import { IconButton, Tooltip } from "@mui/material";
 import {
-  IconButton, Tooltip
-} from "@mui/material";
-import { BsTrash, BsArrowLeft, BsArrowRight, BsMic, BsRocketTakeoff, BsKeyboard, BsBug, BsFillExclamationTriangleFill } from "react-icons/bs";
-import { BsArrowReturnLeft } from "react-icons/bs"
+  BsTrash,
+  BsArrowLeft,
+  BsArrowRight,
+  BsMic,
+  BsRocketTakeoff,
+  BsKeyboard,
+  BsBug,
+  BsFillExclamationTriangleFill,
+} from "react-icons/bs";
+import { BsArrowReturnLeft } from "react-icons/bs";
 import { Link } from "react-router-dom";
-import {
-  AllScenes,
-  Scene,
-  getActReactCouplesFormat,
-  removeActReactAnswer,
-} from "../../Socket/interfaces";
+import { AllScenes, Scene, getActReactCouplesFormat, removeActReactAnswer } from "../../Socket/interfaces";
 import { toast } from "react-toastify";
 const ipcRenderer = window.require("electron").ipcRenderer;
 
@@ -51,9 +53,7 @@ export interface action_reaction_identified {
 }
 
 export const ActionsReactions = () => {
-  const [actionsReactionsList, setActionsReactionsList] = React.useState<
-    action_reaction_identified[]
-  >([]);
+  const [actionsReactionsList, setActionsReactionsList] = React.useState<action_reaction_identified[]>([]);
   const [availableScenes, setAvailableScenes] = React.useState<Scene[]>([]);
 
   // Loading
@@ -78,10 +78,7 @@ export const ActionsReactions = () => {
    */
   const getActionReactionFromServer = (): Promise<getActReactCouplesFormat> => {
     return new Promise(async (resolve, reject) => {
-      const result: getActReactCouplesFormat = await ipcRenderer.sendSync(
-        "getActReactCouples",
-        "ping"
-      );
+      const result: getActReactCouplesFormat = await ipcRenderer.sendSync("getActReactCouples", "ping");
       resolve(result);
     });
   };
@@ -91,14 +88,11 @@ export const ActionsReactions = () => {
    * @param actionReactionId
    * @returns
    */
-  const removeActionReactionFromServer = (
-    actionReactionId: number
-  ): Promise<removeActReactAnswer> => {
+  const removeActionReactionFromServer = (actionReactionId: number): Promise<removeActReactAnswer> => {
     return new Promise(async (resolve, reject) => {
-      const result: removeActReactAnswer = await ipcRenderer.sendSync(
-        "removeActReact",
-        { actReactId: actionReactionId }
-      );
+      const result: removeActReactAnswer = await ipcRenderer.sendSync("removeActReact", {
+        actReactId: actionReactionId,
+      });
       resolve(result);
     });
   };
@@ -154,9 +148,9 @@ export const ActionsReactions = () => {
         }
       });
     };
-    
-    ipcRenderer.on('actions-reactions-updated', handleActionReactionUpdated);
-    ipcRenderer.on('scenes-updated', handleScenesUpdated);
+
+    ipcRenderer.on("actions-reactions-updated", handleActionReactionUpdated);
+    ipcRenderer.on("scenes-updated", handleScenesUpdated);
 
     async function sleep(): Promise<boolean> {
       return new Promise((resolve) => {
@@ -168,7 +162,7 @@ export const ActionsReactions = () => {
             getAllScenes().then((res) => {
               if (res.statusCode === 200) {
                 setAvailableScenes(res.data.scenes);
-                console.log("Scenes", res)
+                console.log("Scenes", res);
                 resolve(true);
               } else {
                 toast("Error loading available scenes.", {
@@ -177,7 +171,6 @@ export const ActionsReactions = () => {
                 resolve(false);
               }
             });
-
           } else {
             toast("Error listing all actions reactions. Verify the internet connection", {
               type: "error",
@@ -191,8 +184,8 @@ export const ActionsReactions = () => {
     sleep().then((res) => setload(!res));
 
     return () => {
-      ipcRenderer.removeListener('actions-reactions-updated', handleActionReactionUpdated);
-      ipcRenderer.removeListener('scenes-updated', handleScenesUpdated);
+      ipcRenderer.removeListener("actions-reactions-updated", handleActionReactionUpdated);
+      ipcRenderer.removeListener("scenes-updated", handleScenesUpdated);
     };
   }, []);
 
@@ -216,12 +209,24 @@ export const ActionsReactions = () => {
   const interpret_action = (type: ActionType, params: any) => {
     if (type === "WORD_DETECT") {
       let words = params.words.join(" or ");
-      return <>If you say <b>{words}</b></>;
+      return (
+        <>
+          If you say <b>{words}</b>
+        </>
+      );
     } else if (type === "APP_LAUNCH") {
-      return <>If the application <b>{params.app_name}</b> launches</>;
+      return (
+        <>
+          If the application <b>{params.app_name}</b> launches
+        </>
+      );
     } else if (type === "KEY_PRESSED") {
       let key = params.key;
-      return <>If you type the key <b>{key}</b></>;
+      return (
+        <>
+          If you type the key <b>{key}</b>
+        </>
+      );
     } else {
       return "ERROR";
     }
@@ -251,19 +256,19 @@ export const ActionsReactions = () => {
    */
   const get_action_icon = (type: ActionType) => {
     if (type === "WORD_DETECT") {
-      return <BsMic/>;
+      return <BsMic />;
     } else if (type === "APP_LAUNCH") {
-      return <BsRocketTakeoff/>;
+      return <BsRocketTakeoff />;
     } else if (type === "KEY_PRESSED") {
-      return <BsKeyboard/>;
+      return <BsKeyboard />;
     } else {
-      return <BsBug/>;
+      return <BsBug />;
     }
   };
 
   /**
    * Get All Scenes
-   * @returns 
+   * @returns
    */
   const getAllScenes = (): Promise<AllScenes> => {
     return new Promise(async (resolve, reject) => {
@@ -274,15 +279,15 @@ export const ActionsReactions = () => {
 
   /**
    * Function to know if a scene not available
-   * @param item 
-   * @returns 
+   * @param item
+   * @returns
    */
   const warningMessageDisplaySceneMissing = (item: action_reaction_identified) => {
     // check if SCENE_SWITCH
     if (item.reaction.type === ReactionType.SCENE_SWITCH) {
-      console.log("item", item)
+      console.log("item", item);
       // check if uuid is in available scenes
-      let tmp = true
+      let tmp = true;
       availableScenes.forEach((element) => {
         if (item.reaction.params && item.reaction.params.uuid) {
           if (element.uuid === item.reaction.params.uuid) {
@@ -294,7 +299,7 @@ export const ActionsReactions = () => {
     } else {
       return false;
     }
-  }
+  };
 
   return (
     <>
@@ -318,67 +323,58 @@ export const ActionsReactions = () => {
                 <div className="item-container action-reaction-cards non-dragable">
                   {actionsReactionsList.map((item: any, index: any) => {
                     return (
-                      <Card key={index} className="card-event non-dragable" sx={{
-                        backgroundColor: "#565d68",
-                        border: "3px solid orange",
-                        borderRadius: "10px",
-                        color: "white",
-                        height: "100%",
-                        display: "inline-table",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        width: "85%"
-                      }}>
+                      <Card
+                        key={index}
+                        className="card-event non-dragable"
+                        sx={{
+                          backgroundColor: "#565d68",
+                          border: "3px solid orange",
+                          borderRadius: "10px",
+                          color: "white",
+                          height: "100%",
+                          display: "inline-table",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          width: "85%",
+                        }}
+                      >
                         <CardContent>
-                        <Typography sx={{ fontSize: 14 }} gutterBottom>
-                          # {index + 1}
-                        </Typography>
+                          <Typography sx={{ fontSize: 14 }} gutterBottom>
+                            # {index + 1}
+                          </Typography>
                           <Typography variant="h4" component="div">
                             <div className="top-card">
-                              <div className="icon-card">
-                                {get_action_icon(item.action.type)}
-                              </div>
-                              <div>
-                                {get_action_type(item.action.type)}
-                              </div>
+                              <div className="icon-card">{get_action_icon(item.action.type)}</div>
+                              <div>{get_action_type(item.action.type)}</div>
                             </div>
                           </Typography>
                           <Typography variant="body1">
-                            {interpret_action(
-                              item.action.type,
-                              item.action.params
-                            )}
+                            {interpret_action(item.action.type, item.action.params)}
                             <br></br>
                             Then, <b>{item.reaction.name}</b>
                           </Typography>
                         </CardContent>
                         <CardActions disableSpacing className="rightAlignItem">
-                          {
-                            warningMessageDisplaySceneMissing(item) === true ? (
-                              <Tooltip title="The scene that is registered in the reaction of this Action/Reaction isn't available anymore. Please delete this Action/Reaction.">
-                                <IconButton
-                                    color="error"
-                                    aria-label="warning"
-                                  >
-                                    <BsFillExclamationTriangleFill />
-                                </IconButton>
-                              </Tooltip>
-                              
-                            ) : (<div></div>)
-                          }
+                          {warningMessageDisplaySceneMissing(item) === true ? (
+                            <Tooltip title="The scene that is registered in the reaction of this Action/Reaction isn't available anymore. Please delete this Action/Reaction.">
+                              <IconButton color="error" aria-label="warning">
+                                <BsFillExclamationTriangleFill />
+                              </IconButton>
+                            </Tooltip>
+                          ) : (
+                            <div></div>
+                          )}
                           <IconButton
-                            onClick={() =>
-                              removeActionReaction(item.actReactId)
-                            }
+                            onClick={() => removeActionReaction(item.actReactId)}
                             aria-label="delete"
                             sx={{
                               ":hover": {
-                                backgroundColor: "transparent",                                
+                                backgroundColor: "transparent",
                                 transform: "scale(1.2)",
                               },
                             }}
                           >
-                            <BsTrash color="coral"/>
+                            <BsTrash color="white" />
                           </IconButton>
                         </CardActions>
                       </Card>

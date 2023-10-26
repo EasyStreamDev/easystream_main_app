@@ -1,25 +1,23 @@
 import { Box } from "@mui/system";
 import React from "react";
-import {
-  IoIosAddCircleOutline,
-} from "react-icons/io";
+import { IoIosAddCircleOutline } from "react-icons/io";
 import CSS from "csstype";
-import { KeyPressedModal } from "./KeyPressedModal/KeyPressedModal"
+import { KeyPressedModal } from "./KeyPressedModal/KeyPressedModal";
 import { SelectChangeEvent } from "@mui/material/Select";
 import { toast } from "react-toastify";
-import './AddNewKeyPressed.css'
+import "./AddNewKeyPressed.css";
 
 // CSS styles for the box component
 const boxStyles: CSS.Properties = {
   border: "solid",
-  borderColor: "#FD7014",
+  borderColor: "orange",
   borderWidth: "50",
   paddingLeft: "20vw",
   paddingRight: "20vw",
   paddingTop: "2vh",
   paddingBottom: "2vh",
   backgroundColor: "#222831",
-  borderRadius: "15px",
+  borderRadius: "10px",
   alignItems: "center",
   cursor: "pointer",
 };
@@ -47,22 +45,22 @@ interface event {
 
 /**
  * Component that adds a new key pressed event
- * @param props 
- * @returns 
+ * @param props
+ * @returns
  */
 export const AddNewKeyPressed = (props: any) => {
   const [open, setOpen] = React.useState(false);
   const [sources, setsources] = React.useState("");
-  
+
   /**
    * Function to handle opening the modal
-   * @returns 
+   * @returns
    */
   const handleOpen = () => setOpen(true);
-  
+
   /**
    * Function to handle closing the modal
-   * @returns 
+   * @returns
    */
   const handleClose = () => setOpen(false);
 
@@ -75,7 +73,7 @@ export const AddNewKeyPressed = (props: any) => {
       handleClose();
     } else {
       toast("Please insert at least one source.", {
-        type: "error"
+        type: "error",
       });
     }
   };
@@ -90,20 +88,20 @@ export const AddNewKeyPressed = (props: any) => {
 
   /**
    * Function to handle the change event of the key input
-   * @param e 
+   * @param e
    */
   const handleChange = (e: any) => {
-    props.newEvent.key = e
+    props.newEvent.key = e;
   };
 
   /**
    * Function to add a source to the new event
-   * @param event 
+   * @param event
    */
   const addSource = (event: SelectChangeEvent) => {
-    let cpy = {...props.newEvent};
-  
-    cpy.source = props.sources.find((elem: any) => elem.name === event.target.value)
+    let cpy = { ...props.newEvent };
+
+    cpy.source = props.sources.find((elem: any) => elem.name === event.target.value);
     props.setnewEvent(cpy);
   };
 
@@ -124,7 +122,6 @@ export const AddNewKeyPressed = (props: any) => {
         closeWithoutSave={closeWithoutSave}
         handleChange={handleChange}
         addSource={addSource}
-
         sources={props.sources}
         newEvent={props.newEvent}
         setnewEvent={props.setnewEvent}
