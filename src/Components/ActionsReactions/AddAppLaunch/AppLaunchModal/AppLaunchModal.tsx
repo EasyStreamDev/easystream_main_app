@@ -1,24 +1,12 @@
-import "./AppLaunchModal.css";
-import React, { useState } from "react";
+import { FormControl, InputLabel, MenuItem } from "@mui/material";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
-import { BsTrash } from "react-icons/bs";
-import { Divider, FormControl, InputLabel, MenuItem, withStyles } from "@mui/material";
-import { AiOutlineMinus } from "react-icons/ai";
-import CSS from "csstype";
-import { SxProps } from "@mui/system";
-import { BorderColorRounded } from "@material-ui/icons";
+import Typography from "@mui/material/Typography";
+import "./AppLaunchModal.css";
 // import { makeStyles } from "@mui/styles";
-import { MuiThemeProvider, createTheme } from "@material-ui/core/styles";
 import Select from "@material-ui/core/Select";
-import { makeStyles } from "@material-ui/core/styles";
-import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
-import DialogTitle from "@material-ui/core/DialogTitle";
+import { createTheme, makeStyles } from "@material-ui/core/styles";
 
 // Create a theme for the UnFocus mode
 const themeUnFocus = createTheme({

@@ -11,21 +11,21 @@ export const CreateActions = () => {
 
       {/* Link to the "Word Detection" page */}
       <Link className="m-6" to="/actions-reactions/word-detection">
-        <Button variant="contained" size="large" startIcon={<BsFonts />} color="warning">
+        <Button className="action-button-orange" variant="contained" size="large" startIcon={<BsFonts />}>
           Word Detection
         </Button>
       </Link>
 
       {/* Link to the "Key Pressed" page */}
       <Link className="m-6" to="/actions-reactions/key-pressed">
-        <Button variant="contained" size="large" startIcon={<BsKeyboard />} color="warning">
+        <Button className="action-button-orange" variant="contained" size="large" startIcon={<BsKeyboard />}>
           Key Pressed
         </Button>
       </Link>
 
       {/* Link to the "App Launch" page */}
       <Link className="m-6" to="/actions-reactions/app-launch">
-        <Button variant="contained" size="large" startIcon={<BsRocketTakeoff />} color="warning">
+        <Button className="action-button-orange" variant="contained" size="large" startIcon={<BsRocketTakeoff />}>
           App Launch
         </Button>
       </Link>

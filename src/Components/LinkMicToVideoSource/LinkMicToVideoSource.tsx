@@ -1,15 +1,5 @@
-import React, { useEffect } from "react";
-import {
-  AllDisplaySourcesResult,
-  AllDisplaySources,
-  DisplaySource,
-  AllLinksMicsToVideoSourceResult,
-  AllLinksMicsToVideoSource,
-  resultFormat,
-  linkMicsToVideoSource,
-  Mic,
-  AllMics,
-} from "../../Socket/interfaces";
+import MicNoneIcon from "@material-ui/icons/MicNone";
+import OndemandVideoIcon from "@material-ui/icons/OndemandVideo";
 import {
   Box,
   Button,
@@ -19,25 +9,31 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
+  Divider,
   IconButton,
+  InputLabel,
   List,
   ListItem,
   ListItemText,
+  MenuItem,
   OutlinedInput,
   Popover,
-  Switch,
-  TextField,
   Typography,
-  InputLabel,
-  MenuItem,
-  Divider,
 } from "@mui/material";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
-import { toast } from "react-toastify";
-import { Theme, useTheme } from "@mui/material/styles";
+import React, { useEffect } from "react";
 import { BsTrash } from "react-icons/bs";
-import MicNoneIcon from "@material-ui/icons/MicNone";
-import OndemandVideoIcon from "@material-ui/icons/OndemandVideo";
+import { toast } from "react-toastify";
+import {
+  AllDisplaySources,
+  AllDisplaySourcesResult,
+  AllLinksMicsToVideoSourceResult,
+  AllMics,
+  DisplaySource,
+  Mic,
+  linkMicsToVideoSource,
+  resultFormat,
+} from "../../Socket/interfaces";
 import "./LinkMicToVideoSource.css";
 const ipcRenderer = window.require("electron").ipcRenderer;
 
@@ -54,8 +50,6 @@ const MenuProps = {
 
 // LinkMicToVideoSource component
 export const LinkMicToVideoSource = (props: any) => {
-  const theme = useTheme();
-
   const [allMics, setAllMics] = React.useState<Mic[]>([]);
   const [allDisplaySources, setAllDisplaySources] = React.useState<DisplaySource[]>([]);
   // TODO To use
@@ -150,13 +144,6 @@ export const LinkMicToVideoSource = (props: any) => {
     // Close the dialog
     setOpen(false);
   };
-
-  function getStyles(name: string, personName: readonly string[], theme: Theme) {
-    return {
-      fontWeight:
-        personName.indexOf(name) === -1 ? theme.typography.fontWeightRegular : theme.typography.fontWeightMedium,
-    };
-  }
 
   const getAllMics = (): Promise<Mic[]> => {
     return new Promise(async (resolve, reject) => {
@@ -474,11 +461,7 @@ export const LinkMicToVideoSource = (props: any) => {
                 MenuProps={MenuProps}
               >
                 {allMics.map((mic) => (
-                  <MenuItem
-                    key={mic.micName}
-                    value={mic.micName}
-                    style={getStyles(mic.micName, newMicsListParam, theme)}
-                  >
+                  <MenuItem key={mic.micName} value={mic.micName} style={{ fontWeight: 300 }}>
                     {mic.micName}
                   </MenuItem>
                 ))}

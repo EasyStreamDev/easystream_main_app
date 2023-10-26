@@ -33,7 +33,7 @@ import {
 import { toast } from "react-toastify";
 import { BsTrash } from "react-icons/bs";
 import "./Subtitles.css";
-import { Theme, useTheme } from "@mui/material/styles";
+import { Theme } from "@mui/material/styles";
 import MicNoneIcon from "@material-ui/icons/MicNone";
 const ipcRenderer = window.require("electron").ipcRenderer;
 
@@ -49,8 +49,6 @@ const MenuProps = {
 };
 
 export const Subtitles = () => {
-  const theme = useTheme();
-
   // Dialog
   const [open, setOpen] = React.useState(false);
   const [newSubtitleParam, setNewSubtitleParam] = React.useState("");
@@ -76,13 +74,6 @@ export const Subtitles = () => {
   const [subtitlesSettings, setSubtitlesSettings] = React.useState<TextFieldSimple[]>([]);
   const [availableTextFields, setAvailableTextFields] = React.useState<TextFieldDetailed[]>([]);
   const [micList, setMicList] = React.useState<string[]>([]);
-
-  function getStyles(name: string, personName: readonly string[], theme: Theme) {
-    return {
-      fontWeight:
-        personName.indexOf(name) === -1 ? theme.typography.fontWeightRegular : theme.typography.fontWeightMedium,
-    };
-  }
 
   const getAllCompressors = (): Promise<AllMics> => {
     return new Promise(async (resolve, reject) => {
@@ -592,7 +583,7 @@ export const Subtitles = () => {
                 MenuProps={MenuProps}
               >
                 {micList.map((mic) => (
-                  <MenuItem key={mic} value={mic} style={getStyles(mic, newMicsListParam, theme)}>
+                  <MenuItem key={mic} value={mic} style={{ fontWeight: 500 }}>
                     {mic}
                   </MenuItem>
                 ))}

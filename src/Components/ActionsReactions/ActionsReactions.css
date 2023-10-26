@@ -1,87 +1,92 @@
 @import "../../index.css";
 
 body {
-    margin: 0
+  margin: 0;
+}
+
+.button-color-orange {
+  border: 1px solid orange !important;
+  color: white !important;
 }
 
 .actions-reactions-list {
-    max-height: 430px;
-    width: 100%;
+  max-height: 430px;
+  width: 100%;
 }
 
 .events-container {
-    text-align: center;
-    width: 100%;
-    align-items: center;
-    justify-content: center;
-    display: grid;
-    height: 60%;
+  text-align: center;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  display: grid;
+  height: 60%;
 }
 
 .compressor-container {
-    text-align: center;
-    width: 85%;
-    align-items: center;
-    display: grid;
+  text-align: center;
+  width: 85%;
+  align-items: center;
+  display: grid;
 }
 
 .card-event {
-    background-color: black;
-    border-color: grey;
-    min-width: 150;
-    min-height: 100;
-    margin: 10px;
+  background-color: black;
+  border-color: grey;
+  min-width: 150;
+  min-height: 100;
+  margin: 10px;
 }
 
 .item-container {
-    overflow:scroll;
-    overflow-y:scroll;
-    overflow-x:hidden;
-    max-height: 65vh;
-    min-height: 65vh;
-    width: 48vw;
-    max-width: 520px;
+  overflow: scroll;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  max-height: 65vh;
+  min-height: 65vh;
+  width: 48vw;
+  max-width: 520px;
 }
 
 .action-reaction-cards {
-    min-width: 300px;
+  min-width: 300px;
 }
 
 .create_actions_button_pos {
-    top: 20%;
-    left: 10%;
-    width: 10%;
-    position: absolute;
+  top: 20%;
+  left: 10%;
+  width: 10%;
+  position: absolute;
 }
 
 .create_reactions_button_pos {
-    top: 20%;
-    right: 10%;
-    width: 10%;
-    position: absolute;
+  top: 20%;
+  right: 10%;
+  width: 10%;
+  position: absolute;
 }
 
 .add_button {
-    font-size: 25px !important;
+  font-size: 25px !important;
 }
 
 .rightAlignItem {
-    justify-content: flex-end;
+  justify-content: flex-end;
 }
 
-.MuiCardActions-root{
-    padding: 0 !important;
+.MuiCardActions-root {
+  padding: 0 !important;
 }
 
 .form-item {
-    padding: 10px;
+  padding: 10px;
 }
 
 .icon-card {
-    padding-right: 5px;
+  padding-right: 5px;
 }
 
 .top-card {
-    display: flex;
-    justify-content: center;
+  display: flex;
+  justify-content: center;
 }

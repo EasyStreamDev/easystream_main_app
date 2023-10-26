@@ -31,7 +31,7 @@ TextStylesModal {
 }
 
 SelectStylesModal {
-  color: red;
+  color: "orange";
 }
 
 /* hover typography-item */

@@ -1,26 +1,24 @@
 import React, { useEffect } from "react";
 import "./ActionsReactions.css";
 
+import { Button, IconButton, Tooltip } from "@mui/material";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
-import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import { IconButton, Tooltip } from "@mui/material";
 import {
-  BsTrash,
   BsArrowLeft,
   BsArrowRight,
-  BsMic,
-  BsRocketTakeoff,
-  BsKeyboard,
   BsBug,
   BsFillExclamationTriangleFill,
+  BsKeyboard,
+  BsMic,
+  BsRocketTakeoff,
+  BsTrash,
 } from "react-icons/bs";
-import { BsArrowReturnLeft } from "react-icons/bs";
 import { Link } from "react-router-dom";
-import { AllScenes, Scene, getActReactCouplesFormat, removeActReactAnswer } from "../../Socket/interfaces";
 import { toast } from "react-toastify";
+import { AllScenes, Scene, getActReactCouplesFormat, removeActReactAnswer } from "../../Socket/interfaces";
 const ipcRenderer = window.require("electron").ipcRenderer;
 
 export enum ReactionType {
@@ -357,7 +355,13 @@ export const ActionsReactions = () => {
                         <CardActions disableSpacing className="rightAlignItem">
                           {warningMessageDisplaySceneMissing(item) === true ? (
                             <Tooltip title="The scene that is registered in the reaction of this Action/Reaction isn't available anymore. Please delete this Action/Reaction.">
-                              <IconButton color="error" aria-label="warning">
+                              <IconButton
+                                // style={{
+                                //   color: "orange !important",
+                                // }}
+                                color="error"
+                                aria-label="warning"
+                              >
                                 <BsFillExclamationTriangleFill />
                               </IconButton>
                             </Tooltip>
@@ -387,7 +391,7 @@ export const ActionsReactions = () => {
 
           <div className="create_actions_button_pos">
             <Link className="m-2" to="/actions-reactions/actions">
-              <Button variant="outlined" startIcon={<BsArrowLeft />} color="warning">
+              <Button className="button-color-orange" variant="outlined" startIcon={<BsArrowLeft />}>
                 Create Actions
               </Button>
             </Link>
@@ -395,7 +399,7 @@ export const ActionsReactions = () => {
 
           <div className="create_reactions_button_pos">
             <Link className="m-2" to="/actions-reactions/reactions">
-              <Button variant="outlined" endIcon={<BsArrowRight />} color="warning">
+              <Button className="button-color-orange" variant="outlined" endIcon={<BsArrowRight />}>
                 Create Reactions
               </Button>
             </Link>

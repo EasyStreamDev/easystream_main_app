@@ -1,5 +1,9 @@
 @import "../../../index.css";
 
 .go-back-link {
-    padding-top: 80px;
+  padding-top: 80px;
+}
+
+.action-button-orange {
+  background-color: orange !important;
 }

@@ -1,9 +1,8 @@
-import React from "react";
-import Slider from "@mui/material/Slider";
-import { styled } from "@mui/material/styles";
-import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
+import Slider from "@mui/material/Slider";
+import Typography from "@mui/material/Typography";
 import { BsMic, BsMicMute } from "react-icons/bs";
+import { styled } from "@mui/material/styles";
 
 const MicroBoxShadow = "0 5px 1px rgba(0,0,0,0.1),0 4px 8px rgba(0,0,0,0.13),0 0 0 1px rgba(0,0,0,0.02)";
 
@@ -34,8 +33,8 @@ const marks = [
   },
 ];
 
-const MicroSlider = styled(Slider)(({ theme }) => ({
-  color: theme.palette.mode === "dark" ? "orange" : "orange",
+const MicroSlider = styled(Slider)(() => ({
+  color: "orange",
   height: 2,
   padding: "15px 0",
   "& .MuiSlider-thumb": {
@@ -55,16 +54,17 @@ const MicroSlider = styled(Slider)(({ theme }) => ({
     fontWeight: "normal",
     top: -6,
     backgroundColor: "unset",
-    color: theme.palette.text.primary,
+    color: "white",
     "&:before": {
       display: "none",
     },
     "& *": {
       background: "transparent",
-      color: theme.palette.mode === "dark" ? "#eeeeee" : "#eeeeee",
+      color: "#eeeeee",
     },
   },
   "& .MuiSlider-track": {
+    color: "orange",
     border: "none",
   },
   "& .MuiSlider-rail": {
@@ -72,11 +72,12 @@ const MicroSlider = styled(Slider)(({ theme }) => ({
     backgroundColor: "#bfbfbf",
   },
   "& .MuiSlider-mark": {
-    backgroundColor: "#bfbfbf",
+    backgroundColor: "orange",
     height: 8,
     width: 1,
     "&.MuiSlider-markActive": {
       opacity: 1,
+      color: "orange",
       backgroundColor: "currentColor",
     },
   },
@@ -110,7 +111,7 @@ const CustomizedSlider = (props: any) => {
       >
         <Box sx={{ width: "65vw" }}>
           <MicroSlider
-            key={`slider-compressor}`}
+            key={`slider-compressor`}
             onChangeCommitted={handleSliderChange}
             aria-label="Micro"
             value={props.value ?? 0}
@@ -118,7 +119,11 @@ const CustomizedSlider = (props: any) => {
             valueLabelDisplay="on"
           />
         </Box>
-        <Box sx={{ marginTop: "-20px" }} onClick={handleMicToggle} style={{ color: props.isActive ? "green" : "red" }}>
+        <Box
+          sx={{ marginTop: "-20px" }}
+          onClick={handleMicToggle}
+          style={{ color: props.isActive ? "green" : "orange" }}
+        >
           {props.isActive ? <BsMic /> : <BsMicMute />}
         </Box>
       </Box>

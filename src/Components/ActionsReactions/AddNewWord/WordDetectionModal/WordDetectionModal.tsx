@@ -1,20 +1,14 @@
 // Importing necessary dependencies and styles
-import "./WordDetectionModal.css";
-import React from "react";
+import { FormControl, InputLabel, MenuItem } from "@mui/material";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
+import Typography from "@mui/material/Typography";
 import { BsTrash } from "react-icons/bs";
-import { Divider, FormControl, InputLabel, MenuItem, withStyles } from "@mui/material";
-import { AiOutlineMinus } from "react-icons/ai";
-import CSS from "csstype";
-import { SxProps } from "@mui/system";
-import { BorderColorRounded } from "@material-ui/icons";
+import "./WordDetectionModal.css";
 // import { makeStyles } from "@mui/styles";
-import { MuiThemeProvider, createTheme } from "@material-ui/core/styles";
 import Select from "@material-ui/core/Select";
-import { makeStyles } from "@material-ui/core/styles";
+import { createTheme, makeStyles } from "@material-ui/core/styles";
 
 /**
  * Creating a custom theme

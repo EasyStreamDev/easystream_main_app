@@ -3,7 +3,7 @@ import { makeStyles } from "@mui/styles";
 import { inputLabelClasses } from "@mui/material/InputLabel";
 import { useRef, useState, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import './login.css'
+import "./login.css";
 
 import React from "react";
 import axios from "../../api/axios";
@@ -99,7 +99,7 @@ export const Login = () => {
       setEmail("");
       setPwd("");
       navigate(from, { replace: true });
-      console.log(response?.data)
+      console.log(response?.data);
     } catch (err: any) {
       if (!err?.response) {
         toast("No Server Response.", {
@@ -128,21 +128,18 @@ export const Login = () => {
 
   return (
     <>
-      <div style={{
-        width: "25vw",
-        maxWidth: "800px",
-        minWidth: "300px",
-        justifyContent: 'center',
-        alignItems: 'center',
-        flexDirection: 'column',
-        display: 'flex',
-      }}
+      <div
+        style={{
+          width: "25vw",
+          maxWidth: "800px",
+          minWidth: "300px",
+          justifyContent: "center",
+          alignItems: "center",
+          flexDirection: "column",
+          display: "flex",
+        }}
       >
-        <p
-          ref={errRef}
-          className={errMsg ? "errmsg" : "offscreen"}
-          aria-live="assertive"
-        >
+        <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive">
           {errMsg}
         </p>
         <h1>Login</h1>
@@ -188,11 +185,7 @@ export const Login = () => {
             },
           }}
         />
-        <Button 
-        variant="outlined" 
-        sx={style.Button} 
-        onClick={handleSubmit}
-        >
+        <Button variant="outlined" sx={style.Button} onClick={handleSubmit}>
           {" "}
           Login{" "}
         </Button>
