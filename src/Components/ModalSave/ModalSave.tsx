@@ -394,7 +394,7 @@ export const ModalSave = (props: any) => {
               <DisplayReactions reactions={saves[saveIndex].reactions} scenesOBS={obsScenes} />
               <div>
                 <Button onClick={() => loadSave(saves[saveIndex].mics)}> Load </Button>
-                <Button onClick={() => {loadMics(), loadScenes()}}> Reload </Button>
+                <Button onClick={() => {loadMics(); loadScenes()}}> Reload </Button>
                 <Button onClick={props.handleClose}> Close</Button>
               </div>
             </Box>
