@@ -110,39 +110,6 @@ export const Home = () => {
 			</div>
 		</div>
 
-	  	{/* <h1 className="ip icon-visibility non-dragable">
-			{
-				visibility ?
-					<div onClick={() => setvisibility(!visibility)}
-					onMouseEnter={handleMouseOver}
-					onMouseLeave={handleMouseOut}
-					className="qr-code"
-					>
-						<QRCode className="qr-code-content" value={ip}>
-						</QRCode>
-						{isHovering && (
-							<VisibilityOff className="visibility-icon-off"></VisibilityOff>
-						)}
-					</div>
-				:
-					<Button style={{ color: 'white' }} onClick={() => setvisibility(!visibility)} endIcon={<BsQrCodeScan />}>
-						Login on EasyStream app
-					</Button>
-			}
-		</h1> */}
-
-			{
-				architecture.map((item: any, index: any) => {
-					return (
-						<div key={item.url} className="items-home">
-							<Link className="m-2" to={item.url}>
-								<OutlinedCard url={item.url} icon={item.icon} title={item.title} description={item.description}></OutlinedCard>
-							</Link>
-						</div>
-					)
-				})
-			}
-
       <div className="container-home">
         {architecture.map((item: any, index: any) => (
           <div key={item.url} className="items-home">
