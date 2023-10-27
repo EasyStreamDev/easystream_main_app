@@ -34,10 +34,6 @@ body {
   margin-right: 3vw;
 }
 
-.add_button {
-  font-size: 1.6vw !important;
-}
-
 .rightAlignItem {
   justify-content: space-between;
 }

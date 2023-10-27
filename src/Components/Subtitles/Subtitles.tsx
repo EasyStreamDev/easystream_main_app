@@ -596,8 +596,8 @@ export const Subtitles = () => {
           </Dialog>
 
           <div className="add-button-pos">
-            <Button variant="contained" className="add_button" onClick={handleClickOpen}>
-              Link subtitle text field
+            <Button variant="contained" className="add-button" onClick={handleClickOpen}>
+              +
             </Button>
           </div>
         </>

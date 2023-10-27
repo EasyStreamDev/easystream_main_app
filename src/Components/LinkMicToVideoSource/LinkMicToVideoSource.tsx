@@ -505,8 +505,8 @@ export const LinkMicToVideoSource = (props: any) => {
             </DialogActions>
           </Dialog>
           <div className="add-button-pos">
-            <Button variant="contained" className="add_button" onClick={handleClickOpen}>
-              Link subtitle text field
+            <Button variant="contained" className="add-button" onClick={handleClickOpen}>
+              +
             </Button>
           </div>
         </>

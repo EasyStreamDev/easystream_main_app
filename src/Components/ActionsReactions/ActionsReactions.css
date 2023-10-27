@@ -65,8 +65,19 @@ body {
   position: absolute;
 }
 
-.add_button {
-  font-size: 25px !important;
+.add-button {
+  font-size: 40px !important;
+
+  background-color: #565d68 !important;
+  height: 80px;
+  width: 80px;
+  border-radius: 100% !important;
+
+  border: orange solid 2px !important;
+}
+
+.add-button:hover {
+  background-color: orange !important;
 }
 
 .rightAlignItem {

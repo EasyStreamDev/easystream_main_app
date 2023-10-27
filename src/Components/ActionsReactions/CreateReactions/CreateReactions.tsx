@@ -421,8 +421,8 @@ export const CreateReactions = () => {
       </Dialog>
 
       <div className="add-button-pos">
-        <Button variant="contained" className="add_button" onClick={handleClickOpen}>
-          Add Reaction
+        <Button variant="contained" className="add-button" onClick={handleClickOpen}>
+          +
         </Button>
       </div>
     </>
