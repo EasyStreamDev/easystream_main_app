@@ -12,7 +12,7 @@ export default function BoxEvent(props: any) {
     paddingRight: "3vw",
     paddingTop: "2vh",
     paddingBottom: "2vh",
-    backgroundColor: "#222831",
+    backgroundColor: "#565d68",
     borderRadius: "10px",
     alignItems: "center",
     cursor: "pointer",
