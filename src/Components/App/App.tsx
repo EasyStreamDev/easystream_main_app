@@ -1,3 +1,4 @@
+import "./App.css";
 import { Route, Routes } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/ReactToastify.min.css";
@@ -18,7 +19,6 @@ import { Feedback } from "../Other/Feedback/Feedback";
 import Sidebar from "../Sidebar/Sidebar";
 import { Subtitles } from "../Subtitles/Subtitles";
 import Unauthorized from "../Unauthorized/Unauthorized";
-import "./App.css";
 
 export default function App() {
   return (

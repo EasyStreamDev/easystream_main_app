@@ -485,47 +485,8 @@ export const Subtitles = () => {
                               variant="outlined"
                               sx={{ m: 0.5, borderColor: "#FFA500" }}
                               icon={<MicNoneIcon className="color-orange" />}
-                              onDelete={handleMicDelete(l.uuid, value)}
                             />
                           ))}
-                          <Chip
-                            key="+"
-                            label="+"
-                            className="color-orange non-dragable"
-                            sx={{ m: 0.5, fontSize: "20px", borderColor: "#FFA500" }}
-                            onClick={(event) => handleClickPopover(event, l)}
-                          />
-                          {Boolean(anchorEl) && (
-                            <Popover
-                              id={l.uuid}
-                              open={Boolean(anchorEl)}
-                              anchorEl={anchorEl}
-                              onClose={handleClosePopover}
-                              anchorOrigin={{
-                                vertical: "center",
-                                horizontal: "right",
-                              }}
-                              transformOrigin={{
-                                vertical: "center",
-                                horizontal: "left",
-                              }}
-                            >
-                              {listMicsAvailable.length === 0 ? (
-                                <Typography sx={{ p: 2 }}>No mic available</Typography>
-                              ) : (
-                                <div>
-                                  <Typography sx={{ p: 2 }}>Select a mic:</Typography>
-                                  <List>
-                                    {listMicsAvailable.map((choice) => (
-                                      <ListItem key={choice} onClick={() => addMicToSubtitle(l, choice)}>
-                                        <ListItemText primary={choice} />
-                                      </ListItem>
-                                    ))}
-                                  </List>
-                                </div>
-                              )}
-                            </Popover>
-                          )}
                         </Box>
                         {/* Show only if it's not the last element */}
                         {subtitlesSettings[subtitlesSettings.length - 1] !== l && (
