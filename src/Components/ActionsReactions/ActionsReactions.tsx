@@ -321,21 +321,17 @@ export const ActionsReactions = () => {
                 <div className="item-container action-reaction-cards non-dragable">
                   {actionsReactionsList.map((item: any, index: any) => {
                     return (
-                      <Card
-                        key={index}
-                        className="card-event non-dragable"
-                        sx={{
-                          backgroundColor: "#565d68",
-                          border: "3px solid orange",
-                          borderRadius: "10px",
-                          color: "white",
-                          height: "100%",
-                          display: "inline-table",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          width: "85%",
-                        }}
-                      >
+                      <Card key={index} className="card-event non-dragable" sx={{
+                        backgroundColor: "#565d68",
+                        border: "2px solid orange",
+                        borderRadius: "10px",
+                        color: "white",
+                        height: "100%",
+                        display: "inline-table",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        width: "85%"
+                      }}>
                         <CardContent>
                           <Typography sx={{ fontSize: 14 }} gutterBottom>
                             # {index + 1}

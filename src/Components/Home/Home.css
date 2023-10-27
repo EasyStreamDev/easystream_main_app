@@ -6,9 +6,53 @@
   right: 5%;
 }
 
+.size-icon {
+    font-size: 3vw !important;
+    margin-bottom: 5px;
+}
+
+.button-color-orange {
+    border: 1px solid orange !important;
+    color: white !important;
+}
+
+.top-bar {
+    position: absolute;
+    top: 5%;
+    right: 5%;
+
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.button-container {
+    display: flex;
+    gap: 10px;
+
+    flex-direction: column-reverse;
+    align-items: flex-end;
+}
+
+/* .login {
+    position: absolute;
+    top: 5%;
+    right: 10%;
+}
+
+.ip {
+    position: absolute;
+    top: 5%;
+    right: 5%;
+} */
+
 .qr-code {
-  width: 9vw;
-  max-width: 16vh;
+    width: 11vw;
+
+    padding: 2px;
+    border: 2px solid orange;
+    border-radius: 10px
 }
 
 /* hover grey filter */
@@ -17,9 +61,9 @@
 }
 
 .visibility-icon-off {
-  top: 39%;
-  position: absolute;
-  left: 44%;
+    position: absolute;
+    left: 46%;
+    top: 53%;
 }
 
 .icon-visibility {
@@ -27,19 +71,16 @@
 }
 
 .container-home {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: auto;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px
 }
 
 .items-home {
-  flex: 0 0 auto;
-  margin: 1rem;
-  height: 43%;
-  width: 25%;
-  text-align: center;
-  padding: 0.1rem;
+    margin: 1rem;
+    width: 30vw;
+    text-align: center;
+    padding: 0.1rem;
 }
 
 .home-card {

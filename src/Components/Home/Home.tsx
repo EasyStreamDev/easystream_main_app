@@ -6,6 +6,11 @@ import { Visibility, VisibilityOff } from "@material-ui/icons";
 import OutlinedCard from "./CardsHome";
 import { QRCode, encrypt } from "./QRcode";
 import { BsQrCodeScan } from "react-icons/bs";
+import AirlineStopsIcon from '@mui/icons-material/AirlineStops';
+import MicIcon from '@mui/icons-material/Mic';
+import ClosedCaptionIcon from '@mui/icons-material/ClosedCaption';
+import CameraswitchIcon from '@mui/icons-material/Cameraswitch';
+import LoginIcon from '@mui/icons-material/Login';
 const ipcRenderer = window.require("electron").ipcRenderer;
 
 export const Home = () => {
@@ -34,58 +39,109 @@ export const Home = () => {
     });
   }, []);
 
-  const architecture = [
-    {
-      url: "/actions-reactions/home",
-      title: "Actions & Reactions",
-      description: "Bind actions and reactions together to create autonomous systems !",
-    },
-    {
-      url: "/audio/compressor-level",
-      title: "Compressor Level",
-      description: "Use the Easystream useful compressor to help you configuring the audio.",
-    },
-    {
-      url: "/video/link-mic-to-video-source",
-      title: "Link mic to Video Source",
-      description: "Automatic change of video source when mic is used.",
-    },
-    {
-      url: "/video/subtitles",
-      title: "Subtitles",
-      description: "Adapt you to your audience activating the auto generated subtitles !",
-    },
-    {
-      url: "/login",
-      title: "Login",
-      description: "Login you to access to all your features !",
-    },
-    {
-      url: "/other/feedback",
-      title: "Feedback",
-      description: "Don't hesitate to send us some feedback to upgrade our plugin <3",
-    },
-  ];
+	const architecture = [
+		{
+			"url": "/actions-reactions/home",
+			"icon": <AirlineStopsIcon className="size-icon" />,
+			"title": "Actions & Reactions",
+			"description": "Bind actions and reactions together to create autonomous systems !",
+		},
+		{
+			"url": "/audio/compressor-level",
+			"icon": <MicIcon className="size-icon"/>,
+			"title": "Compressor Level",
+			"description": "Use the Easystream useful compressor to help you configuring the audio.",
+		},
+		{
+			"url": "/video/link-mic-to-video-source",
+			"icon": <CameraswitchIcon className="size-icon"/>,
+			"title": "Link mic to Video Source",
+			"description": "Automatic change of video source when mic is used.",
+		},
+		{
+			"url": "/video/subtitles",
+			"icon": <ClosedCaptionIcon className="size-icon"/>,
+			"title": "Subtitles",
+			"description": "Adapt you to your audience activating the auto generated subtitles !",
+		},
+		// {
+		// 	"url": "/login",
+		// 	"title": "Login",
+		// 	"description": "Login you to access to all your features !",
+		// },
+		// {
+		// 	"url": "/other/feedback",
+		// 	"title": "Feedback",
+		// 	"description": "Don't hesitate to send us some feedback to upgrade our plugin <3",
+		// },
+	]
+	
+    return (
+      <>
 
-  return (
-    <>
-      <h1 className="ip icon-visibility non-dragable">
-        {visibility ? (
-          <div
-            onClick={() => setvisibility(!visibility)}
-            onMouseEnter={handleMouseOver}
-            onMouseLeave={handleMouseOut}
-            className="qr-code"
-          >
-            <QRCode className="qr-code-content" value={ip}></QRCode>
-            {isHovering && <VisibilityOff className="visibility-icon-off"></VisibilityOff>}
-          </div>
-        ) : (
-          <Button style={{ color: "white" }} onClick={() => setvisibility(!visibility)} endIcon={<BsQrCodeScan />}>
-            Login on EasyStream app
-          </Button>
-        )}
-      </h1>
+		<div className="top-bar non-dragable">
+			<div className="button-container">
+				<div className="icon-visibility">
+					{
+						visibility ?
+							<div onClick={() => setvisibility(!visibility)}
+							onMouseEnter={handleMouseOver}
+							onMouseLeave={handleMouseOut}
+							className="qr-code"
+							>
+								<QRCode className="qr-code-content" value={ip}>
+								</QRCode>
+								{isHovering && (
+									<VisibilityOff className="visibility-icon-off"></VisibilityOff>
+								)}
+							</div>
+						:
+							<Button style={{ color: 'white' }} onClick={() => setvisibility(!visibility)} endIcon={<BsQrCodeScan />}>
+								Login on EasyStream app
+							</Button>
+					}
+				</div>
+
+				<Link to="/login">
+					<Button className="button-color-orange" variant="outlined" endIcon={<LoginIcon />} color="warning">
+						Login
+					</Button>
+				</Link>
+			</div>
+		</div>
+
+	  	{/* <h1 className="ip icon-visibility non-dragable">
+			{
+				visibility ?
+					<div onClick={() => setvisibility(!visibility)}
+					onMouseEnter={handleMouseOver}
+					onMouseLeave={handleMouseOut}
+					className="qr-code"
+					>
+						<QRCode className="qr-code-content" value={ip}>
+						</QRCode>
+						{isHovering && (
+							<VisibilityOff className="visibility-icon-off"></VisibilityOff>
+						)}
+					</div>
+				:
+					<Button style={{ color: 'white' }} onClick={() => setvisibility(!visibility)} endIcon={<BsQrCodeScan />}>
+						Login on EasyStream app
+					</Button>
+			}
+		</h1> */}
+
+			{
+				architecture.map((item: any, index: any) => {
+					return (
+						<div key={item.url} className="items-home">
+							<Link className="m-2" to={item.url}>
+								<OutlinedCard url={item.url} icon={item.icon} title={item.title} description={item.description}></OutlinedCard>
+							</Link>
+						</div>
+					)
+				})
+			}
 
       <div className="container-home">
         {architecture.map((item: any, index: any) => (

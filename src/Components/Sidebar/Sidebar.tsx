@@ -35,15 +35,15 @@ const Sidebar = () => {
     <>
       <IconContext.Provider value={{ color: '#fff' }}>
         <div className='navbar' id="nav-expand">
-          <Link to='#' className='menu-bars'>
+          {/* <Link to='#' className='menu-bars'>
             <FaIcons.FaBars onClick={toggleSidebar} />
-          </Link>
+          </Link> */}
           <Link className='easystream-title' to="/">
             <img src="static/transparent_logo.png" alt="EasyStream Logo" height={40} />
           </Link>
           <PathView />
         </div>
-        <nav className={sidebar ? 'nav-menu active' : 'nav-menu hidden'}>
+        {/* <nav className={sidebar ? 'nav-menu active' : 'nav-menu hidden'}>
           <ul className='nav-menu-items'>
             <li className='navbar-toggle'>
               <Link to='#' className='menu-bars'>
@@ -54,7 +54,7 @@ const Sidebar = () => {
               return <SubMenu item={item} key={index} />;
             })}
           </ul>
-        </nav>
+        </nav> */}
       </IconContext.Provider>
     </>
   );
