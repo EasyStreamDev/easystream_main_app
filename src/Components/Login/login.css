@@ -1,1 +1,6 @@
 @import "../../index.css";
+
+.button-color-orange {
+    border: 1px solid orange !important;
+    color: white !important;
+}

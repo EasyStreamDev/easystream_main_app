@@ -11,12 +11,20 @@ import MicIcon from '@mui/icons-material/Mic';
 import ClosedCaptionIcon from '@mui/icons-material/ClosedCaption';
 import CameraswitchIcon from '@mui/icons-material/Cameraswitch';
 import LoginIcon from '@mui/icons-material/Login';
+import LogoutIcon from '@mui/icons-material/Logout';
+import useAuth from "../../hooks/useAuth.js";
+import useLogout from "../../hooks/useLogout";
 const ipcRenderer = window.require("electron").ipcRenderer;
 
 export const Home = () => {
   const [ip, setip] = React.useState("");
   const [visibility, setvisibility] = React.useState(false);
   const [isHovering, setIsHovering] = React.useState(false);
+
+  const [loginButton, setLoginButton] = React.useState<any>();
+
+  const auth: any = useAuth();
+  const logout = useLogout();
 
   const handleMouseOver = () => {
     setIsHovering(true);
@@ -33,11 +41,34 @@ export const Home = () => {
     });
   };
 
-  useEffect(() => {
-    getLocalIp().then((res) => {
-      if (res.length > 0) setip(encrypt(res));
-    });
-  }, []);
+  const renderLoginButton = () => {
+	console.log(auth)
+	if (auth?.auth && auth?.auth?.email) {
+		return (
+			<Button onClick={logout} className="button-color-orange" variant="outlined" endIcon={<LogoutIcon />} color="warning">
+				Logout
+			</Button>
+		)
+	} else {
+		return (
+			<Link to="/login">
+				<Button className="button-color-orange" variant="outlined" endIcon={<LoginIcon />} color="warning">
+					Login
+				</Button>
+			</Link>
+		)
+	}
+  }
+  
+  	useEffect(() => {
+	  	getLocalIp().then((res) => {
+      		if (res.length > 0) setip(encrypt(res));
+    	});
+  	}, []);
+
+  	useEffect(() => {
+		setLoginButton(renderLoginButton())
+	}, [auth]);
 
 	const architecture = [
 		{
@@ -102,11 +133,13 @@ export const Home = () => {
 					}
 				</div>
 
-				<Link to="/login">
+				{ loginButton }
+
+				{/* <Link to="/login">
 					<Button className="button-color-orange" variant="outlined" endIcon={<LoginIcon />} color="warning">
 						Login
 					</Button>
-				</Link>
+				</Link> */}
 			</div>
 		</div>
 
@@ -114,7 +147,7 @@ export const Home = () => {
         {architecture.map((item: any, index: any) => (
           <div key={item.url} className="items-home">
             <Link className="m-2" to={item.url}>
-              <OutlinedCard url={item.url} title={item.title} description={item.description}></OutlinedCard>
+              <OutlinedCard url={item.url} title={item.title} icon={item.icon} description={item.description}></OutlinedCard>
             </Link>
           </div>
         ))}
