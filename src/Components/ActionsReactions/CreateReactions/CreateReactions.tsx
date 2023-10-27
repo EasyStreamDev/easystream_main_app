@@ -336,7 +336,7 @@ export const CreateReactions = () => {
       </div>
 
       <Link className="pt-20" to="/actions-reactions/home">
-        <Button variant="outlined" startIcon={<BsArrowReturnLeft />} color="info">
+        <Button className="go-back-button" variant="outlined" startIcon={<BsArrowReturnLeft />} color="info">
           Go Back
         </Button>
       </Link>
@@ -420,7 +420,7 @@ export const CreateReactions = () => {
         </DialogActions>
       </Dialog>
 
-      <div className="add_button_pos">
+      <div className="add-button-pos">
         <Button variant="contained" className="add_button" onClick={handleClickOpen}>
           Add Reaction
         </Button>

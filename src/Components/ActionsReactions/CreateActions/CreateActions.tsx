@@ -7,12 +7,12 @@ export const CreateActions = () => {
   return (
     <>
       {/* Display a heading */}
-      <h1 className="m-2"> Select an action</h1>
+      <h1 className="m-2">Select an action</h1>
 
       {/* Link to the "Word Detection" page */}
       <Link className="m-6" to="/actions-reactions/word-detection">
         <Button className="action-button-orange" variant="contained" size="large" startIcon={<BsFonts />}>
-          Word Detection
+          <div style={{ display: "flex" }}>Word Detection</div>
         </Button>
       </Link>
 
@@ -31,8 +31,8 @@ export const CreateActions = () => {
       </Link>
 
       {/* Link to go back to the home page */}
-      <Link className="go-back-link" to="/actions-reactions/home">
-        <Button variant="outlined" startIcon={<BsArrowReturnLeft />} color="info">
+      <Link style={{ paddingTop: "80px" }} to="/actions-reactions/home">
+        <Button className="go-back-button" variant="outlined" startIcon={<BsArrowReturnLeft />} color="info">
           Go Back
         </Button>
       </Link>

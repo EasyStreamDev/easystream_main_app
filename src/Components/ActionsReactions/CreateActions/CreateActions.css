@@ -1,9 +1,10 @@
 @import "../../../index.css";
 
-.go-back-link {
-  padding-top: 80px;
+.action-button-orange {
+  background-color: transparent !important;
+  border: 2px solid orange !important;
 }
 
-.action-button-orange {
+.action-button-orange:hover {
   background-color: orange !important;
 }

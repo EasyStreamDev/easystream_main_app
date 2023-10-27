@@ -16,8 +16,7 @@ body {
 }
 
 .item-container-reaction {
-  overflow: scroll;
-  overflow-y: scroll;
+  overflow-y: auto;
   overflow-x: hidden;
   max-height: 21rem;
   min-height: 23rem;
@@ -28,9 +27,9 @@ body {
   border-color: grey;
 }
 
-.add_button_pos {
-  top: calc(100% - 20%);
-  left: calc(100% - 20%);
+.add-button-pos {
+  top: 80%;
+  left: 80%;
   position: absolute;
   margin-right: 3vw;
 }
