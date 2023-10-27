@@ -359,7 +359,7 @@ export const LinkMicToVideoSource = (props: any) => {
                 <List>
                   {allLinksMicsToVideoSource.map((l) => {
                     return (
-                      <Box className="allLinksMicsToVideoSourceItem" key={l.display_source_id}>
+                      <Box className="allLinksMicsToVideoSourceItem non-dragable" key={l.display_source_id}>
                         <ListItem
                           // Random key
                           key={l.display_source_id}
@@ -422,10 +422,6 @@ export const LinkMicToVideoSource = (props: any) => {
                             </Popover>
                           )}
                         </Box>
-                        {/* Show only if it's not the last element */}
-                        {allLinksMicsToVideoSource[allLinksMicsToVideoSource.length - 1] !== l && (
-                          <Divider style={{ border: "1.5px solid orange", backgroundColor: "orange" }} />
-                        )}
                       </Box>
                     );
                   })}

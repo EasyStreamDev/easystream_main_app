@@ -460,7 +460,7 @@ export const Subtitles = () => {
                 <List>
                   {subtitlesSettings.map((l) => {
                     return (
-                      <Box className="subtitlesSettingsItem" key={l.uuid}>
+                      <Box className="subtitlesSettingsItem non-dragable" key={l.uuid}>
                         <ListItem
                           key={l.uuid}
                           secondaryAction={
@@ -488,10 +488,6 @@ export const Subtitles = () => {
                             />
                           ))}
                         </Box>
-                        {/* Show only if it's not the last element */}
-                        {subtitlesSettings[subtitlesSettings.length - 1] !== l && (
-                          <Divider style={{ border: "1.5px solid orange", backgroundColor: "orange" }} />
-                        )}
                       </Box>
                     );
                   })}

@@ -289,7 +289,7 @@ export const CreateReactions = () => {
                   sx={{
                     backgroundColor: "#565d68",
                     borderRadius: "10px",
-                    border: "3px solid orange",
+                    border: "2px solid orange",
                     color: "white",
                     minWidth: 150,
                     minHeight: 100,
