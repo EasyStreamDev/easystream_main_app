@@ -286,7 +286,7 @@ export const AppLaunch = (props: any) => {
           })}
           <AddAppLaunch addNewEvent={addNewEvent} sources={sources} newEvent={newEvent} setnewEvent={setnewEvent} />
           <Link style={{ paddingTop: "20px" }} to="/actions-reactions/actions">
-            <Button variant="outlined" startIcon={<BsArrowReturnLeft />} color="info">
+            <Button className="go-back-button" variant="outlined" startIcon={<BsArrowReturnLeft />} color="info">
               Go Back
             </Button>
           </Link>

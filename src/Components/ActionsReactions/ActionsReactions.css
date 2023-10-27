@@ -39,8 +39,7 @@ body {
 }
 
 .item-container {
-  overflow: scroll;
-  overflow-y: scroll;
+  overflow-y: auto;
   overflow-x: hidden;
   max-height: 65vh;
   min-height: 65vh;
