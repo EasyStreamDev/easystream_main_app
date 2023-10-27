@@ -4,6 +4,10 @@ body {
   margin: 0;
 }
 
+.button-orange {
+  color: orange !important;
+}
+
 .events-container {
   text-align: center;
   width: 100%;

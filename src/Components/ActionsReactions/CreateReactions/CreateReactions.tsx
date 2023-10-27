@@ -1,6 +1,5 @@
 // Importing necessary dependencies and components
 import React, { useEffect } from "react";
-import "./CreateReactions.css";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
@@ -28,6 +27,7 @@ import { LocalStorage } from "../../../LocalStorage/LocalStorage";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { AllScenes, Scene } from "../../../Socket/interfaces";
+import "./CreateReactions.css";
 const ipcRenderer = window.require("electron").ipcRenderer;
 
 /**
@@ -317,7 +317,7 @@ export const CreateReactions = () => {
                   <CardActions disableSpacing className="rightAlignItem">
                     {warningMessageDisplaySceneMissing(item) === true ? (
                       <Tooltip title="The scene that is registered in this reaction isn't available anymore. Please delete this reaction.">
-                        <IconButton color="error" aria-label="warning">
+                        <IconButton className="button-orange" aria-label="warning">
                           <BsFillExclamationTriangleFill />
                         </IconButton>
                       </Tooltip>
