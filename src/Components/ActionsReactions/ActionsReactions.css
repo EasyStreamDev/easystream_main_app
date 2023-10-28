@@ -4,6 +4,10 @@ body {
   margin: 0;
 }
 
+.full-orange {
+  color: orange !important;
+}
+
 .button-color-orange {
   border: 1px solid orange !important;
   color: white !important;

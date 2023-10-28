@@ -352,11 +352,7 @@ export const ActionsReactions = () => {
                           {warningMessageDisplaySceneMissing(item) === true ? (
                             <Tooltip title="The scene that is registered in the reaction of this Action/Reaction isn't available anymore. Please delete this Action/Reaction.">
                               <IconButton
-                                // style={{
-                                //   color: "orange !important",
-                                // }}
-                                color="error"
-                                aria-label="warning"
+                                className="full-orange"
                               >
                                 <BsFillExclamationTriangleFill />
                               </IconButton>

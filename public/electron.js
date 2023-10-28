@@ -327,12 +327,12 @@ ipcMain.on("getAllLinksMicsToVideoSource", (event, arg) => {
         length: 2,
         display_sources: [
           {
-            "mic_ids": ["21825058-7a54-4057-bb17-a810c08f8db9"],
-            "display_source_id": "277ab5058-7a54-4057-ad17-a810c08ea8db9",
+            "mic_id": "21825058-7a54-4057-bb17-a810c08f8db9",
+            "display_source_ids": ["277ab5058-7a54-4057-ad17-a810c08ea8db9"],
           },
           {
-            "mic_ids": ["21825058-7a54-4057-bb17-a810c08f8db9", "94809237-7a54-4057-bb17-844924840"],
-            "display_source_id": "4f7398d61-094a-4b7b-9905-4fa928329de4",
+            "mic_id": "94809237-7a54-4057-bb17-844924840",
+            "display_source_ids": ["4f7398d61-094a-4b7b-9905-4fa928329de4"],
           },
         ],
       }
