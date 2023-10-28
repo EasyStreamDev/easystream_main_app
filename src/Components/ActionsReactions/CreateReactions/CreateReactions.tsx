@@ -317,7 +317,7 @@ export const CreateReactions = () => {
                   <CardActions disableSpacing className="rightAlignItem">
                     {warningMessageDisplaySceneMissing(item) === true ? (
                       <Tooltip title="The scene that is registered in this reaction isn't available anymore. Please delete this reaction.">
-                        <IconButton className="button-orange" aria-label="warning">
+                        <IconButton className="button-orange">
                           <BsFillExclamationTriangleFill />
                         </IconButton>
                       </Tooltip>
