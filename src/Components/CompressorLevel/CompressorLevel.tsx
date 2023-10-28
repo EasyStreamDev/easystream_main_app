@@ -134,7 +134,7 @@ export const CompressorLevel = () => {
                     exampleCompressorArray.map((item, index) => {
                       return (
                         <CustomizedSlider
-                          key={item.micName}
+                          key={item.uuid}
                           isActive={item.isActive}
                           name={item.micName}
                           value={item.level}

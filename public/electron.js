@@ -81,16 +81,20 @@ ipcMain.on("getAllMics", (event, arg) => {
         length: 1,
         mics: [
           {
-            micName: "Mic Test Dev",
-            uuid: "21825058-7a54-4057-bb17-a810c08f8db9",
-            level: 30,
             isActive: true,
+            level: 30,
+            micKind: "MIC",
+            micName: "Mic Test Dev",
+            unversionedmicKind: "blop",
+            uuid: "21825058-7a54-4057-bb17-a810c08f8db9",
           },
           {
-            micName: "Mic Test Dev 2",
-            level: 50,
-            uuid: "94809237-7a54-4057-bb17-844924840",
             isActive: true,
+            level: 50,
+            micKind: "MIC",
+            micName: "Mic Test Dev 2",
+            unversionedmicKind: "blop",
+            uuid: "94809237-7a54-4057-bb17-844924840",
           },
         ],
       }

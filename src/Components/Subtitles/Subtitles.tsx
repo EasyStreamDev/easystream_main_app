@@ -29,6 +29,7 @@ import {
   TextFieldDetailed,
   resultFormat,
   AllMics,
+  Mic,
 } from "../../Socket/interfaces";
 import { toast } from "react-toastify";
 import { BsTrash } from "react-icons/bs";
@@ -58,22 +59,9 @@ export const Subtitles = () => {
   const [load, setload] = React.useState(true);
   const [point, setpoint] = React.useState(".");
 
-  // Popover
-  const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
-  const [listMicsAvailable, setListMicsAvailable] = React.useState<string[]>([]);
-
-  const handleClickPopover = (event: any, l: TextFieldSimple) => {
-    setAnchorEl(event.currentTarget);
-    setListMicsAvailable(micList.filter((mic) => !l.linked_mics.includes(mic)));
-  };
-
-  const handleClosePopover = () => {
-    setAnchorEl(null);
-  };
-
   const [subtitlesSettings, setSubtitlesSettings] = React.useState<TextFieldSimple[]>([]);
   const [availableTextFields, setAvailableTextFields] = React.useState<TextFieldDetailed[]>([]);
-  const [micList, setMicList] = React.useState<string[]>([]);
+  const [micList, setMicList] = React.useState<Mic[]>([]);
 
   const getAllCompressors = (): Promise<AllMics> => {
     return new Promise(async (resolve, reject) => {
@@ -85,9 +73,8 @@ export const Subtitles = () => {
   const updateMicList = (notify = false) => {
     getAllCompressors().then((result) => {
       if (result.statusCode === 200) {
-        // Only get the mics names
-        const mics = result.data.mics.map((mic) => mic.micName);
-        setMicList(mics);
+        // Only get the mics uuid
+        setMicList(result.data.mics);
         if (notify) {
           toast("Mics list updated", {
             type: "info",
@@ -123,30 +110,6 @@ export const Subtitles = () => {
       // On autofill we get a stringified value.
       typeof value === "string" ? value.split(",") : value
     );
-  };
-
-  const handleMicDelete = (uuid_text_field: string, micToDelete: string) => () => {
-    let good_subtitle_setting = subtitlesSettings.filter(
-      (subtitle_setting) => subtitle_setting.uuid === uuid_text_field
-    )[0];
-    let new_mics = good_subtitle_setting.linked_mics.filter((mic) => mic !== micToDelete);
-    console.log("new_mics", new_mics);
-    addSubtitleTextField(uuid_text_field, new_mics).then((res: resultFormat) => {
-      if (res.statusCode === 200) {
-        // Refresh
-        getSubtitlesSettings().then((subtitles_res) => {
-          setSubtitlesSettings(subtitles_res.data.text_fields);
-        });
-
-        toast("Mic deleted from the text field", {
-          type: "success",
-        });
-      } else {
-        toast("Error while deleting the mic from the text field", {
-          type: "error",
-        });
-      }
-    });
   };
 
   const addSubtitleTextField = (uuid: string, linkedMics: string[]): Promise<resultFormat> => {
@@ -250,27 +213,6 @@ export const Subtitles = () => {
         return;
       }
     });
-  };
-
-  const addMicToSubtitle = (text_field: TextFieldSimple, mic_to_add: any) => {
-    let new_mics = text_field.linked_mics.slice();
-    new_mics.push(mic_to_add);
-
-    addSubtitleTextField(text_field.uuid, new_mics).then((res: resultFormat) => {
-      if (res.statusCode === 200) {
-        // Refresh
-        refresh();
-        toast("Mic added to the text field", {
-          type: "success",
-        });
-      } else {
-        toast("Error while adding the mic to the text field", {
-          type: "error",
-        });
-      }
-    });
-    refresh();
-    handleClosePopover();
   };
 
   const deleteSubtitleTextField = (uuid: string) => {
@@ -540,8 +482,8 @@ export const Subtitles = () => {
                 MenuProps={MenuProps}
               >
                 {micList.map((mic) => (
-                  <MenuItem key={mic} value={mic} style={{ fontWeight: 500 }}>
-                    {mic}
+                  <MenuItem key={mic.uuid} value={mic.micName} style={{ fontWeight: 500 }}>
+                    {mic.micName}
                   </MenuItem>
                 ))}
               </Select>

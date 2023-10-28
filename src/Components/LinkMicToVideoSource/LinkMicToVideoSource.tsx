@@ -371,7 +371,7 @@ export const LinkMicToVideoSource = (props: any) => {
               >
                 {allMics.map((mic) => {
                     return (
-                      <MenuItem key={mic.micName} value={mic.micName} style={{ fontWeight: 300 }}>
+                      <MenuItem key={mic.uuid} value={mic.micName} style={{ fontWeight: 300 }}>
                         {mic.micName}
                       </MenuItem>
                     );

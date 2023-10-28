@@ -111,7 +111,7 @@ const CustomizedSlider = (props: any) => {
       >
         <Box sx={{ width: "65vw" }}>
           <MicroSlider
-            key={`slider-compressor`}
+            key={props.key}
             onChangeCommitted={handleSliderChange}
             aria-label="Micro"
             value={props.value ?? 0}
