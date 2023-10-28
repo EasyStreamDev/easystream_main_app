@@ -7,16 +7,20 @@
 }
 
 .subtitlesSettingsBox {
-    border: 3px solid orange;
-    background-color: #565d68;
-    /* rounded */
-    border-radius: 10px;
 
     overflow:scroll;
     overflow-y:scroll;
     overflow-x:hidden;
 
     max-height: 65vh;
+}
+
+.subtitlesSettingsItem {
+    border: 2px solid orange;
+    background-color: #565d68;
+    /* rounded */
+    border-radius: 10px;
+    margin: 10px;
 }
 
 .subtitlesSettingsItem:hover {

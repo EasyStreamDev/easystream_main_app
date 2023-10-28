@@ -14,6 +14,9 @@ const card = (props: any) => (
         paddingBottom: "15px !important",
       }}
     >
+      <div>
+        {props.icon}
+      </div>
       <Typography sx={{ fontWeight: "bold" }} variant="h5">
         {/* // Render the title prop */}
         {props.title}
@@ -35,7 +38,8 @@ export default function OutlinedCard(props: any) {
         variant="outlined"
         sx={{
           backgroundColor: "#565d68",
-          border: "3px solid orange",
+          border: "2px solid orange",
+          borderRadius: "10px",
           height: "100%",
           display: "flex",
           alignItems: "center",

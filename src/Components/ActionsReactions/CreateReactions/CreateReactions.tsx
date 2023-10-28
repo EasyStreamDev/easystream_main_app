@@ -1,12 +1,11 @@
 // Importing necessary dependencies and components
 import React, { useEffect } from "react";
-import "./CreateReactions.css";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import { BsArrowReturnLeft, BsExclamationCircle, BsFillExclamationTriangleFill } from "react-icons/bs"
+import { BsArrowReturnLeft, BsExclamationCircle, BsFillExclamationTriangleFill } from "react-icons/bs";
 import {
   AiFillVideoCamera,
   AiOutlineBug,
@@ -16,14 +15,7 @@ import {
   AiOutlineVideoCamera,
 } from "react-icons/ai";
 import { MdPanoramaHorizontal } from "react-icons/md";
-import {
-  IconButton,
-  InputLabel,
-  MenuItem,
-  Select,
-  SelectChangeEvent,
-  Tooltip,
-} from "@mui/material";
+import { IconButton, InputLabel, MenuItem, Select, SelectChangeEvent, Tooltip } from "@mui/material";
 import { BsTrash } from "react-icons/bs";
 import TextField from "@mui/material/TextField";
 import Dialog from "@mui/material/Dialog";
@@ -35,6 +27,7 @@ import { LocalStorage } from "../../../LocalStorage/LocalStorage";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { AllScenes, Scene } from "../../../Socket/interfaces";
+import "./CreateReactions.css";
 const ipcRenderer = window.require("electron").ipcRenderer;
 
 /**
@@ -51,21 +44,17 @@ export enum ReactionType {
 
 /**
  * React component for creating reactions
- * @returns 
+ * @returns
  */
 export const CreateReactions = () => {
   // Define state variables
   const keysReactionType = Object.keys(ReactionType);
   const [open, setOpen] = React.useState(false);
   const [newActionName, setNewActionName] = React.useState("");
-  const [newActionSelected, setNewActionSelected] =
-    React.useState("START_STREAM");
+  const [newActionSelected, setNewActionSelected] = React.useState("START_STREAM");
   const [newActionParam, setNewActionParam] = React.useState("");
-  const [actionsList, setActionsList] = React.useState(
-    LocalStorage.getItemObject("actionsList") || []
-  );
+  const [actionsList, setActionsList] = React.useState(LocalStorage.getItemObject("actionsList") || []);
   const [availableScenes, setAvailableScenes] = React.useState<Scene[]>([]);
-
 
   /**
    * Define styles for the component
@@ -84,7 +73,7 @@ export const CreateReactions = () => {
 
   /**
    * Event handler for the select component's value change
-   * @param action 
+   * @param action
    */
   const handleOnChangeSelect = (action: SelectChangeEvent<unknown>) => {
     const value = action.target.value as ReactionType;
@@ -93,7 +82,7 @@ export const CreateReactions = () => {
 
   /**
    * Get All Scenes
-   * @returns 
+   * @returns
    */
   const getAllScenes = (): Promise<AllScenes> => {
     return new Promise(async (resolve, reject) => {
@@ -111,14 +100,14 @@ export const CreateReactions = () => {
 
   /**
    * Function to know if a scene not available
-   * @param item 
-   * @returns 
+   * @param item
+   * @returns
    */
   const warningMessageDisplaySceneMissing = (item: any) => {
     // check if SCENE_SWITCH
     if (item.action === ReactionType.SCENE_SWITCH) {
       // check if uuid is in available scenes
-      let tmp = true
+      let tmp = true;
       availableScenes.forEach((element) => {
         if (element.uuid === item.params.uuid) {
           tmp = false;
@@ -128,11 +117,11 @@ export const CreateReactions = () => {
     } else {
       return false;
     }
-  }
+  };
 
   /**
    * Event handler for saving the reaction
-   * @returns 
+   * @returns
    */
   const handleSave = () => {
     console.log("newActionName", newActionName);
@@ -146,10 +135,7 @@ export const CreateReactions = () => {
         return;
       }
       let newElem: any = {
-        id:
-          actionsList.length > 0
-            ? Math.max(...actionsList.map((o: any) => o.id)) + 1
-            : 1,
+        id: actionsList.length > 0 ? Math.max(...actionsList.map((o: any) => o.id)) + 1 : 1,
         name: newActionName,
         action: newActionSelected as ReactionType,
       };
@@ -160,15 +146,11 @@ export const CreateReactions = () => {
             toggle: true,
           };
         if (newActionSelected === ReactionType.SCENE_SWITCH)
-          newElem.params = JSON.parse(newActionParam) ? JSON.parse(newActionParam) : { scene: "" }
-        if (newActionSelected === ReactionType.START_STREAM)
-          newElem.params = { delay: newActionParam };
-        if (newActionSelected === ReactionType.STOP_STREAM)
-          newElem.params = { delay: newActionParam };
-        if (newActionSelected === ReactionType.START_REC)
-          newElem.params = { delay: newActionParam };
-        if (newActionSelected === ReactionType.STOP_REC)
-          newElem.params = { delay: newActionParam };
+          newElem.params = JSON.parse(newActionParam) ? JSON.parse(newActionParam) : { scene: "" };
+        if (newActionSelected === ReactionType.START_STREAM) newElem.params = { delay: newActionParam };
+        if (newActionSelected === ReactionType.STOP_STREAM) newElem.params = { delay: newActionParam };
+        if (newActionSelected === ReactionType.START_REC) newElem.params = { delay: newActionParam };
+        if (newActionSelected === ReactionType.STOP_REC) newElem.params = { delay: newActionParam };
       }
       if (newActionSelected === ReactionType.SCENE_SWITCH && (!newActionParam || newActionParam === "")) {
         toast("Missing scene name as parameter.", {
@@ -176,10 +158,7 @@ export const CreateReactions = () => {
         });
         return;
       }
-      if (
-        !newActionParam &&
-        newActionSelected === ReactionType.TOGGLE_AUDIO_COMPRESSOR
-      ) {
+      if (!newActionParam && newActionSelected === ReactionType.TOGGLE_AUDIO_COMPRESSOR) {
         toast("Missing audio source identifier name as parameter.", {
           type: "error",
         });
@@ -223,7 +202,7 @@ export const CreateReactions = () => {
 
   /**
    * Function for deleting an action from the list
-   * @param id 
+   * @param id
    */
   function deleteAction(id: number) {
     const newList = actionsList.filter((item: any) => item.id !== id);
@@ -233,12 +212,11 @@ export const CreateReactions = () => {
 
   /**
    * Function for getting the display name for an action
-   * @param actionEnum 
-   * @returns 
+   * @param actionEnum
+   * @returns
    */
   function getAction(actionEnum: any) {
-    if (actionEnum === ReactionType.TOGGLE_AUDIO_COMPRESSOR)
-      return "Toggle the audio compressor";
+    if (actionEnum === ReactionType.TOGGLE_AUDIO_COMPRESSOR) return "Toggle the audio compressor";
     if (actionEnum === ReactionType.SCENE_SWITCH) return "Change the scene";
     if (actionEnum === ReactionType.START_STREAM) return "Start the stream";
     if (actionEnum === ReactionType.STOP_STREAM) return "Stop the stream";
@@ -249,16 +227,13 @@ export const CreateReactions = () => {
 
   /**
    * Function for getting the icon component for an action
-   * @param actionEnum 
-   * @returns 
+   * @param actionEnum
+   * @returns
    */
   function getIcon(actionEnum: ReactionType) {
-    if (actionEnum === ReactionType.TOGGLE_AUDIO_COMPRESSOR)
-      return <AiOutlineSound />;
-    if (actionEnum === ReactionType.SCENE_SWITCH)
-      return <MdPanoramaHorizontal />;
-    if (actionEnum === ReactionType.START_STREAM)
-      return <AiOutlinePlayCircle />;
+    if (actionEnum === ReactionType.TOGGLE_AUDIO_COMPRESSOR) return <AiOutlineSound />;
+    if (actionEnum === ReactionType.SCENE_SWITCH) return <MdPanoramaHorizontal />;
+    if (actionEnum === ReactionType.START_STREAM) return <AiOutlinePlayCircle />;
     if (actionEnum === ReactionType.STOP_STREAM) return <AiOutlineStop />;
     if (actionEnum === ReactionType.START_REC) return <AiFillVideoCamera />;
     if (actionEnum === ReactionType.STOP_REC) return <AiOutlineVideoCamera />;
@@ -276,13 +251,13 @@ export const CreateReactions = () => {
         }
       });
     };
-  
-    ipcRenderer.on('scenes-updated', handleScenesUpdated);
+
+    ipcRenderer.on("scenes-updated", handleScenesUpdated);
 
     getAllScenes().then((res) => {
       if (res.statusCode === 200) {
         setAvailableScenes(res.data.scenes);
-        console.log(res)
+        console.log(res);
       } else {
         toast("Error loading available scenes.", {
           type: "error",
@@ -291,7 +266,7 @@ export const CreateReactions = () => {
     });
 
     return () => {
-      ipcRenderer.removeListener('scenes-updated', handleScenesUpdated);
+      ipcRenderer.removeListener("scenes-updated", handleScenesUpdated);
     };
   }, []);
 
@@ -307,61 +282,61 @@ export const CreateReactions = () => {
         ) : (
           <div className="reactions-list">
             <div className="item-container-reaction non-dragable">
-              {actionsList.map((item: any, index: any) => {
-                return (
-                  <Card
-                    key={index}
-                    className="card-event"
-                    sx={{ minWidth: 150, minHeight: 100, margin: 2 }}
-                  >
-                    <CardContent>
-                      <Typography variant="h5" component="div">
-                        {getIcon(item.action)} "{item.name}"
-                      </Typography>
-                      <Typography sx={{ mb: 1.5 }} color="text.secondary">
-                        {getAction(item.action)}
-                      </Typography>
-                      <Typography variant="body2">
-                        {item.params
-                          ? Object.keys(item.params)
-                              .map((key) => {
-                                return <li key={key}><b>{key}: </b>{item.params[key]}</li>;
-                              })
-                          : ""}
-                      </Typography>
-                    </CardContent>
-                    <CardActions disableSpacing className="rightAlignItem">
-                      {
-                        warningMessageDisplaySceneMissing(item) === true ? (
-                          <Tooltip title="The scene that is registered in this reaction isn't available anymore. Please delete this reaction.">
-                            <IconButton
-                                color="error"
-                                aria-label="warning"
-                              >
-                                <BsFillExclamationTriangleFill />
-                            </IconButton>
-                          </Tooltip>
-                          
-                        ) : (<div></div>)
-                      }
-                      <IconButton
-                        color="warning"
-                        onClick={() => deleteAction(item.id)}
-                        aria-label="delete"
-                      >
-                        <BsTrash />
-                      </IconButton>
-                    </CardActions>
-                  </Card>
-                );
-              })}
+              {actionsList.map((item: any, index: any) => (
+                <Card
+                  key={index}
+                  className="card-event"
+                  sx={{
+                    backgroundColor: "#565d68",
+                    borderRadius: "10px",
+                    border: "2px solid orange",
+                    color: "white",
+                    minWidth: 150,
+                    minHeight: 100,
+                    margin: 2,
+                  }}
+                >
+                  <CardContent>
+                    <Typography variant="h5" component="div">
+                      {getIcon(item.action)} "{item.name}"
+                    </Typography>
+                    <Typography sx={{ mb: 1.5, color: "orange" }}>{getAction(item.action)}</Typography>
+                    <Typography variant="body2">
+                      {item.params
+                        ? Object.keys(item.params).map((key) => {
+                            return (
+                              <li key={key}>
+                                <b>{key}: </b>
+                                {item.params[key]}
+                              </li>
+                            );
+                          })
+                        : ""}
+                    </Typography>
+                  </CardContent>
+                  <CardActions disableSpacing className="rightAlignItem">
+                    {warningMessageDisplaySceneMissing(item) === true ? (
+                      <Tooltip title="The scene that is registered in this reaction isn't available anymore. Please delete this reaction.">
+                        <IconButton className="button-orange">
+                          <BsFillExclamationTriangleFill />
+                        </IconButton>
+                      </Tooltip>
+                    ) : (
+                      <div></div>
+                    )}
+                    <IconButton color="warning" onClick={() => deleteAction(item.id)} aria-label="delete">
+                      <BsTrash color="white" />
+                    </IconButton>
+                  </CardActions>
+                </Card>
+              ))}
             </div>
           </div>
         )}
       </div>
 
       <Link className="pt-20" to="/actions-reactions/home">
-        <Button variant="outlined" startIcon={<BsArrowReturnLeft />} color="info">
+        <Button className="go-back-button" variant="outlined" startIcon={<BsArrowReturnLeft />} color="info">
           Go Back
         </Button>
       </Link>
@@ -370,8 +345,7 @@ export const CreateReactions = () => {
         <DialogTitle>Add Reaction</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Reactions are activated when Actions are triggered. Here you can
-            create your own reactions !
+            Reactions are activated when Actions are triggered. Here you can create your own reactions !
           </DialogContentText>
 
           <div className="form-item">
@@ -407,39 +381,37 @@ export const CreateReactions = () => {
           </div>
 
           <div className="form-item">
-            {
-              newActionSelected === "SCENE_SWITCH" ? (
-                <>
-                  <InputLabel id="select-event-label">Parameter reaction</InputLabel>
-                  <Select
-                    labelId="select-event-label"
-                    id="select-event"
-                    value={newActionParam}
-                    onChange={(action) => setNewActionParam(action.target.value as string)}
-                    autoWidth
-                    label="ParameterReaction"
-                  >
-                    {availableScenes.map((k) => {
-                      return (
-                        <MenuItem key={k.uuid} value={JSON.stringify(k)}>
-                          {k.name}
-                        </MenuItem>
-                      );
-                    })}
-                  </Select>
-                </>
-              ) : (
-                <>
-                  <TextField
-                    id="parameter-action"
-                    label="Parameter action"
-                    type="text"
-                    variant="outlined"
-                    onChange={(action) => setNewActionParam(action.target.value)}
-                  />
-                </>
-              )
-            }
+            {newActionSelected === "SCENE_SWITCH" ? (
+              <>
+                <InputLabel id="select-event-label">Parameter reaction</InputLabel>
+                <Select
+                  labelId="select-event-label"
+                  id="select-event"
+                  value={newActionParam}
+                  onChange={(action) => setNewActionParam(action.target.value as string)}
+                  autoWidth
+                  label="ParameterReaction"
+                >
+                  {availableScenes.map((k) => {
+                    return (
+                      <MenuItem key={k.uuid} value={JSON.stringify(k)}>
+                        {k.name}
+                      </MenuItem>
+                    );
+                  })}
+                </Select>
+              </>
+            ) : (
+              <>
+                <TextField
+                  id="parameter-action"
+                  label="Parameter action"
+                  type="text"
+                  variant="outlined"
+                  onChange={(action) => setNewActionParam(action.target.value)}
+                />
+              </>
+            )}
           </div>
         </DialogContent>
         <DialogActions>
@@ -448,13 +420,9 @@ export const CreateReactions = () => {
         </DialogActions>
       </Dialog>
 
-      <div className="add_button_pos">
-        <Button
-          variant="contained"
-          className="add_button"
-          onClick={handleClickOpen}
-        >
-          Add Reaction
+      <div className="add-button-pos">
+        <Button variant="contained" className="add-button" onClick={handleClickOpen}>
+          +
         </Button>
       </div>
     </>

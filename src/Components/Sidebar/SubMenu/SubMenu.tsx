@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import styled from 'styled-components';
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import styled from "styled-components";
 
 const SidebarLink = styled(Link)`
   display: flex;
-  color: #EEEEEE;
+  color: #eeeeee;
   justify-content: space-between;
   align-items: center;
   padding: 20px;
@@ -14,9 +14,9 @@ const SidebarLink = styled(Link)`
   font-size: 18px;
 
   &:hover {
-    color: #EEEEEE;
+    color: #eeeeee;
     background: #252831;
-    border-left: 4px solid #FD7014;
+    border-left: 4px solid orange;
     cursor: pointer;
   }
 `;
@@ -32,11 +32,11 @@ const DropdownLink = styled(Link)`
   display: flex;
   align-items: center;
   text-decoration: none;
-  color: #EEEEEE;
+  color: #eeeeee;
   font-size: 18px;
 
   &:hover {
-    color: #EEEEEE;
+    color: #eeeeee;
     background: #323642;
     cursor: pointer;
   }
@@ -54,13 +54,7 @@ const SubMenu = ({ item }: any) => {
           {item.icon}
           <SidebarLabel>{item.title}</SidebarLabel>
         </div>
-        <div>
-          {item.subNav && subnav
-            ? item.iconOpened
-            : item.subNav
-            ? item.iconClosed
-            : null}
-        </div>
+        <div>{item.subNav && subnav ? item.iconOpened : item.subNav ? item.iconClosed : null}</div>
       </SidebarLink>
       {subnav &&
         item.subNav.map((item: any, index: any) => {

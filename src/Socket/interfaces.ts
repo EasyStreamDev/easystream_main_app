@@ -135,7 +135,7 @@ export interface DisplaySource {
 
 export interface AllDisplaySources {
   length: number;
-  display_sources: [DisplaySource];
+  display_sources: DisplaySource[];
 }
 
 export interface AllDisplaySourcesResult {
@@ -147,8 +147,8 @@ export interface AllDisplaySourcesResult {
 
 // getAllLinksMicsToVideoSource
 export interface linkMicsToVideoSource {
-  display_source_id: string;
-  mic_ids: [string];
+  display_source_ids: [string];
+  mic_id: string;
 }
 
 export interface AllLinksMicsToVideoSource {

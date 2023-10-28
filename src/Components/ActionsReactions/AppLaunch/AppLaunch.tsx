@@ -3,17 +3,16 @@ import { AddAppLaunch } from "../AddAppLaunch/AddAppLaunch";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import Button from "@mui/material/Button";
-import './AppLaunch.css'
+import "./AppLaunch.css";
 
-import { BsArrowReturnLeft } from "react-icons/bs"
-
+import { BsArrowReturnLeft } from "react-icons/bs";
 
 import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
 
 import BoxEvent from "../../BoxEvent/BoxEvent";
-import { LocalStorage } from '../../../LocalStorage/LocalStorage';
-import { getActReactCouplesFormat, actionReactionFormat, removeActReactAnswer } from '../../../Socket/interfaces';
-const ipcRenderer = window.require('electron').ipcRenderer
+import { LocalStorage } from "../../../LocalStorage/LocalStorage";
+import { getActReactCouplesFormat, actionReactionFormat, removeActReactAnswer } from "../../../Socket/interfaces";
+const ipcRenderer = window.require("electron").ipcRenderer;
 
 /**
  * Define an enum for action types
@@ -28,18 +27,18 @@ export enum ActionType {
  * Define interfaces for identified action-reaction pairs
  */
 export interface action_reaction_identified {
-  actReactId: number,
-  isActive: boolean,
+  actReactId: number;
+  isActive: boolean;
   action: {
-    actionId: number,
-    type: string,
-    params?: Object
-  },
+    actionId: number;
+    type: string;
+    params?: Object;
+  };
   reaction: {
-    reactionId: number,
-    type: string,
-    params?: Object
-  }
+    reactionId: number;
+    type: string;
+    params?: Object;
+  };
 }
 
 /**
@@ -47,14 +46,14 @@ export interface action_reaction_identified {
  */
 export interface action_reaction {
   action: {
-    type: string,
-    params?: Object
-  },
+    type: string;
+    params?: Object;
+  };
   reaction: {
-    name: string,
-    type: string,
-    params?: Object
-  }
+    name: string;
+    type: string;
+    params?: Object;
+  };
 }
 
 /**
@@ -64,21 +63,21 @@ interface event {
   id: number;
   keywords: String[];
   source: {
-    id?: number,
-    name?: String,
-    action?: ActionType,
-    param_value?: number
+    id?: number;
+    name?: String;
+    action?: ActionType;
+    param_value?: number;
   };
 }
 
 /**
  * Define the AppLaunch component
- * @param props 
- * @returns 
+ * @param props
+ * @returns
  */
 export const AppLaunch = (props: any) => {
   // State variables
-  const [ action_reactionArray, setaction_reactionArray ] = React.useState<action_reaction_identified[]>([]);
+  const [action_reactionArray, setaction_reactionArray] = React.useState<action_reaction_identified[]>([]);
   const [newEvent, setnewEvent] = React.useState<event>({
     id: action_reactionArray.length,
     keywords: [],
@@ -108,8 +107,7 @@ export const AppLaunch = (props: any) => {
    * Function to update the action-reaction array
    */
   const updateActionReactionArray = () => {
-    getActionReactionFromServer()
-    .then(res => {
+    getActionReactionFromServer().then((res) => {
       if (res.statusCode === 200) {
         console.log("updateActionReactionArray", res);
         setaction_reactionArray(res.data.actReacts);
@@ -119,57 +117,56 @@ export const AppLaunch = (props: any) => {
 
   /**
    * Function to get action-reaction pairs from the server
-   * @returns 
+   * @returns
    */
   const getActionReactionFromServer = (): Promise<getActReactCouplesFormat> => {
     return new Promise(async (resolve, reject) => {
-      const result: getActReactCouplesFormat = await ipcRenderer.sendSync('getActReactCouples', 'ping');
+      const result: getActReactCouplesFormat = await ipcRenderer.sendSync("getActReactCouples", "ping");
       resolve(result);
     });
   };
 
   /**
    * Function to send an action-reaction pair to the server
-   * @param newActionReaction 
-   * @returns 
+   * @param newActionReaction
+   * @returns
    */
   const sendActionReactionToServer = (newActionReaction: action_reaction): Promise<actionReactionFormat> => {
     return new Promise(async (resolve, reject) => {
-      const result: actionReactionFormat = await ipcRenderer.sendSync('setActionReaction', newActionReaction);
+      const result: actionReactionFormat = await ipcRenderer.sendSync("setActionReaction", newActionReaction);
       resolve(result);
     });
   };
 
   /**
    * Function to add a new event
-   * @param event 
+   * @param event
    */
   function addNewEvent(event: any) {
     let newActionReaction: action_reaction = {
       action: {
         type: ActionType.APP_LAUNCH as string,
         params: {
-          app_name: event.keywords[0] // ! Careful
-        }
+          app_name: event.keywords[0], // ! Careful
+        },
       },
       reaction: {
         name: event.source.name,
         type: event.source.action,
-        params: event.source.params
-      }
-    }
+        params: event.source.params,
+      },
+    };
 
-    console.log("New action sent to server", newActionReaction)
-    sendActionReactionToServer(newActionReaction)
-    .then(res => {
+    console.log("New action sent to server", newActionReaction);
+    sendActionReactionToServer(newActionReaction).then((res) => {
       if (res.statusCode === 200) {
         updateActionReactionArray();
         toast("Action & Reaction submitted successfully !", {
-          type: "success"
+          type: "success",
         });
       } else {
         toast("Error server.", {
-          type: "error"
+          type: "error",
         });
       }
     });
@@ -177,9 +174,9 @@ export const AppLaunch = (props: any) => {
 
   /**
    * Function to find a deleted element in an array
-   * @param originalArray 
-   * @param newArray 
-   * @returns 
+   * @param originalArray
+   * @param newArray
+   * @returns
    */
   function findDeletedElement(originalArray: any[], newArray: any[]): any | undefined {
     const newSet = new Set(newArray);
@@ -193,40 +190,40 @@ export const AppLaunch = (props: any) => {
 
   /**
    * Function to remove and update an action-reaction pair
-   * @param params 
-   * @param eventArr 
-   * @returns 
+   * @param params
+   * @param eventArr
+   * @returns
    */
   const removeAndUpdateActReaction = (params: any, eventArr: any) => {
     return new Promise(async (resolve, reject) => {
-      const result: removeActReactAnswer = await ipcRenderer.sendSync('removeActReact', params)
+      const result: removeActReactAnswer = await ipcRenderer.sendSync("removeActReact", params);
       if (result.statusCode === 200) {
-        console.log("Remove ActReaction", result.data.actReactId)
-        updateActionReactionArray()
+        console.log("Remove ActReaction", result.data.actReactId);
+        updateActionReactionArray();
         toast("Remove Action & Reaction successfully done !", {
-          type: "success"
+          type: "success",
         });
       } else {
         toast("Error server. Please check connection.", {
-          type: "error"
+          type: "error",
         });
       }
     });
-  }
+  };
 
   /**
    * Function to update the event from BoxEvent component
-   * @param eventArr 
+   * @param eventArr
    */
   function updateEventFromBoxEvent(eventArr: any) {
     console.log("Before", action_reactionArray);
     console.log("After", eventArr);
 
-    const elem = findDeletedElement(action_reactionArray, eventArr)
+    const elem = findDeletedElement(action_reactionArray, eventArr);
     if (elem !== undefined) {
-      console.log("LELEMENT", elem)
+      console.log("LELEMENT", elem);
       const actReactId = elem.actReactId;
-      removeAndUpdateActReaction({ actReactId }, eventArr)
+      removeAndUpdateActReaction({ actReactId }, eventArr);
     } else {
       console.error("Changement undefined.");
     }
@@ -238,17 +235,16 @@ export const AppLaunch = (props: any) => {
   useEffect(() => {
     async function sleep(): Promise<boolean> {
       return new Promise((resolve) => {
-        getActionReactionFromServer()
-        .then(res => {
+        getActionReactionFromServer().then((res) => {
           if (res.statusCode === 200) {
             console.log("New Array", res);
             setaction_reactionArray(res.data.actReacts);
             resolve(false);
           }
-        })
-      })
+        });
+      });
     }
-    
+
     sleep().then((res) => setload(res));
   }, []);
 
@@ -256,51 +252,46 @@ export const AppLaunch = (props: any) => {
    * Function to add a point to the loading message
    */
   function addpoint() {
-    {setInterval(() => {
-      (point.length >= 3 ? setpoint(".") : setpoint(point + "."));
-    }, 1000)}
+    {
+      setInterval(() => {
+        point.length >= 3 ? setpoint(".") : setpoint(point + ".");
+      }, 1000);
+    }
   }
-
 
   return (
     <>
-    {load ? (
+      {load ? (
         <>
           <h1>Easystream is loading</h1>
           <h1>{point}</h1>
           {addpoint()}
         </>
       ) : (
-      <>
-      {
-        action_reactionArray.map((item: any, index: number) => {
-          if (item.action.type === "APP_LAUNCH") {
-            return (
-              <BoxEvent
+        <>
+          {action_reactionArray.map((item: any, index: number) => {
+            if (item.action.type === "APP_LAUNCH") {
+              return (
+                <BoxEvent
                   className="non-dragable"
-                  key={index} keyObj={item}
+                  key={index}
+                  keyObj={item}
                   i={index}
                   eventArray={action_reactionArray}
-                  seteventArray={updateEventFromBoxEvent}/>
-            )
-          }
-        })
-      }
-      <AddAppLaunch
-        addNewEvent={addNewEvent}
-        sources={sources}
-        newEvent={newEvent}
-        setnewEvent={setnewEvent}
-      />
-        <Link style={{ "paddingTop": "20px" }} to="/actions-reactions/actions">
-          <Button variant="outlined" startIcon={<BsArrowReturnLeft />} color="info">
-            Go Back
-          </Button>
-        </Link>
-
-      </>
-      )
-    }
+                  seteventArray={updateEventFromBoxEvent}
+                />
+              );
+            }
+            return <></>;
+          })}
+          <AddAppLaunch addNewEvent={addNewEvent} sources={sources} newEvent={newEvent} setnewEvent={setnewEvent} />
+          <Link style={{ paddingTop: "20px" }} to="/actions-reactions/actions">
+            <Button className="go-back-button" variant="outlined" startIcon={<BsArrowReturnLeft />} color="info">
+              Go Back
+            </Button>
+          </Link>
+        </>
+      )}
     </>
   );
 };

@@ -1,6 +1,5 @@
 @import "../../../../index.css";
 
-
 styleModal {
   position: "absolute" as "absolute";
   top: "50%";
@@ -8,7 +7,7 @@ styleModal {
   transform: "translate(-50%, -50%)";
   width: 400;
   background-color: "#222831";
-  border: "2px solid #FD7014";
+  border: "2px solid orange";
   box-shadow: 24;
   padding: 4;
   border-radius: "15px";
@@ -32,10 +31,10 @@ TextStylesModal {
 }
 
 SelectStylesModal {
-  color: red;
+  color: orange;
 }
 
 /* hover typography-item */
 .typography-item:hover {
-  color: #FD7014;
+  color: orange;
 }

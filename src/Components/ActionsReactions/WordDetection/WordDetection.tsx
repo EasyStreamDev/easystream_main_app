@@ -2,17 +2,13 @@ import React, { Component, useEffect, useState } from "react";
 import { AddNewWord } from "../AddNewWord/AddNewWord";
 import { Link } from "react-router-dom";
 import Button from "@mui/material/Button";
-import { BsArrowReturnLeft } from "react-icons/bs"
-import './WordDetection.css'
+import { BsArrowReturnLeft } from "react-icons/bs";
+import "./WordDetection.css";
 import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
 
 import BoxEvent from "../../BoxEvent/BoxEvent";
 import { LocalStorage } from "../../../LocalStorage/LocalStorage";
-import {
-  getActReactCouplesFormat,
-  actionReactionFormat,
-  removeActReactAnswer,
-} from "../../../Socket/interfaces";
+import { getActReactCouplesFormat, actionReactionFormat, removeActReactAnswer } from "../../../Socket/interfaces";
 import { toast } from "react-toastify";
 import { ActionType, action_reaction_identified } from "../ActionsReactions";
 const ipcRenderer = window.require("electron").ipcRenderer;
@@ -41,17 +37,13 @@ interface event {
 }
 
 export const WordDetection = (props: any) => {
-  const [action_reactionArray, setaction_reactionArray] = React.useState<
-    action_reaction_identified[]
-  >([]); // State for storing action-reaction pairs
+  const [action_reactionArray, setaction_reactionArray] = React.useState<action_reaction_identified[]>([]); // State for storing action-reaction pairs
   const [newEvent, setnewEvent] = React.useState<event>({
     id: action_reactionArray.length, // Set the ID of the new event based on the length of the action-reaction array
     keywords: [],
     source: {},
   });
-  const [sources] = React.useState(
-    LocalStorage.getItemObject("actionsList") || []
-  ); // State for storing sources
+  const [sources] = React.useState(LocalStorage.getItemObject("actionsList") || []); // State for storing sources
   const [load, setload] = React.useState(true); // Flag indicating whether the component is loading or not
   const [point, setpoint] = React.useState("."); // State for displaying a point
 
@@ -80,22 +72,14 @@ export const WordDetection = (props: any) => {
 
   const getActionReactionFromServer = (): Promise<getActReactCouplesFormat> => {
     return new Promise(async (resolve, reject) => {
-      const result: getActReactCouplesFormat = await ipcRenderer.sendSync(
-        "getActReactCouples",
-        "ping"
-      ); // Send a synchronous IPC message to get action-reaction couples from the server
+      const result: getActReactCouplesFormat = await ipcRenderer.sendSync("getActReactCouples", "ping"); // Send a synchronous IPC message to get action-reaction couples from the server
       resolve(result);
     });
   };
 
-  const sendActionReactionToServer = (
-    newActionReaction: action_reaction
-  ): Promise<actionReactionFormat> => {
+  const sendActionReactionToServer = (newActionReaction: action_reaction): Promise<actionReactionFormat> => {
     return new Promise(async (resolve, reject) => {
-      const result: actionReactionFormat = await ipcRenderer.sendSync(
-        "setActionReaction",
-        newActionReaction
-      ); // Send a synchronous IPC message to set a new action-reaction pair on the server
+      const result: actionReactionFormat = await ipcRenderer.sendSync("setActionReaction", newActionReaction); // Send a synchronous IPC message to set a new action-reaction pair on the server
       resolve(result);
     });
   };
@@ -129,10 +113,7 @@ export const WordDetection = (props: any) => {
     });
   }
 
-  function findDeletedElement(
-    originalArray: any[],
-    newArray: any[]
-  ): any | undefined {
+  function findDeletedElement(originalArray: any[], newArray: any[]): any | undefined {
     const newSet = new Set(newArray);
     for (const element of originalArray) {
       if (!newSet.has(element)) {
@@ -144,10 +125,7 @@ export const WordDetection = (props: any) => {
 
   const removeAndUpdateActReaction = (params: any, eventArr: any) => {
     return new Promise(async (resolve, reject) => {
-      const result: removeActReactAnswer = await ipcRenderer.sendSync(
-        "removeActReact",
-        params
-      ); // Send a synchronous IPC message to remove the action-reaction pair from the server
+      const result: removeActReactAnswer = await ipcRenderer.sendSync("removeActReact", params); // Send a synchronous IPC message to remove the action-reaction pair from the server
       if (result.statusCode === 200) {
         console.log("Remove ActReaction", result.data.actReactId);
         updateActionReactionArray();
@@ -224,14 +202,9 @@ export const WordDetection = (props: any) => {
               );
             }
           })}
-          <AddNewWord
-            addNewEvent={addNewEvent}
-            sources={sources}
-            newEvent={newEvent}
-            setnewEvent={setnewEvent}
-          />
+          <AddNewWord addNewEvent={addNewEvent} sources={sources} newEvent={newEvent} setnewEvent={setnewEvent} />
           <Link style={{ paddingTop: "20px" }} to="/actions-reactions/actions">
-            <Button variant="outlined" startIcon={<BsArrowReturnLeft />} color="info">
+            <Button className="go-back-button" variant="outlined" startIcon={<BsArrowReturnLeft />} color="info">
               Go Back
             </Button>
           </Link>

@@ -3,7 +3,7 @@ import { makeStyles } from "@mui/styles";
 import { inputLabelClasses } from "@mui/material/InputLabel";
 import { useRef, useState, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import './login.css'
+import "./login.css";
 
 import React from "react";
 import axios from "../../api/axios";
@@ -16,27 +16,27 @@ const useStyles = makeStyles({
   TextField: {
     width: "100%",
     "& label.Mui-focused": {
-      color: "#f56f28",
+      color: "#ffa500",
     },
     "& .MuiInput-underline:after": {
-      borderBottomColor: "#f56f28",
+      borderBottomColor: "#ffa500",
       color: "#FFFFFF",
     },
     "& .MuiInput-underline": {
-      borderBottomColor: "#f56f28",
+      borderBottomColor: "#ffa500",
       color: "#FFFFFF",
     },
     "& .MuiOutlinedInput-root": {
       "& fieldset": {
-        borderColor: "#f56f28",
+        borderColor: "#ffa500",
         color: "#FFFFFF",
       },
       "&:hover fieldset": {
-        borderColor: "#f56f28",
+        borderColor: "#ffa500",
         color: "#FFFFFF",
       },
       "&.Mui-focused fieldset": {
-        borderColor: "#f56f28",
+        borderColor: "#ffa500",
         color: "#FFFFFF",
       },
     },
@@ -47,13 +47,13 @@ export const Login = () => {
   const classes = useStyles();
   const style = {
     Button: {
-      borderColor: "#f56f28",
+      borderColor: "#ffa500",
       color: "#FFFFFF",
       marginTop: "20px",
-      "&:hover": {
-        borderColor: "#f56f28",
-        color: "#f56f28",
-      },
+      // "&:hover": {
+      //   borderColor: "#ffa500",
+      //   color: "#ffa500",
+      // },
     },
   };
 
@@ -99,7 +99,7 @@ export const Login = () => {
       setEmail("");
       setPwd("");
       navigate(from, { replace: true });
-      console.log(response?.data)
+      console.log(response?.data);
     } catch (err: any) {
       if (!err?.response) {
         toast("No Server Response.", {
@@ -128,21 +128,18 @@ export const Login = () => {
 
   return (
     <>
-      <div style={{
-        width: "25vw",
-        maxWidth: "800px",
-        minWidth: "300px",
-        justifyContent: 'center',
-        alignItems: 'center',
-        flexDirection: 'column',
-        display: 'flex',
-      }}
+      <div
+        style={{
+          width: "25vw",
+          maxWidth: "800px",
+          minWidth: "300px",
+          justifyContent: "center",
+          alignItems: "center",
+          flexDirection: "column",
+          display: "flex",
+        }}
       >
-        <p
-          ref={errRef}
-          className={errMsg ? "errmsg" : "offscreen"}
-          aria-live="assertive"
-        >
+        <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive">
           {errMsg}
         </p>
         <h1>Login</h1>
@@ -162,7 +159,7 @@ export const Login = () => {
             sx: {
               color: "#FFFFFF",
               [`&.${inputLabelClasses.shrink}`]: {
-                color: "#f56f28",
+                color: "#ffa500",
               },
             },
           }}
@@ -183,18 +180,13 @@ export const Login = () => {
             sx: {
               color: "#FFFFFF",
               [`&.${inputLabelClasses.shrink}`]: {
-                color: "#f56f28",
+                color: "#ffa500",
               },
             },
           }}
         />
-        <Button 
-        variant="outlined" 
-        sx={style.Button} 
-        onClick={handleSubmit}
-        >
-          {" "}
-          Login{" "}
+        <Button className="button-color-orange" variant="outlined" onClick={handleSubmit}>
+          Login
         </Button>
       </div>
     </>

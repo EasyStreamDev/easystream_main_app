@@ -1,57 +1,55 @@
 @import "../../../index.css";
 
-
 body {
-    margin: 0
+  margin: 0;
+}
+
+.button-orange {
+  color: orange !important;
 }
 
 .events-container {
-    text-align: center;
-    width: 100%;
-    height: 60%;
+  text-align: center;
+  width: 100%;
+  height: 60%;
 }
 
 .reactions-list {
-    max-height: 45rem;
-    min-height: 23rem;
+  max-height: 45rem;
+  min-height: 23rem;
 }
 
 .item-container-reaction {
-    overflow:scroll;
-    overflow-y:scroll;
-    overflow-x:hidden;
-    max-height: 21rem;
-    min-height: 23rem;
+  overflow-y: auto;
+  overflow-x: hidden;
+  max-height: 21rem;
+  min-height: 23rem;
 }
 
 .card-event {
-    background-color: black;
-    border-color: grey;
+  background-color: black;
+  border-color: grey;
 }
 
-.add_button_pos {
-    top: calc(100% - 20%);
-    left: calc(100% - 20%);
-    position: absolute;
-    margin-right: 3vw;
-}
-
-.add_button {
-    font-size: 1.6vw !important;
+.add-button-pos {
+  top: 80%;
+  left: 80%;
+  position: absolute;
+  margin-right: 3vw;
 }
 
 .rightAlignItem {
-    justify-content: space-between;
+  justify-content: space-between;
 }
 
-.MuiCardActions-root{
-    padding: 0 !important;
+.MuiCardActions-root {
+  padding: 0 !important;
 }
 
 .form-item {
-    padding: 10px;
+  padding: 10px;
 }
 
 .pt-20 {
-    padding-top: 20px;
+  padding-top: 20px;
 }

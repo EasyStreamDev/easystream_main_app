@@ -1,17 +1,13 @@
 import React, { Component, useEffect, useState } from "react";
 import BoxEvent from "../../BoxEvent/BoxEvent";
-import './KeyPressed.css'
+import "./KeyPressed.css";
 import { LocalStorage } from "../../../LocalStorage/LocalStorage";
-import {
-  getActReactCouplesFormat,
-  actionReactionFormat,
-  removeActReactAnswer,
-} from "../../../Socket/interfaces";
+import { getActReactCouplesFormat, actionReactionFormat, removeActReactAnswer } from "../../../Socket/interfaces";
 import { AddNewKeyPressed } from "../AddNewKeyPressed/AddNewKeyPressed";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import Button from "@mui/material/Button";
-import { BsArrowReturnLeft } from "react-icons/bs"
+import { BsArrowReturnLeft } from "react-icons/bs";
 const ipcRenderer = window.require("electron").ipcRenderer;
 
 export enum ActionType {
@@ -59,17 +55,13 @@ interface event {
 }
 
 export const KeyPressed = (props: any) => {
-  const [action_reactionArray, setaction_reactionArray] = React.useState<
-    action_reaction_identified[]
-  >([]); // State variable to store action-reaction pairs
+  const [action_reactionArray, setaction_reactionArray] = React.useState<action_reaction_identified[]>([]); // State variable to store action-reaction pairs
   const [newEvent, setnewEvent] = React.useState<event>({
     id: action_reactionArray.length,
     key: "",
     source: {},
   });
-  const [sources] = React.useState(
-    LocalStorage.getItemObject("actionsList") || []
-  ); // State variable to store sources
+  const [sources] = React.useState(LocalStorage.getItemObject("actionsList") || []); // State variable to store sources
   const [load, setload] = React.useState(true); // State variable to indicate if the component is loading
   const [point, setpoint] = React.useState("."); // State variable to store a point
 
@@ -84,22 +76,14 @@ export const KeyPressed = (props: any) => {
 
   const getActionReactionFromServer = (): Promise<getActReactCouplesFormat> => {
     return new Promise(async (resolve, reject) => {
-      const result: getActReactCouplesFormat = await ipcRenderer.sendSync(
-        "getActReactCouples",
-        "ping"
-      ); // Send a synchronous request to the server to get action-reaction pairs
+      const result: getActReactCouplesFormat = await ipcRenderer.sendSync("getActReactCouples", "ping"); // Send a synchronous request to the server to get action-reaction pairs
       resolve(result);
     });
   };
 
-  const sendActionReactionToServer = (
-    newActionReaction: action_reaction
-  ): Promise<actionReactionFormat> => {
+  const sendActionReactionToServer = (newActionReaction: action_reaction): Promise<actionReactionFormat> => {
     return new Promise(async (resolve, reject) => {
-      const result: actionReactionFormat = await ipcRenderer.sendSync(
-        "setActionReaction",
-        newActionReaction
-      ); // Send a synchronous request to the server to set an action-reaction pair
+      const result: actionReactionFormat = await ipcRenderer.sendSync("setActionReaction", newActionReaction); // Send a synchronous request to the server to set an action-reaction pair
       resolve(result);
     });
   };
@@ -134,10 +118,7 @@ export const KeyPressed = (props: any) => {
     });
   }
 
-  function findDeletedElement(
-    originalArray: any[],
-    newArray: any[]
-  ): any | undefined {
+  function findDeletedElement(originalArray: any[], newArray: any[]): any | undefined {
     const newSet = new Set(newArray);
     for (const element of originalArray) {
       if (!newSet.has(element)) {
@@ -149,10 +130,7 @@ export const KeyPressed = (props: any) => {
 
   const removeAndUpdateActReaction = (params: any, eventArr: any) => {
     return new Promise(async (resolve, reject) => {
-      const result: removeActReactAnswer = await ipcRenderer.sendSync(
-        "removeActReact",
-        params
-      ); // Send a synchronous request to the server to remove an action-reaction pair
+      const result: removeActReactAnswer = await ipcRenderer.sendSync("removeActReact", params); // Send a synchronous request to the server to remove an action-reaction pair
       if (result.statusCode === 200) {
         console.log("Remove ActReaction", result.data.actReactId);
         updateActionReactionArray(); // Update the action-reaction array after removing an action-reaction pair
@@ -229,14 +207,9 @@ export const KeyPressed = (props: any) => {
               );
             }
           })}
-          <AddNewKeyPressed
-            addNewEvent={addNewEvent}
-            sources={sources}
-            newEvent={newEvent}
-            setnewEvent={setnewEvent}
-          />
+          <AddNewKeyPressed addNewEvent={addNewEvent} sources={sources} newEvent={newEvent} setnewEvent={setnewEvent} />
           <Link style={{ paddingTop: "20px" }} to="/actions-reactions/actions">
-            <Button variant="outlined" startIcon={<BsArrowReturnLeft />} color="info">
+            <Button className="go-back-button" variant="outlined" startIcon={<BsArrowReturnLeft />} color="info">
               Go Back
             </Button>
           </Link>
