@@ -121,7 +121,7 @@ export const AppLaunch = (props: any) => {
    */
   const getActionReactionFromServer = (): Promise<getActReactCouplesFormat> => {
     return new Promise(async (resolve, reject) => {
-      const result: getActReactCouplesFormat = await ipcRenderer.sendSync("getActReactCouples", "ping");
+      const result: getActReactCouplesFormat = await ipcRenderer.sendSync("/areas/get", "ping");
       resolve(result);
     });
   };
@@ -133,7 +133,7 @@ export const AppLaunch = (props: any) => {
    */
   const sendActionReactionToServer = (newActionReaction: action_reaction): Promise<actionReactionFormat> => {
     return new Promise(async (resolve, reject) => {
-      const result: actionReactionFormat = await ipcRenderer.sendSync("setActionReaction", newActionReaction);
+      const result: actionReactionFormat = await ipcRenderer.sendSync("/areas/create", newActionReaction);
       resolve(result);
     });
   };
@@ -196,7 +196,7 @@ export const AppLaunch = (props: any) => {
    */
   const removeAndUpdateActReaction = (params: any, eventArr: any) => {
     return new Promise(async (resolve, reject) => {
-      const result: removeActReactAnswer = await ipcRenderer.sendSync("removeActReact", params);
+      const result: removeActReactAnswer = await ipcRenderer.sendSync("/areas/remove", params);
       if (result.statusCode === 200) {
         console.log("Remove ActReaction", result.data.actReactId);
         updateActionReactionArray();

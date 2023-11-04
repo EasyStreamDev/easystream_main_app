@@ -12,12 +12,7 @@ import {
   ListItem,
   ListItemText,
   OutlinedInput,
-  Popover,
-  Switch,
-  TextField,
-  Typography,
 } from "@mui/material";
-import Divider from "@mui/material/Divider";
 import React, { Fragment, useEffect } from "react";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
@@ -33,7 +28,6 @@ import {
 import { toast } from "react-toastify";
 import { BsTrash } from "react-icons/bs";
 import "./Subtitles.css";
-import { Theme } from "@mui/material/styles";
 import MicNoneIcon from "@material-ui/icons/MicNone";
 const ipcRenderer = window.require("electron").ipcRenderer;
 
@@ -77,7 +71,7 @@ export const Subtitles = () => {
 
   const getAllCompressors = (): Promise<AllMics> => {
     return new Promise(async (resolve, reject) => {
-      const result: AllMics = await ipcRenderer.sendSync("getAllMics", "ping");
+      const result: AllMics = await ipcRenderer.sendSync("/microphones/get", "ping");
       resolve(result);
     });
   };
@@ -155,7 +149,7 @@ export const Subtitles = () => {
         linked_mics: linkedMics,
         uuid: uuid,
       };
-      const result: resultFormat = ipcRenderer.sendSync("setSubtitles", param);
+      const result: resultFormat = ipcRenderer.sendSync("/subtitles/set", param);
       resolve(result);
     });
   };
@@ -166,21 +160,21 @@ export const Subtitles = () => {
         linked_mics: [], // Empty linked_mics means that the text field will be deleted
         uuid: uuid,
       };
-      const result: resultFormat = ipcRenderer.sendSync("setSubtitles", param);
+      const result: resultFormat = ipcRenderer.sendSync("/subtitles/set", param);
       resolve(result);
     });
   };
 
   const getSubtitlesSettings = (): Promise<AllSubtitlesSettings> => {
     return new Promise(async (resolve, reject) => {
-      const result: AllSubtitlesSettings = await ipcRenderer.sendSync("getSubtitlesSettings", "ping");
+      const result: AllSubtitlesSettings = await ipcRenderer.sendSync("/subtitles/get", "ping");
       resolve(result);
     });
   };
 
   const getAllTextFields = (): Promise<AllTextFields> => {
     return new Promise(async (resolve, reject) => {
-      const result: any = await ipcRenderer.sendSync("getAllTextFields", "ping");
+      const result: any = await ipcRenderer.sendSync("/text-fields/get", "ping");
       resolve(result);
     });
   };

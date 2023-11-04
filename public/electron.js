@@ -4,7 +4,7 @@ const path = require("path");
 const isDev = require("electron-is-dev");
 let notRelease = process.env.NOT_RELEASE || false;
 const { TCPConnection } = require("../src/Socket/socket.js");
-const {autoUpdater} = require("electron-updater");
+const { autoUpdater } = require("electron-updater");
 const log = require('electron-log');
 const localIpAddress = require("local-ip-address")
 
@@ -48,8 +48,8 @@ const createWindow = () => {
   // load the index.html of the app. (or localhost on port 3000 if you're in development)
   const startURL = isDev || notRelease
     ? "http://localhost:3000/app"
-    : `file://${path.join(__dirname, '../build/index.html')}`; 
-  
+    : `file://${path.join(__dirname, '../build/index.html')}`;
+
 
   mainWindow.loadURL(startURL)
 
@@ -72,7 +72,7 @@ ipcMain.on("getLocalIP", (event, _) => {
   return true;
 });
 
-ipcMain.on("getAllMics", (event, arg) => {
+ipcMain.on("/microphones/get", (event, arg) => {
   if (isDev) {
     let res = {
       statusCode: 200,
@@ -105,7 +105,7 @@ ipcMain.on("getAllMics", (event, arg) => {
   }
 });
 
-ipcMain.on("getAllScenes", (event, arg) => {
+ipcMain.on("/scenes/get", (event, arg) => {
   if (isDev) {
     let res = {
       statusCode: 200,
@@ -134,7 +134,7 @@ ipcMain.on("getAllScenes", (event, arg) => {
   }
 });
 
-ipcMain.on("getActReactCouples", (event, arg) => {
+ipcMain.on("/areas/get", (event, arg) => {
   if (isDev) {
     let res = {
       statusCode: 200,
@@ -146,60 +146,60 @@ ipcMain.on("getActReactCouples", (event, arg) => {
             actReactId: 1,
             isActive: true,
             action: {
-                actionId: 1,
-                type: "WORD_DETECT",
-                params: {
-                  words: ['bouloubouga']
-                }
+              actionId: 1,
+              type: "WORD_DETECT",
+              params: {
+                words: ['bouloubouga']
+              }
             },
             reaction: {
-                name: "Changement de scene sur la scene 2",
-                reactionId: 1,
-                type: "SCENE_SWITCH",
-                params: {
-                  scene: "Scene 2",
-                  uuid: "4f712d61-094a-4b7b-9905-4fa928329de4"
-                }
+              name: "Changement de scene sur la scene 2",
+              reactionId: 1,
+              type: "SCENE_SWITCH",
+              params: {
+                scene: "Scene 2",
+                uuid: "4f712d61-094a-4b7b-9905-4fa928329de4"
+              }
             }
           },
-          { 
+          {
             actReactId: 2,
             isActive: true,
             action: {
-                actionId: 2,
-                type: "KEY_PRESSED",
-                params: {
-                  key: "m"
-                }
+              actionId: 2,
+              type: "KEY_PRESSED",
+              params: {
+                key: "m"
+              }
             },
             reaction: {
-                name: "Changement de scene sur la scene 3",
-                reactionId: 4,
-                type: "SCENE_SWITCH",
-                params: {
-                  scene: "Scene qui n'existe pas",
-                  uuid: "2772a187-cc04-4058-9148-beaaba7a2145"
-                }
+              name: "Changement de scene sur la scene 3",
+              reactionId: 4,
+              type: "SCENE_SWITCH",
+              params: {
+                scene: "Scene qui n'existe pas",
+                uuid: "2772a187-cc04-4058-9148-beaaba7a2145"
+              }
             }
           },
-          { 
+          {
             actReactId: 3,
             isActive: true,
             action: {
-                actionId: 3,
-                type: "APP_LAUNCH",
-                params: {
-                  app_name: "discord"
-                }
+              actionId: 3,
+              type: "APP_LAUNCH",
+              params: {
+                app_name: "discord"
+              }
             },
             reaction: {
-                name: "Changement de scene sur la scene 3",
-                reactionId: 4,
-                type: "SCENE_SWITCH",
-                params: {
-                  scene: "Scene qui n'existe pas",
-                  uuid: "2772a187-cc04-4058-9148-beaaba7a2145"
-                }
+              name: "Changement de scene sur la scene 3",
+              reactionId: 4,
+              type: "SCENE_SWITCH",
+              params: {
+                scene: "Scene qui n'existe pas",
+                uuid: "2772a187-cc04-4058-9148-beaaba7a2145"
+              }
             }
           },
         ],
@@ -215,7 +215,7 @@ ipcMain.on("getActReactCouples", (event, arg) => {
   }
 });
 
-ipcMain.on("getSubtitlesSettings", (event, arg) => {
+ipcMain.on("/subtitles/get", (event, arg) => {
   if (isDev) {
     let res = {
       statusCode: 200,
@@ -246,7 +246,7 @@ ipcMain.on("getSubtitlesSettings", (event, arg) => {
   }
 });
 
-ipcMain.on("getAllTextFields", (event, arg) => {
+ipcMain.on("/text-fields/get", (event, arg) => {
   if (isDev) {
     let res = {
       statusCode: 200,
@@ -282,7 +282,7 @@ ipcMain.on("getAllTextFields", (event, arg) => {
   }
 });
 
-ipcMain.on("getAllDisplaySources", (event, arg) => {
+ipcMain.on("/display-sources/get", (event, arg) => {
   if (isDev) {
     let res = {
       statusCode: 200,
@@ -318,7 +318,7 @@ ipcMain.on("getAllDisplaySources", (event, arg) => {
   }
 });
 
-ipcMain.on("getAllLinksMicsToVideoSource", (event, arg) => {
+ipcMain.on("/mtdsis/get", (event, arg) => {
   if (isDev) {
     let res = {
       statusCode: 200,
@@ -347,7 +347,7 @@ ipcMain.on("getAllLinksMicsToVideoSource", (event, arg) => {
   }
 });
 
-ipcMain.on("setCompressorLevel", (event, arg) => {
+ipcMain.on("/microphones/auto-leveler/set", (event, arg) => {
   if (isDev) {
     let res = {
       message: "OK",
@@ -363,7 +363,7 @@ ipcMain.on("setCompressorLevel", (event, arg) => {
   }
 });
 
-ipcMain.on("setSubtitles", (event, arg) => {
+ipcMain.on("/subtitles/set", (event, arg) => {
   if (isDev) {
     let res = {
       message: "OK",
@@ -379,7 +379,7 @@ ipcMain.on("setSubtitles", (event, arg) => {
   }
 });
 
-ipcMain.on("setActionReaction", (event, arg) => {
+ipcMain.on("/areas/create", (event, arg) => {
   if (isDev) {
     let res = {
       message: "OK",
@@ -400,7 +400,7 @@ ipcMain.on("setActionReaction", (event, arg) => {
   }
 });
 
-ipcMain.on("linkMicToVideoSource", (event, arg) => {
+ipcMain.on("/mtdsis/create", (event, arg) => {
   if (isDev) {
     let res = {
       message: "OK",
@@ -416,7 +416,7 @@ ipcMain.on("linkMicToVideoSource", (event, arg) => {
   }
 });
 
-ipcMain.on("removeActReact", (event, arg) => {
+ipcMain.on("/areas/remove", (event, arg) => {
   if (isDev) {
     console.log("removeActReact")
     let res = {
@@ -437,7 +437,7 @@ ipcMain.on("removeActReact", (event, arg) => {
 });
 
 ipcMain.on("compressor-level-updated", (evt, arg) => { // Get from socket broadcast
-    mainWindow.webContents.send('compressor-level-updated'); // To renderer
+  mainWindow.webContents.send('compressor-level-updated'); // To renderer
 });
 
 ipcMain.on("scenes-updated", (evt, arg) => { // Get from socket broadcast
@@ -479,23 +479,23 @@ const createLoadingScreen = () => {
       .then((res) => {
         clearInterval(refreshIntervalId);
         boadcastConn.connectBroadcast()
-        .then((broadcast_res) => {
-          console.log("TCPConnection and Broadcast is connected");
-          launchingApplication();
-          clearInterval(refreshIntervalId);
-          return res;
-        }).catch((err) => {
-          tcpConn.disconnectSocket()
-          if (isDev) {
-            console.log("DEV MODE");
+          .then((broadcast_res) => {
+            console.log("TCPConnection and Broadcast is connected");
+            launchingApplication();
             clearInterval(refreshIntervalId);
-            return null;
-          } else {
-            console.log("Can't locate the server", err);
-            setInterval(refreshIntervalId, 5000)
-            return null;
-          }
-        })
+            return res;
+          }).catch((err) => {
+            tcpConn.disconnectSocket()
+            if (isDev) {
+              console.log("DEV MODE");
+              clearInterval(refreshIntervalId);
+              return null;
+            } else {
+              console.log("Can't locate the server", err);
+              setInterval(refreshIntervalId, 5000)
+              return null;
+            }
+          })
       }).catch((err) => {
         if (isDev) {
           console.log("DEV MODE");

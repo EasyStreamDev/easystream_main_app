@@ -76,14 +76,14 @@ export const KeyPressed = (props: any) => {
 
   const getActionReactionFromServer = (): Promise<getActReactCouplesFormat> => {
     return new Promise(async (resolve, reject) => {
-      const result: getActReactCouplesFormat = await ipcRenderer.sendSync("getActReactCouples", "ping"); // Send a synchronous request to the server to get action-reaction pairs
+      const result: getActReactCouplesFormat = await ipcRenderer.sendSync("/areas/get", "ping"); // Send a synchronous request to the server to get action-reaction pairs
       resolve(result);
     });
   };
 
   const sendActionReactionToServer = (newActionReaction: action_reaction): Promise<actionReactionFormat> => {
     return new Promise(async (resolve, reject) => {
-      const result: actionReactionFormat = await ipcRenderer.sendSync("setActionReaction", newActionReaction); // Send a synchronous request to the server to set an action-reaction pair
+      const result: actionReactionFormat = await ipcRenderer.sendSync("/areas/create", newActionReaction); // Send a synchronous request to the server to set an action-reaction pair
       resolve(result);
     });
   };
@@ -130,7 +130,7 @@ export const KeyPressed = (props: any) => {
 
   const removeAndUpdateActReaction = (params: any, eventArr: any) => {
     return new Promise(async (resolve, reject) => {
-      const result: removeActReactAnswer = await ipcRenderer.sendSync("removeActReact", params); // Send a synchronous request to the server to remove an action-reaction pair
+      const result: removeActReactAnswer = await ipcRenderer.sendSync("/areas/remove", params); // Send a synchronous request to the server to remove an action-reaction pair
       if (result.statusCode === 200) {
         console.log("Remove ActReaction", result.data.actReactId);
         updateActionReactionArray(); // Update the action-reaction array after removing an action-reaction pair

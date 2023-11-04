@@ -86,7 +86,7 @@ export const CreateReactions = () => {
    */
   const getAllScenes = (): Promise<AllScenes> => {
     return new Promise(async (resolve, reject) => {
-      const result: AllScenes = await ipcRenderer.sendSync("getAllScenes", "ping");
+      const result: AllScenes = await ipcRenderer.sendSync("/scenes/get", "ping");
       resolve(result);
     });
   };
