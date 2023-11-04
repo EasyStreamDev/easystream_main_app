@@ -72,14 +72,14 @@ export const WordDetection = (props: any) => {
 
   const getActionReactionFromServer = (): Promise<getActReactCouplesFormat> => {
     return new Promise(async (resolve, reject) => {
-      const result: getActReactCouplesFormat = await ipcRenderer.sendSync("getActReactCouples", "ping"); // Send a synchronous IPC message to get action-reaction couples from the server
+      const result: getActReactCouplesFormat = await ipcRenderer.sendSync("/areas/get", "ping"); // Send a synchronous IPC message to get action-reaction couples from the server
       resolve(result);
     });
   };
 
   const sendActionReactionToServer = (newActionReaction: action_reaction): Promise<actionReactionFormat> => {
     return new Promise(async (resolve, reject) => {
-      const result: actionReactionFormat = await ipcRenderer.sendSync("setActionReaction", newActionReaction); // Send a synchronous IPC message to set a new action-reaction pair on the server
+      const result: actionReactionFormat = await ipcRenderer.sendSync("/areas/create", newActionReaction); // Send a synchronous IPC message to set a new action-reaction pair on the server
       resolve(result);
     });
   };
@@ -125,7 +125,7 @@ export const WordDetection = (props: any) => {
 
   const removeAndUpdateActReaction = (params: any, eventArr: any) => {
     return new Promise(async (resolve, reject) => {
-      const result: removeActReactAnswer = await ipcRenderer.sendSync("removeActReact", params); // Send a synchronous IPC message to remove the action-reaction pair from the server
+      const result: removeActReactAnswer = await ipcRenderer.sendSync("/areas/remove", params); // Send a synchronous IPC message to remove the action-reaction pair from the server
       if (result.statusCode === 200) {
         console.log("Remove ActReaction", result.data.actReactId);
         updateActionReactionArray();

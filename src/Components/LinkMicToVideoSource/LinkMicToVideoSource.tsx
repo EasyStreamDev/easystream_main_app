@@ -53,9 +53,7 @@ export const LinkMicToVideoSource = (props: any) => {
   const [allMics, setAllMics] = React.useState<Mic[]>([]);
   const [allDisplaySources, setAllDisplaySources] = React.useState<DisplaySource[]>([]);
   // TODO To use
-  const [allLinksMicsToVideoSource, setAllLinksMicsToVideoSource] = React.useState<
-    linkMicsToVideoSource[]
-  >([]);
+  const [allLinksMicsToVideoSource, setAllLinksMicsToVideoSource] = React.useState<linkMicsToVideoSource[]>([]);
 
   // loading
   const [load, setload] = React.useState(true);
@@ -89,12 +87,16 @@ export const LinkMicToVideoSource = (props: any) => {
     } = event;
     setNewVideoSourceListParam(
       // On autofill we get a stringified value.
-      typeof value === 'string' ? value.split(',') : value,
+      typeof value === "string" ? value.split(",") : value
     );
-  }
+  };
 
   const handleSave = () => {
-    if (newVideoSourceListParam === undefined || newVideoSourceListParam === null || newVideoSourceListParam.length === 0) {
+    if (
+      newVideoSourceListParam === undefined ||
+      newVideoSourceListParam === null ||
+      newVideoSourceListParam.length === 0
+    ) {
       toast("You must select a video source.", {
         type: "error",
       });
@@ -117,15 +119,16 @@ export const LinkMicToVideoSource = (props: any) => {
       return "";
     });
 
-    console.log("newVideoSourceListParam", newVideoSourceListParam)
-    console.log("LINK", newMicParam, videoSourceListParamsUuids)
+    console.log("newVideoSourceListParam", newVideoSourceListParam);
+    console.log("LINK", newMicParam, videoSourceListParamsUuids);
 
     linkMicToVideoSource(newMicParam, videoSourceListParamsUuids)
       .then((res) => {
-          toast("Mic(s) linked to video source.", {
-            type: "success",
-          });
-      }).catch((err) => {
+        toast("Mic(s) linked to video source.", {
+          type: "success",
+        });
+      })
+      .catch((err) => {
         toast("ERROR", {
           type: "error",
         });
@@ -146,7 +149,7 @@ export const LinkMicToVideoSource = (props: any) => {
 
   const getAllMics = (): Promise<Mic[]> => {
     return new Promise(async (resolve, reject) => {
-      const result: AllMics = await ipcRenderer.sendSync("getAllMics", "ping");
+      const result: AllMics = await ipcRenderer.sendSync("/microphones/get", "ping");
       if (result.statusCode === 200) {
         resolve(result.data.mics);
       } else {
@@ -160,10 +163,7 @@ export const LinkMicToVideoSource = (props: any) => {
 
   const getAllLinksMicsToVideoSource = (): Promise<linkMicsToVideoSource[]> => {
     return new Promise(async (resolve, reject) => {
-      const result: AllLinksMicsToVideoSourceResult = await ipcRenderer.sendSync(
-        "getAllLinksMicsToVideoSource",
-        "ping"
-      );
+      const result: AllLinksMicsToVideoSourceResult = await ipcRenderer.sendSync("/mtdsis/get", "ping");
       if (result.statusCode === 200) {
         resolve(result.data.display_sources);
       } else {
@@ -177,7 +177,7 @@ export const LinkMicToVideoSource = (props: any) => {
 
   const linkMicToVideoSource = (micUuid: string, videoSourceUuids: string[]): Promise<boolean> => {
     return new Promise(async (resolve, reject) => {
-      const result: resultFormat = await ipcRenderer.sendSync("linkMicToVideoSource", {
+      const result: resultFormat = await ipcRenderer.sendSync("/mtdsis/create", {
         mic_ids: micUuid,
         display_source_id: videoSourceUuids,
       });
@@ -238,7 +238,7 @@ export const LinkMicToVideoSource = (props: any) => {
 
   const getAllDisplaySources = (): Promise<AllDisplaySources> => {
     return new Promise(async (resolve, reject) => {
-      const result: AllDisplaySourcesResult = await ipcRenderer.sendSync("getAllDisplaySources", "ping");
+      const result: AllDisplaySourcesResult = await ipcRenderer.sendSync("/display-sources/get", "ping");
       if (result.statusCode === 200) {
         resolve(result.data);
       } else {
@@ -323,7 +323,12 @@ export const LinkMicToVideoSource = (props: any) => {
                           // Random key
                           key={l.mic_id}
                           secondaryAction={
-                            <IconButton onClick={handleMicDelete(l.mic_id)} edge="end" color="error" aria-label="delete">
+                            <IconButton
+                              onClick={handleMicDelete(l.mic_id)}
+                              edge="end"
+                              color="error"
+                              aria-label="delete"
+                            >
                               <BsTrash color="white" />
                             </IconButton>
                           }
@@ -335,7 +340,7 @@ export const LinkMicToVideoSource = (props: any) => {
                             <Chip
                               className="color-white"
                               key={display_source_id}
-                              label={ getNameDisplaySourceFromUuid(display_source_id) }
+                              label={getNameDisplaySourceFromUuid(display_source_id)}
                               variant="outlined"
                               sx={{ m: 0.5, borderColor: "#FFA500" }}
                             />
@@ -363,19 +368,17 @@ export const LinkMicToVideoSource = (props: any) => {
                 labelId="select-event-label"
                 id="select-event"
                 value={newMicParam}
-                onChange={(action) =>
-                  setNewMicParam(action.target.value as string)
-                }
+                onChange={(action) => setNewMicParam(action.target.value as string)}
                 autoWidth
                 label="TextField"
               >
                 {allMics.map((mic) => {
-                    return (
-                      <MenuItem key={mic.micName} value={mic.micName} style={{ fontWeight: 300 }}>
-                        {mic.micName}
-                      </MenuItem>
-                    );
-                  })}
+                  return (
+                    <MenuItem key={mic.micName} value={mic.micName} style={{ fontWeight: 300 }}>
+                      {mic.micName}
+                    </MenuItem>
+                  );
+                })}
               </Select>
 
               <InputLabel id="select-event-label">Select display source(s):</InputLabel>
@@ -402,8 +405,6 @@ export const LinkMicToVideoSource = (props: any) => {
                   </MenuItem>
                 ))}
               </Select>
-
-
             </DialogContent>
             <DialogActions>
               <Button onClick={handleCancel}>Cancel</Button>

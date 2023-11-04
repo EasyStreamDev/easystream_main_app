@@ -10,13 +10,13 @@ class TCPConnection {
 
     connect() {
         return new Promise((resolve, reject) => {
-            this.socket = net.createConnection({port: this.port, host: this.host}, () => {
+            this.socket = net.createConnection({ port: this.port, host: this.host }, () => {
                 console.log('TCPConnection initialized');
                 resolve(this.socket);
             });
             this.socket.once('data', (data) => {
                 try {
-                    data = data.toString().replace('\t','').replace('\r','').replace('\n','').replace(/\0/g, ''); // Remove all useless characters
+                    data = data.toString().replace('\t', '').replace('\r', '').replace('\n', '').replace(/\0/g, ''); // Remove all useless characters
                     const payload = JSON.parse(data);
                     console.log(payload);
                 } catch (error) {
@@ -42,7 +42,7 @@ class TCPConnection {
 
     connectBroadcast() {
         return new Promise((resolve, reject) => {
-            this.socket = net.createConnection({port: this.port, host: this.host}, () => {
+            this.socket = net.createConnection({ port: this.port, host: this.host }, () => {
                 console.log('TCPConnection broadcast initialized');
                 this.setBrocast({ "enable": true }).then(
                     () => {
@@ -54,20 +54,20 @@ class TCPConnection {
                 try {
                     console.log("BEFORE toString", data)
                     data = data.toString()
-                    data = data.replace('\t','').replace('\r','').replace(/\0/g, ''); // Remove all useless characters
+                    data = data.replace('\t', '').replace('\r', '').replace(/\0/g, ''); // Remove all useless characters
 
                     // Split the data by newline character
                     const jsonStrings = data.split('\n');
-                    
+
                     // Add the JSON strings to the queue
                     jsonStrings.forEach((jsonString) => {
                         if (jsonString.trim() !== '') {
 
                             let payload = JSON.parse(jsonString);
-        
+
                             if (payload.message === 'BROADCAST') {
                                 let type = payload.data.type
-        
+
                                 if (type === 'audioSourceCreated' || type === 'audioSourceRemoved' || type === 'audioSourceNameChanged' || type === 'compressorSettingsChanged') {
                                     this.ipcMain.emit('compressor-level-updated')
                                 } else if (type === 'sceneCreated' || type === 'sceneRemoved' || type === 'sceneNameChanged') {
@@ -109,12 +109,12 @@ class TCPConnection {
         }
     }
 
-    sendData(obj, callback){
+    sendData(obj, callback) {
         obj = JSON.stringify(obj) + "\r\n";
         this.socket.write(obj);
         this.socket.once('data', (data) => {
             try {
-                data = data.toString().replace('\t','').replace('\r','').replace('\n','').replace(/\0/g, ''); // Remove all useless characters
+                data = data.toString().replace('\t', '').replace('\r', '').replace('\n', '').replace(/\0/g, ''); // Remove all useless characters
                 const payload = JSON.parse(data);
                 callback(payload, null);
             } catch (error) {
@@ -131,16 +131,16 @@ class TCPConnection {
 
     getAllMics() {
         let obj = {
-            command: 'getAllMics',
+            command: '/microphones/get',
         };
-        console.log('getAllMics -> ', JSON.stringify(obj));
+        console.log('/microphones/get -> ', JSON.stringify(obj));
         return new Promise((resolve, reject) => {
             this.sendData(obj, (data, error) => {
                 if (data) {
-                    console.log('getAllMics resolve', data);
+                    console.log('/microphones/get resolve', data);
                     resolve(data);
                 } else {
-                    console.log('getAllMics error', error);
+                    console.log('/microphones/get error', error);
                     this.socket.end();
                     this.ipcMain.emit('connection-server-lost')
                     reject(error);
@@ -151,7 +151,7 @@ class TCPConnection {
 
     getAllScenes() {
         let obj = {
-            command: 'getAllScenes',
+            command: '/scenes/get',
         };
         console.log('getAllScenes -> ', JSON.stringify(obj));
         return new Promise((resolve, reject) => {
@@ -171,7 +171,7 @@ class TCPConnection {
 
     getActReactCouples() {
         let obj = {
-            command: 'getActReactCouples',
+            command: '/areas/get',
         };
         console.log('getActReactCouples -> ', JSON.stringify(obj));
         return new Promise((resolve, reject) => {
@@ -191,7 +191,7 @@ class TCPConnection {
 
     getSubtitlesSettings() {
         let obj = {
-            command: 'getSubtitlesSettings',
+            command: '/subtitles/get',
         };
         console.log('getSubtitlesSettings -> ', JSON.stringify(obj));
         return new Promise((resolve, reject) => {
@@ -211,7 +211,7 @@ class TCPConnection {
 
     getAllTextFields() {
         let obj = {
-            command: 'getAllTextFields',
+            command: '/text-fields/get',
         };
         console.log('getAllTextFields -> ', JSON.stringify(obj));
         return new Promise((resolve, reject) => {
@@ -251,7 +251,7 @@ class TCPConnection {
 
     getAllDisplaySources() {
         let obj = {
-            command: 'getAllDisplaySources',
+            command: '/display-sources/get',
         };
         console.log('getAllDisplaySources -> ', JSON.stringify(obj));
         return new Promise((resolve, reject) => {
@@ -271,7 +271,7 @@ class TCPConnection {
 
     getAllLinksMicsToVideoSource() {
         let obj = {
-            command: 'getAllLinksMicsToVideoSource',
+            command: '/mtdsis/get',
         };
         console.log('getAllLinksMicsToVideoSource -> ', JSON.stringify(obj));
         return new Promise((resolve, reject) => {
@@ -291,17 +291,17 @@ class TCPConnection {
 
     setVolumeToMic(args) {
         let obj = {
-            command: 'setCompressorLevel',
+            command: '/microphones/auto-leveler/set',
             params: args
         };
-        console.log('setVolumeToMic -> ', JSON.stringify(obj));
+        console.log('/microphones/auto-leveler/set -> ', JSON.stringify(obj));
         return new Promise((resolve, reject) => {
             this.sendData(obj, (data, error) => {
                 if (data) {
-                    console.log('setVolumeToMic resolve', data);
+                    console.log('/microphones/auto-leveler/set resolve', data);
                     resolve(data);
                 } else {
-                    console.log('setVolumeToMic error', error);
+                    console.log('/microphones/auto-leveler/set error', error);
                     this.socket.end();
                     this.ipcMain.emit('connection-server-lost')
                     reject(error);
@@ -312,7 +312,7 @@ class TCPConnection {
 
     setSubtitles(args) {
         let obj = {
-            command: 'setSubtitles',
+            command: '/subtitles/set',
             params: args
         };
         console.log('setSubtitles -> ', JSON.stringify(obj));
@@ -333,7 +333,7 @@ class TCPConnection {
 
     setActionReaction(args) {
         let obj = {
-            command: 'setActionReaction',
+            command: '/areas/create',
             params: args
         };
         console.log('setActionReaction -> ', JSON.stringify(obj));
@@ -354,7 +354,7 @@ class TCPConnection {
 
     linkMicToVideoSource(args) {
         let obj = {
-            command: 'linkMicToVideoSource',
+            command: '/mtdsis/create',
             params: args
         };
         console.log('linkMicToVideoSource -> ', JSON.stringify(obj));
@@ -375,7 +375,7 @@ class TCPConnection {
 
     removeActReact(args) {
         let obj = {
-            command: 'removeActReact',
+            command: '/areas/remove',
             params: args
         };
         console.log('removeActReact -> ', JSON.stringify(obj));
@@ -396,7 +396,7 @@ class TCPConnection {
 
     setBrocast(args) {
         let obj = {
-            command: 'subscribeBroadcast',
+            command: '/broadcast/subscribe',
             params: args
         };
         console.log('subscribeBroadcast -> ', JSON.stringify(obj));

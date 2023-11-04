@@ -76,7 +76,7 @@ export const ActionsReactions = () => {
    */
   const getActionReactionFromServer = (): Promise<getActReactCouplesFormat> => {
     return new Promise(async (resolve, reject) => {
-      const result: getActReactCouplesFormat = await ipcRenderer.sendSync("getActReactCouples", "ping");
+      const result: getActReactCouplesFormat = await ipcRenderer.sendSync("/areas/get", "ping");
       resolve(result);
     });
   };
@@ -88,7 +88,7 @@ export const ActionsReactions = () => {
    */
   const removeActionReactionFromServer = (actionReactionId: number): Promise<removeActReactAnswer> => {
     return new Promise(async (resolve, reject) => {
-      const result: removeActReactAnswer = await ipcRenderer.sendSync("removeActReact", {
+      const result: removeActReactAnswer = await ipcRenderer.sendSync("/areas/remove", {
         actReactId: actionReactionId,
       });
       resolve(result);
@@ -270,7 +270,7 @@ export const ActionsReactions = () => {
    */
   const getAllScenes = (): Promise<AllScenes> => {
     return new Promise(async (resolve, reject) => {
-      const result: AllScenes = await ipcRenderer.sendSync("getAllScenes", "ping");
+      const result: AllScenes = await ipcRenderer.sendSync("/scenes/get", "ping");
       resolve(result);
     });
   };
@@ -321,17 +321,21 @@ export const ActionsReactions = () => {
                 <div className="item-container action-reaction-cards non-dragable">
                   {actionsReactionsList.map((item: any, index: any) => {
                     return (
-                      <Card key={index} className="card-event non-dragable" sx={{
-                        backgroundColor: "#565d68",
-                        border: "2px solid orange",
-                        borderRadius: "10px",
-                        color: "white",
-                        height: "100%",
-                        display: "inline-table",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        width: "85%"
-                      }}>
+                      <Card
+                        key={index}
+                        className="card-event non-dragable"
+                        sx={{
+                          backgroundColor: "#565d68",
+                          border: "2px solid orange",
+                          borderRadius: "10px",
+                          color: "white",
+                          height: "100%",
+                          display: "inline-table",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          width: "85%",
+                        }}
+                      >
                         <CardContent>
                           <Typography sx={{ fontSize: 14 }} gutterBottom>
                             # {index + 1}
@@ -351,9 +355,7 @@ export const ActionsReactions = () => {
                         <CardActions disableSpacing className="rightAlignItem">
                           {warningMessageDisplaySceneMissing(item) === true ? (
                             <Tooltip title="The scene that is registered in the reaction of this Action/Reaction isn't available anymore. Please delete this Action/Reaction.">
-                              <IconButton
-                                className="full-orange"
-                              >
+                              <IconButton className="full-orange">
                                 <BsFillExclamationTriangleFill />
                               </IconButton>
                             </Tooltip>
