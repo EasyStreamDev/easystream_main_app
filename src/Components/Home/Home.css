@@ -48,11 +48,12 @@
 } */
 
 .qr-code {
-    width: 11vw;
+    width: 240px;
 
     padding: 2px;
     border: 1px solid orange;
-    border-radius: 10px
+    border-radius: 10px;
+    z-index: 999999;
 }
 
 /* hover grey filter */
