@@ -47,6 +47,7 @@ export const Subtitles = () => {
   const [open, setOpen] = React.useState(false);
   const [newSubtitleParam, setNewSubtitleParam] = React.useState("");
   const [newMicsListParam, setNewMicsListParam] = React.useState<string[]>([]);
+  const [newLanguageParam, setNewLanguageParam] = React.useState<string>('en');
 
   // Loading
   const [load, setload] = React.useState(true);
@@ -119,35 +120,12 @@ export const Subtitles = () => {
     );
   };
 
-  const handleMicDelete = (uuid_text_field: string, micToDelete: string) => () => {
-    let good_subtitle_setting = subtitlesSettings.filter(
-      (subtitle_setting) => subtitle_setting.uuid === uuid_text_field
-    )[0];
-    let new_mics = good_subtitle_setting.linked_mics.filter((mic) => mic !== micToDelete);
-    console.log("new_mics", new_mics);
-    addSubtitleTextField(uuid_text_field, new_mics).then((res: resultFormat) => {
-      if (res.statusCode === 200) {
-        // Refresh
-        getSubtitlesSettings().then((subtitles_res) => {
-          setSubtitlesSettings(subtitles_res.data.text_fields);
-        });
-
-        toast("Mic deleted from the text field", {
-          type: "success",
-        });
-      } else {
-        toast("Error while deleting the mic from the text field", {
-          type: "error",
-        });
-      }
-    });
-  };
-
-  const addSubtitleTextField = (uuid: string, linkedMics: string[]): Promise<resultFormat> => {
+  const addSubtitleTextField = (uuid: string, linkedMics: string[], language='fr'): Promise<resultFormat> => {
     return new Promise(async (resolve, reject) => {
       const param = {
         linked_mics: linkedMics,
         uuid: uuid,
+        language: language
       };
       const result: resultFormat = ipcRenderer.sendSync("/subtitles/set", param);
       resolve(result);
@@ -229,11 +207,12 @@ export const Subtitles = () => {
     }
 
     const textField: TextFieldDetailed = JSON.parse(newSubtitleParam);
-    addSubtitleTextField(textField.uuid, newMicsListParam).then((res: resultFormat) => {
+    addSubtitleTextField(textField.uuid, newMicsListParam, newLanguageParam).then((res: resultFormat) => {
       if (res.statusCode === 200) {
         // Reset
         setNewSubtitleParam("");
         setNewMicsListParam([]);
+        setNewLanguageParam("en");
 
         // Refresh
         refresh(textField);
@@ -244,27 +223,6 @@ export const Subtitles = () => {
         return;
       }
     });
-  };
-
-  const addMicToSubtitle = (text_field: TextFieldSimple, mic_to_add: any) => {
-    let new_mics = text_field.linked_mics.slice();
-    new_mics.push(mic_to_add);
-
-    addSubtitleTextField(text_field.uuid, new_mics).then((res: resultFormat) => {
-      if (res.statusCode === 200) {
-        // Refresh
-        refresh();
-        toast("Mic added to the text field", {
-          type: "success",
-        });
-      } else {
-        toast("Error while adding the mic to the text field", {
-          type: "error",
-        });
-      }
-    });
-    refresh();
-    handleClosePopover();
   };
 
   const deleteSubtitleTextField = (uuid: string) => {
@@ -538,6 +496,26 @@ export const Subtitles = () => {
                     {mic}
                   </MenuItem>
                 ))}
+              </Select>
+
+              <InputLabel id="select-event-label">Language for subtitles:</InputLabel>
+              <Select
+                labelId="select-event-label"
+                id="select-event"
+                value={newLanguageParam}
+                onChange={(action) => setNewLanguageParam(action.target.value as string)}
+                autoWidth
+                label="TextField"
+              >
+                <MenuItem key="en" value="en">
+                  English
+                </MenuItem>
+                <MenuItem key="fr" value="fr">
+                  French
+                </MenuItem>
+                <MenuItem key="de" value="de">
+                  German
+                </MenuItem>
               </Select>
             </DialogContent>
             <DialogActions>
