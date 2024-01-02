@@ -165,7 +165,7 @@ export const LinkMicToVideoSource = (props: any) => {
     return new Promise(async (resolve, reject) => {
       const result: AllLinksMicsToVideoSourceResult = await ipcRenderer.sendSync("/mtdsis/get", "ping");
       if (result.statusCode === 200) {
-        resolve(result.data.display_sources);
+        resolve(result.data.links);
       } else {
         toast.error(result.message, {
           type: "error",
@@ -178,8 +178,8 @@ export const LinkMicToVideoSource = (props: any) => {
   const linkMicToVideoSource = (micUuid: string, videoSourceUuids: string[]): Promise<boolean> => {
     return new Promise(async (resolve, reject) => {
       const result: resultFormat = await ipcRenderer.sendSync("/mtdsis/create", {
-        mic_ids: micUuid,
-        display_source_id: videoSourceUuids,
+        mic_id: micUuid,
+        display_sources_ids: videoSourceUuids,
       });
       if (result.statusCode === 200) {
         resolve(true);
@@ -374,7 +374,7 @@ export const LinkMicToVideoSource = (props: any) => {
               >
                 {allMics.map((mic) => {
                   return (
-                    <MenuItem key={mic.micName} value={mic.micName} style={{ fontWeight: 300 }}>
+                    <MenuItem key={mic.uuid} value={mic.uuid} style={{ fontWeight: 300 }}>
                       {mic.micName}
                     </MenuItem>
                   );

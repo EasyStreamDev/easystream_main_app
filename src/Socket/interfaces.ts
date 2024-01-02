@@ -153,7 +153,7 @@ export interface linkMicsToVideoSource {
 
 export interface AllLinksMicsToVideoSource {
   length: number;
-  display_sources: [linkMicsToVideoSource];
+  links: [linkMicsToVideoSource];
 }
 
 export interface AllLinksMicsToVideoSourceResult {

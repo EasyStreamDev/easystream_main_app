@@ -325,7 +325,7 @@ ipcMain.on("/mtdsis/get", (event, arg) => {
       message: "OK",
       data: {
         length: 2,
-        display_sources: [
+        links: [
           {
             "mic_id": "21825058-7a54-4057-bb17-a810c08f8db9",
             "display_source_ids": ["277ab5058-7a54-4057-ad17-a810c08ea8db9"],
