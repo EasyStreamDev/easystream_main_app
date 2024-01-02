@@ -35,6 +35,7 @@ import {
   resultFormat,
 } from "../../Socket/interfaces";
 import "./LinkMicToVideoSource.css";
+import { get } from "http";
 const ipcRenderer = window.require("electron").ipcRenderer;
 
 const ITEM_HEIGHT = 48;
@@ -223,8 +224,11 @@ export const LinkMicToVideoSource = (props: any) => {
   const handleMicDelete = (micUuid: string) => () => {
     removeMicToVideoSource(micUuid)
       .then((res) => {
-        toast("Mic unlinked to display source.", {
-          type: "success",
+        getAllLinksMicsToVideoSource().then((res) => {
+          setAllLinksMicsToVideoSource(res);
+          toast("Mic unlinked to display source.", {
+            type: "success",
+          });
         });
       })
       .catch((err) => {
