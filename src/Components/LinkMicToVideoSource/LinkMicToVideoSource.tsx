@@ -179,9 +179,8 @@ export const LinkMicToVideoSource = (props: any) => {
 
   const linkMicToVideoSource = (micUuid: string, videoSourceUuids: string[]): Promise<boolean> => {
     return new Promise(async (resolve, reject) => {
-      const result: resultFormat = await ipcRenderer.sendSync("/mtdsis/create", {
-        mic_id: micUuid,
-        display_sources_ids: videoSourceUuids,
+      const result: resultFormat = await ipcRenderer.sendSync("/mtdsis/remove", {
+        mic_id: micUuid
       });
       if (result.statusCode === 200) {
         resolve(true);
