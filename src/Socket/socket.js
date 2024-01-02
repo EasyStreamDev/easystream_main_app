@@ -310,6 +310,27 @@ class TCPConnection {
         });
     }
 
+    removeMicVideoSource(args) {
+        let obj = {
+            command: '/mtdsis/remove',
+            params: args
+        };
+        console.log('/mtdsis/remove -> ', JSON.stringify(obj));
+        return new Promise((resolve, reject) => {
+            this.sendData(obj, (data, error) => {
+                if (data) {
+                    console.log('/mtdsis/remove resolve', data);
+                    resolve(data);
+                } else {
+                    console.log('/mtdsis/remove error', error);
+                    this.socket.end();
+                    this.ipcMain.emit('connection-server-lost')
+                    reject(error);
+                }
+            });
+        });
+    }
+
     setSubtitles(args) {
         let obj = {
             command: '/subtitles/set',

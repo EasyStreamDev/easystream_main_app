@@ -416,6 +416,22 @@ ipcMain.on("/mtdsis/create", (event, arg) => {
   }
 });
 
+ipcMain.on("/mtdsis/remove", (event, arg) => {
+  if (isDev) {
+    let res = {
+      message: "OK",
+      statusCode: 200,
+    };
+    event.returnValue = res;
+    return res;
+  } else {
+    return tcpConn.removeMicVideoSource(arg).then((res) => {
+      console.log("removeMicVideoSource : " + res);
+      event.returnValue = res;
+    });
+  }
+});
+
 ipcMain.on("/areas/remove", (event, arg) => {
   if (isDev) {
     console.log("removeActReact")
