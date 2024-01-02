@@ -107,7 +107,7 @@ export interface AllTextFields {
   data: {
     length: number;
     text_fields: [TextFieldDetailed];
-  }
+  };
 }
 
 export interface TimeRange {
@@ -144,16 +144,15 @@ export interface AllDisplaySourcesResult {
   data: AllDisplaySources;
 }
 
-
 // getAllLinksMicsToVideoSource
 export interface linkMicsToVideoSource {
-  display_source_ids: [string];
+  display_sources_ids: [string];
   mic_id: string;
 }
 
 export interface AllLinksMicsToVideoSource {
   length: number;
-  display_sources: [linkMicsToVideoSource];
+  links: [linkMicsToVideoSource];
 }
 
 export interface AllLinksMicsToVideoSourceResult {

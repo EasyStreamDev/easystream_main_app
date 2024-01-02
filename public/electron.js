@@ -325,7 +325,7 @@ ipcMain.on("/mtdsis/get", (event, arg) => {
       message: "OK",
       data: {
         length: 2,
-        display_sources: [
+        links: [
           {
             "mic_id": "21825058-7a54-4057-bb17-a810c08f8db9",
             "display_source_ids": ["277ab5058-7a54-4057-ad17-a810c08ea8db9"],
@@ -411,6 +411,22 @@ ipcMain.on("/mtdsis/create", (event, arg) => {
   } else {
     return tcpConn.linkMicToVideoSource(arg).then((res) => {
       console.log("linkMicToVideoSource : " + res);
+      event.returnValue = res;
+    });
+  }
+});
+
+ipcMain.on("/mtdsis/remove", (event, arg) => {
+  if (isDev) {
+    let res = {
+      message: "OK",
+      statusCode: 200,
+    };
+    event.returnValue = res;
+    return res;
+  } else {
+    return tcpConn.removeMicVideoSource(arg).then((res) => {
+      console.log("removeMicVideoSource : " + res);
       event.returnValue = res;
     });
   }

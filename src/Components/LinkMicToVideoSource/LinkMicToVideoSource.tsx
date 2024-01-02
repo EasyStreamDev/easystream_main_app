@@ -35,6 +35,7 @@ import {
   resultFormat,
 } from "../../Socket/interfaces";
 import "./LinkMicToVideoSource.css";
+import { get } from "http";
 const ipcRenderer = window.require("electron").ipcRenderer;
 
 const ITEM_HEIGHT = 48;
@@ -136,7 +137,9 @@ export const LinkMicToVideoSource = (props: any) => {
 
     // IUpdate the list of links
     getAllLinksMicsToVideoSource().then((res) => {
+      console.log("res:", res);
       setAllLinksMicsToVideoSource(res);
+      console.log("all links:", allLinksMicsToVideoSource);
     });
 
     // Set variables to default
@@ -165,7 +168,23 @@ export const LinkMicToVideoSource = (props: any) => {
     return new Promise(async (resolve, reject) => {
       const result: AllLinksMicsToVideoSourceResult = await ipcRenderer.sendSync("/mtdsis/get", "ping");
       if (result.statusCode === 200) {
-        resolve(result.data.display_sources);
+        resolve(result.data.links);
+      } else {
+        toast.error(result.message, {
+          type: "error",
+        });
+        reject(result.message);
+      }
+    });
+  };
+
+  const removeMicToVideoSource = (micUuid: string): Promise<boolean> => {
+    return new Promise(async (resolve, reject) => {
+      const result: resultFormat = await ipcRenderer.sendSync("/mtdsis/remove", {
+        mic_id: micUuid,
+      });
+      if (result.statusCode === 200) {
+        resolve(true);
       } else {
         toast.error(result.message, {
           type: "error",
@@ -178,8 +197,8 @@ export const LinkMicToVideoSource = (props: any) => {
   const linkMicToVideoSource = (micUuid: string, videoSourceUuids: string[]): Promise<boolean> => {
     return new Promise(async (resolve, reject) => {
       const result: resultFormat = await ipcRenderer.sendSync("/mtdsis/create", {
-        mic_ids: micUuid,
-        display_source_id: videoSourceUuids,
+        mic_id: micUuid,
+        display_sources_ids: videoSourceUuids,
       });
       if (result.statusCode === 200) {
         resolve(true);
@@ -203,10 +222,13 @@ export const LinkMicToVideoSource = (props: any) => {
   };
 
   const handleMicDelete = (micUuid: string) => () => {
-    linkMicToVideoSource(micUuid, [])
+    removeMicToVideoSource(micUuid)
       .then((res) => {
-        toast("Mic unlinked to display source.", {
-          type: "success",
+        getAllLinksMicsToVideoSource().then((res) => {
+          setAllLinksMicsToVideoSource(res);
+          toast("Mic unlinked to display source.", {
+            type: "success",
+          });
         });
       })
       .catch((err) => {
@@ -291,6 +313,10 @@ export const LinkMicToVideoSource = (props: any) => {
     };
   }, []);
 
+  useEffect(() => {
+    console.log("on trigger:", allLinksMicsToVideoSource);
+  }, [allLinksMicsToVideoSource]);
+
   function addpoint() {
     {
       setInterval(() => {
@@ -336,7 +362,7 @@ export const LinkMicToVideoSource = (props: any) => {
                           <ListItemText primary={getMicName(l.mic_id)} />
                         </ListItem>
                         <Box display="flex" justifyContent="center" m={1} p={1}>
-                          {l.display_source_ids.map((display_source_id) => (
+                          {l.display_sources_ids?.map((display_source_id) => (
                             <Chip
                               className="color-white"
                               key={display_source_id}
@@ -374,7 +400,7 @@ export const LinkMicToVideoSource = (props: any) => {
               >
                 {allMics.map((mic) => {
                   return (
-                    <MenuItem key={mic.micName} value={mic.micName} style={{ fontWeight: 300 }}>
+                    <MenuItem key={mic.uuid} value={mic.uuid} style={{ fontWeight: 300 }}>
                       {mic.micName}
                     </MenuItem>
                   );
