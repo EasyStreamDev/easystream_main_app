@@ -136,7 +136,9 @@ export const LinkMicToVideoSource = (props: any) => {
 
     // IUpdate the list of links
     getAllLinksMicsToVideoSource().then((res) => {
+      console.log("res:", res);
       setAllLinksMicsToVideoSource(res);
+      console.log("all links:", allLinksMicsToVideoSource);
     });
 
     // Set variables to default
@@ -291,6 +293,10 @@ export const LinkMicToVideoSource = (props: any) => {
     };
   }, []);
 
+  useEffect(() => {
+    console.log("on trigger:", allLinksMicsToVideoSource);
+  }, [allLinksMicsToVideoSource]);
+
   function addpoint() {
     {
       setInterval(() => {
@@ -336,7 +342,7 @@ export const LinkMicToVideoSource = (props: any) => {
                           <ListItemText primary={getMicName(l.mic_id)} />
                         </ListItem>
                         <Box display="flex" justifyContent="center" m={1} p={1}>
-                          {l.display_source_ids.map((display_source_id) => (
+                          {l.display_sources_ids?.map((display_source_id) => (
                             <Chip
                               className="color-white"
                               key={display_source_id}
