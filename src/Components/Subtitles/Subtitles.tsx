@@ -516,6 +516,9 @@ export const Subtitles = () => {
                 <MenuItem key="de" value="de">
                   German
                 </MenuItem>
+                <MenuItem key="none" value="none">
+                  None
+                </MenuItem>
               </Select>
             </DialogContent>
             <DialogActions>
