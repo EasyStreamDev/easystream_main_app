@@ -287,6 +287,13 @@ export const LinkMicToVideoSource = (props: any) => {
     ipcRenderer.on("compressor-level-updated", handleMicsUpdated);
     ipcRenderer.on("display-sources-updated", handleDisplaySourcesUpdated);
 
+    // Every 5 seconds, update the list of links mics to video source
+    setInterval(() => {
+      getAllLinksMicsToVideoSource().then((res) => {
+        setAllLinksMicsToVideoSource(res);
+      });
+    }, 5000);
+
     async function sleep(): Promise<boolean> {
       return new Promise((resolve) => {
         getAllMics().then((res) => {
@@ -336,7 +343,7 @@ export const LinkMicToVideoSource = (props: any) => {
       ) : (
         <>
           {allLinksMicsToVideoSource.length === 0 ? (
-            <h1>No subtitles settings found</h1>
+            <h1>No links mics to display source(s)</h1>
           ) : (
             <>
               <h1>Links mics to display source(s):</h1>
