@@ -1,7 +1,8 @@
 import React, { useEffect } from "react";
 import { Routes, Route, Link } from "react-router-dom";
 import "./Home.css";
-import { Button, IconButton } from "@mui/material";
+import { Box, Button, CardContent, IconButton, Typography } from "@mui/material";
+import Modal from "@mui/material/Modal";
 import { Visibility, VisibilityOff } from "@material-ui/icons";
 import OutlinedCard from "./CardsHome";
 import { QRCode, encrypt } from "./QRcode";
@@ -14,6 +15,8 @@ import LoginIcon from '@mui/icons-material/Login';
 import LogoutIcon from '@mui/icons-material/Logout';
 import useAuth from "../../hooks/useAuth.js";
 import useLogout from "../../hooks/useLogout";
+import { ModalSave } from "../ModalSave/ModalSave";
+
 const ipcRenderer = window.require("electron").ipcRenderer;
 
 export const Home = () => {
@@ -34,12 +37,25 @@ export const Home = () => {
     setIsHovering(false);
   };
 
-  const getLocalIp = (): Promise<string> => {
-    return new Promise(async (resolve, reject) => {
-      const result: string = await ipcRenderer.sendSync("getLocalIP", "ping");
-      resolve(result);
-    });
-  };
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+  
+	
+	const getLocalIp = (): Promise<string> => {
+		return new Promise(async (resolve, reject) => {
+		  const result: string = await ipcRenderer.sendSync("getLocalIP", "ping");
+		  resolve(result);
+		});
+	};
+	
+	useEffect(() => {
+		getLocalIp().then(res => {
+			if (res.length > 0)
+				setip(encrypt(res))
+		});
+	
+	  }, []);
 
   const renderLoginButton = () => {
 	console.log(auth)
@@ -152,6 +168,15 @@ export const Home = () => {
           </div>
         ))}
       </div>
+			{ auth?.auth && auth?.auth?.email ?
+			<>
+      	<Button onClick={handleOpen}> Load Last save</Button>
+      	<Modal open={open} onClose={handleClose}>
+      	  <ModalSave handleClose={handleClose}/>
+      	</Modal>
+			</> : 
+			<></>
+			}
     </>
   );
 };

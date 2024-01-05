@@ -51,10 +51,12 @@ export interface getActReactCouplesFormat {
 }
 
 export interface Mic {
-  micName: string;
-  level: number;
-  uuid: string;
   isActive: boolean;
+  level: number;
+  micKind?: string;
+  micName: string;
+  unversionedmicKind?: string;
+  uuid: string;
 }
 
 export interface AllMics {
