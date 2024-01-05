@@ -13,6 +13,7 @@ import { action_reaction } from "../ActionsReactions/AppLaunch/AppLaunch";
 
 const ipcRenderer = window.require("electron").ipcRenderer;
 
+const SAVEURL = '/users/saveUserFeatures'
 export interface Save {
   saveName: string;
   actions: Action[];
@@ -349,6 +350,62 @@ export const ModalSave = (props: any) => {
     });
   };
 
+  const save = async (mics: MicCompressor[] | undefined, action: Action[] | undefined, reaction: Reaction[] | undefined, savesNumber: number) => {
+    const save: any = {
+      "saveName": savesNumber.toString(),
+      "actions": [],
+      "reactions": [],
+      "mics": [],
+      "changeScene": null,
+    }
+    if (mics && mics != undefined) {
+      mics.forEach(mic => {
+        save.mics.push({
+          "name": mic.micName,
+          "level": mic.level,
+          "isActive": mic.isActive,
+        })
+      });
+    }
+    // reaction.forEach(reaction => {
+    //   save.save.reactions.push({
+    //     "reactionName": reaction.reactionName,
+    //     "reactionType": reaction.reactionType,
+    //     "reactionValue": reaction.reactionValue,
+    //   })
+    // });
+    // action.forEach(action => {
+    //   if (action.wordDetection) {
+    //     save.save.actions.push({
+    //       "name": action.name,
+    //       "wordDetection": {
+    //         "keyWord": action.wordDetection.keyWord,
+    //       }
+    //     })
+    //   }
+    //   else if (action.keyPressed) {
+    //     save.save.actions.push({
+    //       "name": action.name,
+    //       "keyPressed": {
+    //         "key": action.keyPressed.key,
+    //       }
+    //     })
+    //   }
+    //   else if (action.appLaunch) {
+    //     save.save.actions.push({
+    //       "name": action.name,
+    //       "appLaunch": {
+    //         "appName": action.appLaunch.appName,
+    //       }
+    //     })
+    //   }
+    // });
+    const req = await axiosPrivate.post(SAVEURL, {
+      save
+    })
+    console.log(req)
+  };
+
   const loadSave = async (mics: Mic[], action: Action[], reaction: Reaction[]) => {
     mics.forEach((mic: Mic) => {
       setVolumeToCompressor(mic);
@@ -492,6 +549,7 @@ export const ModalSave = (props: any) => {
             <DisplayMics mics={saves[saveIndex].mics} micsOBS={exampleCompressorArray} />
             <DisplayActions actions={saves[saveIndex].actions} />
             <DisplayReactions reactions={saves[saveIndex].reactions} scenesOBS={obsScenes} />
+              <Button onClick={() => save(exampleCompressorArray, saves[saveIndex].actions, saves[saveIndex].reactions, saves.length)}> Save </Button>
               <Button onClick={() => loadSave(saves[saveIndex].mics, saves[saveIndex].actions, saves[saveIndex].reactions)}> Load </Button>
               <Button onClick={() => {loadMics(); loadScenes()}}> Reload </Button>
               <Button onClick={props.handleClose}> Close</Button>
@@ -510,6 +568,7 @@ export const ModalSave = (props: any) => {
               variant="h3"
             >
               Nothing saved.
+              <Button onClick={() => save(exampleCompressorArray, undefined, undefined, 0)}> Save </Button>
             </Typography>
           </Box>
         )}
