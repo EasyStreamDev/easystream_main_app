@@ -509,7 +509,7 @@ export const ModalSave = (props: any) => {
               }}
               variant="h3"
             >
-              {"Vous n'avez pas de sauvegarde"}
+              Nothing saved.
             </Typography>
           </Box>
         )}
