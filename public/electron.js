@@ -15,6 +15,7 @@ log.info('App starting...');
 console.log("isDev", isDev)
 console.log("notRelease", notRelease)
 
+
 let loadingScreen;
 let mainWindow;
 let tcpConn;
@@ -65,7 +66,41 @@ const createWindow = () => {
     }
     mainWindow.show();
   });
+
+  ipcMain.on('login', (event, arg) => {
+    openTwitchAuthWindow();
+    event.returnValue = true;
+  });
 };
+
+function openTwitchAuthWindow() {
+  const clientId = 'ap6bcqyn1kroiqzfvj46cirft541gv';
+  const redirectUri = 'http://localhost:3000/OauthTwitch';
+  // Open the Twitch authentication URL in a new window
+  const twitchAuthURL = 'https://id.twitch.tv/oauth2/authorize' +
+    `?client_id=${clientId}` +
+    `&redirect_uri=${redirectUri}` +
+    `&response_type=token` +
+    `&scope=${''}`;
+
+  const authWindow = new BrowserWindow({ 
+    width: 800,
+    height: 600,
+    show: false,
+    webPreferences: {
+      nodeIntegration: true, // turn this off if you don't mean to use node
+      contextIsolation: false,
+    },
+  });
+  authWindow.loadURL(twitchAuthURL);
+  authWindow.show();
+
+  authWindow.webContents.on('will-navigate', function (event, newUrl) {
+    console.log("will-navigate", newUrl);
+    authWindow.destroy();
+    mainWindow.webContents.send('oauth-twitch', newUrl);
+});
+}
 
 ipcMain.on("getLocalIP", (event, _) => {
   event.returnValue = localIpAddress();
@@ -296,7 +331,7 @@ ipcMain.on("/display-sources/get", (event, arg) => {
             "uuid": "277ab5058-7a54-4057-ad17-a810c08ea8db9",
           },
           {
-            "name": "Webcame Capture",
+            "name": "Wconnection-server-lostfebcame Capture",
             "parent_scene": "Facecam Scene",
             "uuid": "4f7398d61-094a-4b7b-9905-4fa928329de4",
           },

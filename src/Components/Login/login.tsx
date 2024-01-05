@@ -1,3 +1,4 @@
+import React from "react";
 import { Button, TextField } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { inputLabelClasses } from "@mui/material/InputLabel";
@@ -5,11 +6,16 @@ import { useRef, useState, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import "./login.css";
 
-import React from "react";
+
 import axios from "../../api/axios";
 import useAuth from "../../hooks/useAuth";
 import { toast } from "react-toastify";
+const ipcRenderer = window.require("electron").ipcRenderer;
+const OAUTHURL = "auth/Oauth";
 
+
+const clientId = 'ap6bcqyn1kroiqzfvj46cirft541gv';
+const redirectUri = 'http://localhost:3000/OauthTwitch';
 const LOGIN_URL = "/auth/login";
 
 const useStyles = makeStyles({
@@ -70,6 +76,7 @@ export const Login = () => {
   const [pwd, setPwd] = useState("");
   const [errMsg, setErrMsg] = useState("");
 
+
   useEffect(() => {
     emailRef.current.focus();
   }, []);
@@ -77,6 +84,39 @@ export const Login = () => {
   useEffect(() => {
     setErrMsg("");
   }, [email, pwd]);
+
+  useEffect(() => {
+    const handleOAuthTwitch = (evt: any, url: any) => {
+      // TODO
+      console.log('ALERT', url)
+      const fragment = url.split("#")[1];
+      const accessTokenParam = new URLSearchParams(fragment).get("access_token");
+      const getUser = async () => {
+        try {
+          const response = await axios.post(OAUTHURL, {
+            token: accessTokenParam,
+            headers: { "Content-Type": "application/json" },
+          });
+          console.log("response:", response.data)
+          const {email, roles, accessToken, refreshToken, subscription} = response.data;
+          console.log(email, roles, accessToken, refreshToken, subscription)
+          setAuth({ email: "blabla", roles, accessToken, refreshToken, subscription });
+          navigate(from, { replace: true });
+        } catch (err: any) {
+          
+          console.error(err.response);
+        }
+      }
+      getUser();
+    };
+
+    console.log("HERE")
+    ipcRenderer.on('oauth-twitch', handleOAuthTwitch);
+
+    return () => {
+      ipcRenderer.removeListener('oauth-twitch', handleOAuthTwitch);
+    };
+  }, []);
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
@@ -125,6 +165,11 @@ export const Login = () => {
       errRef.current.focus();
     }
   };
+
+  const handleLogin = () => {
+    // window.location.href = `https://id.twitch.tv/oauth2/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=token&scope=${''}`;
+    ipcRenderer.send('login');
+  }
 
   return (
     <>
@@ -187,6 +232,9 @@ export const Login = () => {
         />
         <Button className="button-color-orange" variant="outlined" onClick={handleSubmit}>
           Login
+        </Button>
+        <Button onClick={handleLogin} className="twitch-login-btn">
+          Twitch
         </Button>
       </div>
     </>

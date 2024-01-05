@@ -4,3 +4,23 @@
     border: 1px solid orange !important;
     color: white !important;
 }
+
+.twitch-login-btn {
+    display: inline-block;
+    padding: 15px 25px;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    color: #fff;
+    background-color: #6441a5;
+    border: 2px solid #6441a5;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+  }
+  
+  .twitch-login-btn:hover {
+    background-color: #724eb1;
+    border-color: #724eb1;
+  }

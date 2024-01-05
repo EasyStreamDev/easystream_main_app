@@ -168,10 +168,15 @@ export const Home = () => {
           </div>
         ))}
       </div>
-      <Button onClick={handleOpen}> Load Last save</Button>
-      <Modal open={open} onClose={handleClose}>
-        <ModalSave handleClose={handleClose}/>
-      </Modal>
+			{ auth?.auth && auth?.auth?.email ?
+			<>
+      	<Button onClick={handleOpen}> Load Last save</Button>
+      	<Modal open={open} onClose={handleClose}>
+      	  <ModalSave handleClose={handleClose}/>
+      	</Modal>
+			</> : 
+			<></>
+			}
     </>
   );
 };

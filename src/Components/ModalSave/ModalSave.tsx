@@ -5,8 +5,11 @@ import CancelRoundedIcon from "@mui/icons-material/CancelRounded";
 import CheckCircleOutlineRoundedIcon from "@mui/icons-material/CheckCircleOutlineRounded";
 import React, { useEffect, useState } from "react";
 
-import { AllMics, resultFormat, AllScenes, Scene  } from "../../Socket/interfaces";
+import { AllMics, resultFormat, AllScenes, Scene, actionReactionFormat  } from "../../Socket/interfaces";
 import { toast } from "react-toastify";
+
+import useAuth from "../../hooks/useAuth.js";
+import { action_reaction } from "../ActionsReactions/AppLaunch/AppLaunch";
 
 const ipcRenderer = window.require("electron").ipcRenderer;
 
@@ -261,18 +264,15 @@ export const ModalSave = (props: any) => {
   const [exampleCompressorArray, setExampleCompressorArray] = useState<MicCompressor[]>();
   const [obsScenes, setObsScenes] = useState<Scene[]>();
 
-
   // call get save at the beginning of the component
   useEffect(() => {
-    getSave();
-    loadMics();
-    loadScenes();
+      getSave();
+      loadMics();
+      loadScenes();
   }, []);
 
   useEffect(() => {
     // This code will run when exampleCompressorArray changes.
-    console.log("exampleCompressorArray: ", exampleCompressorArray);
-    console.log("obsScenes: ", obsScenes);
   }, [exampleCompressorArray, obsScenes]);
   
   const loadMics = async () => {
@@ -342,81 +342,180 @@ export const ModalSave = (props: any) => {
     setSaveIndex(response.data.saves.length - 1);
   };
 
-  const loadSave = async (mics: Mic[]) => {
+  const sendActionReactionToServer = (newActionReaction: action_reaction): Promise<actionReactionFormat> => {
+    return new Promise(async (resolve, reject) => {
+      const result: actionReactionFormat = await ipcRenderer.sendSync("setActionReaction", newActionReaction);
+      resolve(result);
+    });
+  };
+
+  const loadSave = async (mics: Mic[], action: Action[], reaction: Reaction[]) => {
     mics.forEach((mic: Mic) => {
       if (mics.some((mic: Mic) => mic.name === mic.name) === true) {
         setVolumeToCompressor(mic);
       }
     });
+    action.forEach((action: Action, index) => {
+      if (action.wordDetection) {
+        toast("Word detection is not implemented yet", {
+          type: "error",
+        });
+        sendActionReactionToServer({
+          action: {
+            type: "WORD_DETECTION",
+            params: {
+              key_word: action.wordDetection.keyWord,
+            },
+          },
+          reaction: {
+            name: reaction[index].reactionName,
+            type: reaction[index].reactionType,
+            params: {
+              reaction_value: reaction[index].reactionValue,
+            },
+          },
+        }).then((res) => {
+          if (res.statusCode === 200) {
+            console.log("updateActionReactionArray", res);
+            toast("Action & Reaction submitted successfully !", {
+              type: "success",
+            });
+          } else {
+            toast("Error server.", {
+              type: "error",
+            });
+          }
+        });
+        console.log(action.wordDetection, reaction[index])
+      } else if (action.keyPressed) {
+        toast("Key pressed is not implemented yet", {
+          type: "error",
+        });
+        console.log(action.keyPressed, reaction[index])
+        sendActionReactionToServer({
+          action: {
+            type: "KEY_PRESSED",
+            params: {
+              key: action.keyPressed.key,
+            },
+          },
+          reaction: {
+            name: reaction[index].reactionName,
+            type: reaction[index].reactionType,
+            params: {
+              reaction_value: reaction[index].reactionValue,
+            },
+          },
+        }).then((res) => {
+          if (res.statusCode === 200) {
+            console.log("updateActionReactionArray", res);
+            toast("Action & Reaction submitted successfully !", {
+              type: "success",
+            });
+          } else {
+            toast("Error server.", {
+              type: "error",
+            });
+          }
+        })
+      } else if (action.appLaunch) {
+        toast("App launch is not implemented yet", {
+          type: "error",
+        });
+        sendActionReactionToServer({
+          action: {
+            type: "APP_LAUNCH",
+            params: {
+              app_name: action.appLaunch.appName,
+            },
+          },
+          reaction: {
+            name: reaction[index].reactionName,
+            type: reaction[index].reactionType,
+            params: {
+              reaction_value: reaction[index].reactionValue,
+            },
+          },
+        }).then((res) => {
+          if (res.statusCode === 200) {
+            console.log("updateActionReactionArray", res);
+            toast("Action & Reaction submitted successfully !", {
+              type: "success",
+            });
+          } else {
+            toast("Error server.", {
+              type: "error",
+            });
+          }
+        });
+        console.log(action.appLaunch, reaction[index])
+      }
+    }
+    );
   };
 
   return (
     <>
-      {load ? (
-        <h1>NOT Load</h1>
-      ) : (
-        <div
-          style={{
-            marginLeft: "30vw",
-            marginTop: "10vh",
-            width: "40vw",
-            height: "80vh",
-            border: "3px solid orange",
-            backgroundColor: "#222831",
-            borderRadius: "15px",
-          }}
-        >
-          {saves != undefined && saves.length > 0 ? (
-            <Box
+      <div
+        style={{
+          marginLeft: "30vw",
+          marginTop: "10vh",
+          width: "40vw",
+          height: "80vh",
+          border: "3px solid orange",
+          backgroundColor: "#222831",
+          borderRadius: "15px",
+          overflow: 'auto',
+        }}
+      >
+        {saves != undefined && saves.length > 0 ? (
+          <Box
+            sx={{
+              color: "white",
+              padding: "2vh",
+              paddingBottom: "15px !important",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <Typography
               sx={{
-                color: "white",
-                padding: "2vh",
-                paddingBottom: "15px !important",
+                fontWeight: "bold",
+                display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
+                paddingTop: "5vh",
+                paddingBottom: "5vh",
               }}
+              variant="h2"
             >
-              <Typography
-                sx={{
-                  fontWeight: "bold",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  paddingTop: "5vh",
-                  paddingBottom: "5vh",
-                }}
-                variant="h2"
-              >
-                {saves[saveIndex].saveName}
-              </Typography>
-              <DisplayMics mics={saves[saveIndex].mics} micsOBS={exampleCompressorArray} />
-              <DisplayActions actions={saves[saveIndex].actions} />
-              <DisplayReactions reactions={saves[saveIndex].reactions} scenesOBS={obsScenes} />
-              <div>
-                <Button onClick={() => loadSave(saves[saveIndex].mics)}> Load </Button>
-                <Button onClick={() => {loadMics(); loadScenes()}}> Reload </Button>
-                <Button onClick={props.handleClose}> Close</Button>
-              </div>
-            </Box>
-          ) : (
-            <Box>
-              <Typography
-                sx={{
-                  color: "white",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  paddingTop: "30vh",
+              {saves[saveIndex].saveName}
+            </Typography>
+            <DisplayMics mics={saves[saveIndex].mics} micsOBS={exampleCompressorArray} />
+            <DisplayActions actions={saves[saveIndex].actions} />
+            <DisplayReactions reactions={saves[saveIndex].reactions} scenesOBS={obsScenes} />
+              <Button onClick={() => loadSave(saves[saveIndex].mics, saves[saveIndex].actions, saves[saveIndex].reactions)}> Load </Button>
+              <Button onClick={() => {loadMics(); loadScenes()}}> Reload </Button>
+              <Button onClick={props.handleClose}> Close</Button>
+          </Box>
+        ) : (
+          <Box>
+            <Typography
+              sx={{
+                color: "white",
+                alignItems: "center",
+                justifyContent: "center",
+                paddingTop: "30vh",
 
-                  fontWeight: "bold",
-                }}
-                variant="h3"
-              >
-                {"Vous n'avez pas de sauvegarde"}
-              </Typography>
-            </Box>
-          )}
-        </div>
-      )}
+                fontWeight: "bold",
+              }}
+              variant="h3"
+            >
+              {"Vous n'avez pas de sauvegarde"}
+            </Typography>
+          </Box>
+        )}
+      </div>
     </>
   );
 };

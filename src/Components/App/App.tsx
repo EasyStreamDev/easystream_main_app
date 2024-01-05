@@ -19,6 +19,7 @@ import { Feedback } from "../Other/Feedback/Feedback";
 import Sidebar from "../Sidebar/Sidebar";
 import { Subtitles } from "../Subtitles/Subtitles";
 import Unauthorized from "../Unauthorized/Unauthorized";
+import OauthTwitch from "../Oauth/OauthTwitch";
 
 export default function App() {
   return (
@@ -41,6 +42,7 @@ export default function App() {
               <Route path="/actions-reactions/app-launch" element={<AppLaunch />} />
               <Route path="/actions-reactions/reactions" element={<CreateReactions />} />
               <Route path="/other/feedback" element={<Feedback />} />
+              <Route path="/OauthTwitch" element={< OauthTwitch />} />
 
               <Route
                 element={
