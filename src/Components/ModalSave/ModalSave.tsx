@@ -292,7 +292,7 @@ export const ModalSave = (props: any) => {
 
   const getAllCompressors = (): Promise<AllMics> => {
     return new Promise(async (resolve) => {
-      const result: AllMics = await ipcRenderer.sendSync("getAllMics", "ping");
+      const result: AllMics = await ipcRenderer.sendSync("/microphones/get", "ping");
       resolve(result);
     });
   };
@@ -314,7 +314,7 @@ export const ModalSave = (props: any) => {
 
   const getAllScenes = (): Promise<AllScenes> => {
     return new Promise(async (resolve, reject) => {
-      const result: AllScenes = await ipcRenderer.sendSync("getAllScenes", "ping");
+      const result: AllScenes = await ipcRenderer.sendSync("/scenes/get", "ping");
       resolve(result);
     });
   };
@@ -322,7 +322,7 @@ export const ModalSave = (props: any) => {
   const setVolumeToCompressor = (mic: Mic): Promise<resultFormat> => {
     return new Promise(async (resolve, reject) => {
       const result: resultFormat = await ipcRenderer.sendSync(
-        "setCompressorLevel",
+        "/microphones/auto-leveler/set",
         {
           level: parseInt(mic.level),
           micName: mic.name,
@@ -344,16 +344,14 @@ export const ModalSave = (props: any) => {
 
   const sendActionReactionToServer = (newActionReaction: action_reaction): Promise<actionReactionFormat> => {
     return new Promise(async (resolve, reject) => {
-      const result: actionReactionFormat = await ipcRenderer.sendSync("setActionReaction", newActionReaction);
+      const result: actionReactionFormat = await ipcRenderer.sendSync("/areas/create", newActionReaction);
       resolve(result);
     });
   };
 
   const loadSave = async (mics: Mic[], action: Action[], reaction: Reaction[]) => {
     mics.forEach((mic: Mic) => {
-      if (mics.some((mic: Mic) => mic.name === mic.name) === true) {
-        setVolumeToCompressor(mic);
-      }
+      setVolumeToCompressor(mic);
     });
     action.forEach((action: Action, index) => {
       if (action.wordDetection) {
@@ -468,7 +466,7 @@ export const ModalSave = (props: any) => {
           overflow: 'auto',
         }}
       >
-        {saves != undefined && saves.length > 0 ? (
+        {saves !== undefined && saves.length > 0 ? (
           <Box
             sx={{
               color: "white",
